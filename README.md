@@ -1,6 +1,6 @@
 #Brofiler
 
-Brofiler is a manual instrumented Profiling library for C++. It provides mechanisms to add measurement-points to the code. At runtime these are 
+Brofiler is a manual instrumented Profiling library for C++.
 
 ##Goals
 These are the main goals for the project:
