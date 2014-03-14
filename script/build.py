@@ -75,6 +75,7 @@ def createBuildFiles(component):
     
     #create the build environment with cmake
     try:
+        os.mkdir( BUILD_PATH )
         os.mkdir( component.buildpath )
     except:
         pass
