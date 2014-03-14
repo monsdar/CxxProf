@@ -2,18 +2,6 @@
 
 <components>
     <component>
-        <name>goclient</name>
-        <dependencies>
-            <dependency>golib</dependency>
-        </dependencies>
-    </component>
-    <component>
-        <name>gotest</name>
-        <dependencies>
-            <dependency>golib</dependency>
-        </dependencies>
-    </component>
-    <component>
         <name>brofiler_testclient</name>
         <dependencies>
             <dependency>brofiler</dependency>
