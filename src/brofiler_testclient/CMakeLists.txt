@@ -17,6 +17,7 @@ enable_testing()
 
 #Find the dependencies
 find_package(brofiler)
+find_package(brofiler_dyntest)
 
 #Build the actual component
 FILE(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/helpers/*.cpp)
@@ -24,9 +25,12 @@ FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/src/helpers/*.h)
 
 set( INCLUDEDIRS ${Boost_INCLUDE_DIRS}
                  ${brofiler_INCLUDE_DIRS}
+                 ${brofiler_dyntest_INCLUDE_DIRS}
                  ${CMAKE_CURRENT_SOURCE_DIR}/src/helpers/)
-set( LIBRARYDIRS ${brofiler_LIBRARY_DIRS})
+set( LIBRARYDIRS ${brofiler_LIBRARY_DIRS}
+                 ${brofiler_dyntest_LIBRARY_DIRS})
 set( LIBRARIES   ${brofiler_Release_LIBRARIES}
+                 ${brofiler_dyntest_Release_LIBRARIES}
                  ${Boost_LIBRARIES})
 set( ADDITIONALSOURCES ${Sources} ${Headers})
 

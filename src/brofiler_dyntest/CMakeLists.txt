@@ -11,16 +11,25 @@ set( SELFCONTAINED_CMAKE ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/)
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${SELFCONTAINED_CMAKE} )
 include( setEnv )
 
+#Find the dependencies
+find_package(brofiler)
+
+
 #This is needed for the dllexport mechanism
-add_definitions(-DBROFILER)
+add_definitions(-DBROFILER_DYNTEST)
 
 #Build the actual component
 file(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
+                    ${brofiler_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS})
+link_directories(${brofiler_LIBRARY_DIRS})
+
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
+target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES} ${Boost_LIBRARIES})  
+target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES} ${Boost_LIBRARIES})  
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${PROJECT_NAME}/lib

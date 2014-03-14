@@ -1,15 +1,12 @@
 
-#include "brofiler/Brofiler.h"
-
 #include <boost/thread/thread.hpp>
+#include <iostream>
 
 int main()
-{
-    Brofiler bro;
-    
+{    
     while(true)
     {
-        bro.printHello();
+        std::cout << "Hello World!" << std::endl;
         boost::this_thread::sleep( boost::posix_time::milliseconds(1000) );
     }
     
