@@ -15,9 +15,6 @@ INSTALL_PATH = DEV_PATH + "/install/"
 SRC_PATH = DEV_PATH + "/src/"
 CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake.exe"
 
-#This will be set to True if there are any errors during the runtime of a thread
-globalExitFlag = False
-
 #NOTE:  This switches the parallel build of components on/off
 #       It's currently turned off because we had problems with gotest-release and its log-files
 MULTITHREADED = True
@@ -70,9 +67,7 @@ class Component():
         self.buildpath = BUILD_PATH + "/" + self.name
         self.dependencies = []
 
-def createBuildFiles(component):
-    global globalExitFlag
-    
+def createBuildFiles(component):    
     #create the build environment with cmake
     try:
         os.mkdir( BUILD_PATH )
@@ -100,14 +95,11 @@ def createBuildFiles(component):
     process.wait()
     if not( process.returncode == 0 ):
         print "Creating Build-files for " + component.name + " exited with ErrorCode: " + str(process.returncode)
-        globalExitFlag = True
         exit(process.returncode)
     else:
         print "|    ..." + component.name.ljust(20, ' ') + " - " + "cmake".ljust(20, ' ') + " - SUCCESSFUL"
         
-def build(component, type):
-    global globalExitFlag
-        
+def build(component, type):        
     os.chdir( component.buildpath )
     outLog = open('build_' + component.name + '_' + type + '_out.log', 'wb')
     errLog = open('build_' + component.name + '_' + type + '_err.log', 'wb')
@@ -124,7 +116,6 @@ def build(component, type):
     process.wait()
     if not( process.returncode == 0 ):
         print "Building " + type + " for " + component.name + " exited with ErrorCode: " + str(process.returncode)
-        globalExitFlag = True
         exit(process.returncode)
     else:
         print "|    ..." + component.name.ljust(20, ' ') + " - " + type.ljust(20, ' ') + " - SUCCESSFUL"
@@ -242,10 +233,11 @@ def main():
         if( MULTITHREADED ):
             for worker in buildWorkers:
                 worker.join()
-            
-        if(globalExitFlag):
-            print "Errors occured, stopping the build..."
-            exit(-1)
+                
+        for worker in buildWorkers:
+            if( not worker.exitcode == 0 ):
+                print "Errors occured, stopping the build..."
+                exit(-1)
                 
     print "================================="
     print "====== BUILD SUCCESSFUL ========="
