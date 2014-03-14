@@ -76,6 +76,9 @@ def createBuildFiles(component):
     #create the build environment with cmake
     try:
         os.mkdir( BUILD_PATH )
+    except:
+        pass
+    try:
         os.mkdir( component.buildpath )
     except:
         pass
@@ -104,7 +107,7 @@ def createBuildFiles(component):
         
 def build(component, type):
     global globalExitFlag
-    
+        
     os.chdir( component.buildpath )
     outLog = open('build_' + component.name + '_' + type + '_out.log', 'wb')
     errLog = open('build_' + component.name + '_' + type + '_err.log', 'wb')
@@ -141,14 +144,12 @@ def cleanup():
     #clean build directory
     try:
         shutil.rmtree( BUILD_PATH )
-        os.mkdir( BUILD_PATH )
     except:
         pass
         
     #clean install directory
     try:
         shutil.rmtree( INSTALL_PATH )
-        os.mkdir( INSTALL_PATH )
     except:
         pass
         
