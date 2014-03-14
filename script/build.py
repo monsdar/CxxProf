@@ -94,10 +94,10 @@ def createBuildFiles(component):
     process = subprocess.Popen( cmakeCreate, stdout=outLog, stderr=errLog )
     process.wait()
     if not( process.returncode == 0 ):
-        print "Creating Build-files for " + component.name + " exited with ErrorCode: " + str(process.returncode)
+        print "|    ..." + component.name.ljust(20, ' ') + " - " + "cmake".ljust(20, ' ') + " - ~~ ERROR: " + str(process.returncode) + " ~~"
         exit(process.returncode)
     else:
-        print "|    ..." + component.name.ljust(20, ' ') + " - " + "cmake".ljust(20, ' ') + " - SUCCESSFUL"
+        print "|    ..." + component.name.ljust(20, ' ') + " - " + "cmake".ljust(20, ' ') + " - SUCCESS"
         
 def build(component, type):        
     os.chdir( component.buildpath )
@@ -115,10 +115,10 @@ def build(component, type):
     process = subprocess.Popen( cmakeBuild, stdout=outLog, stderr=errLog )
     process.wait()
     if not( process.returncode == 0 ):
-        print "Building " + type + " for " + component.name + " exited with ErrorCode: " + str(process.returncode)
+        print "|    ..." + component.name.ljust(20, ' ') + " - " + type.ljust(20, ' ') + " - ~~ ERROR: " + str(process.returncode) + " ~~"
         exit(process.returncode)
     else:
-        print "|    ..." + component.name.ljust(20, ' ') + " - " + type.ljust(20, ' ') + " - SUCCESSFUL"
+        print "|    ..." + component.name.ljust(20, ' ') + " - " + type.ljust(20, ' ') + " - SUCCESS"
         
 class ExecWorker(multiprocessing.Process):
     def __init__(self, component):
