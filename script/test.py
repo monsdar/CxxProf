@@ -39,12 +39,7 @@ def main():
             testCmd.append(".")
             process = subprocess.Popen(testCmd)
             process.wait()
-            print "Testing failed with errorcode: " + str(process.returncode)
+            print "Testing executed with errorcode: " + str(process.returncode)
 
-    print ""
-    print "================================="
-    print "====== TESTS SUCCESSFUL ========="
-    print "================================="
-    
 if __name__=="__main__":
     main()
