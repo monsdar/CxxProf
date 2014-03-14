@@ -137,13 +137,7 @@ def cleanup():
         shutil.rmtree( BUILD_PATH )
     except:
         pass
-        
-    #clean install directory
-    try:
-        shutil.rmtree( INSTALL_PATH )
-    except:
-        pass
-        
+
     #remove the Find-Scripts
     for root, dirnames, filenames in os.walk( CMAKE_PATH ):
         for filename in fnmatch.filter(filenames, 'Find*.cmake'):
@@ -158,6 +152,12 @@ def main():
     if( sys.argv[-1].lower() == "clean"):
         print "Cleaning up..."
         cleanup();
+        
+    #clean up the install directory everytime (to avoid old files messing up builds)
+    try:
+        shutil.rmtree( INSTALL_PATH )
+    except:
+        pass
     
     #first read the dependency config
     dependencies = readComponents()
