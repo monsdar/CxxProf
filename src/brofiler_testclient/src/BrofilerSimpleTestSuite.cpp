@@ -11,17 +11,25 @@
 
 BOOST_AUTO_TEST_CASE(simpleTest)
 {
-    //create the Brofiler along with its DynBrofiler
-    boost::shared_ptr<IDynBrofiler> dynBrofiler( new TestBrofiler() );
-    Brofiler newBro(dynBrofiler);
+    //Create the Brofiler
+    std::cout << "Creating Brofiler" << std::endl;
+    Brofiler newBro;
     
-    newBro.loadDynBrofiler();
+    //The brofiler should throw if there is no DynBrofiler loaded
+    std::cout << "Trying to create Activity without DynBrofiler (should fail)" << std::endl;
+    BOOST_CHECK_THROW(newBro.createActivity("FailActivity"), std::exception);
+    
+    //Load a DynBrofiler
+    std::cout << "Loading DynBrofiler" << std::endl;
+    BOOST_CHECK_NO_THROW( newBro.loadDynBrofiler() );
     
     //let's try to create an Activity
-    std::cout << "Activity gets created..." << std::endl;
+    std::cout << "Activity focus test..." << std::endl;
     {
         boost::shared_ptr<IActivity> act;
+        std::cout << "Creating Activity" << std::endl;
         BOOST_CHECK_NO_THROW( act = newBro.createActivity("MyFirstActivity") );
+        std::cout << "Activity Name: " << act->getName() << std::endl;
     }
-    std::cout << "Activity should be destructed by now..." << std::endl;
+    std::cout << "...Activity focus test ended" << std::endl;
 }

@@ -9,17 +9,24 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
+//forward declaration
+namespace pluma
+{
+    class Pluma;
+};
+
 class Brofiler_EXPORT Brofiler
 {
 public:
-    Brofiler(boost::shared_ptr<IDynBrofiler> givenDynBrofider);
+    Brofiler();
     virtual ~Brofiler();
     
     void loadDynBrofiler();
     boost::shared_ptr<IActivity> createActivity(const std::string& name) const;
 
 private:
-    boost::shared_ptr<IDynBrofiler> dynBrofiler_;
+    IDynBrofiler* dynBrofiler_;
+    boost::shared_ptr<pluma::Pluma> manager_;
 };
 
 #endif //_BROFILER_H_
