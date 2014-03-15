@@ -15,6 +15,8 @@ BOOST_AUTO_TEST_CASE(simpleTest)
     boost::shared_ptr<IDynBrofiler> dynBrofiler( new TestBrofiler() );
     Brofiler newBro(dynBrofiler);
     
+    newBro.loadDynBrofiler();
+    
     //let's try to create an Activity
     std::cout << "Activity gets created..." << std::endl;
     {

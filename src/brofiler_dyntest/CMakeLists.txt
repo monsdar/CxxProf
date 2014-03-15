@@ -17,6 +17,7 @@ find_package(brofiler)
 
 #This is needed for the dllexport mechanism
 add_definitions(-DBROFILER_DYNTEST)
+add_definitions(-DPLUGIN_EXPORTS) #needed for Pluma
 
 #Build the actual component
 file(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -24,12 +25,17 @@ file(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
                     ${brofiler_INCLUDE_DIRS}
-                    ${Boost_INCLUDE_DIRS})
+                    ${Boost_INCLUDE_DIRS}
+                    ${Pluma_INCLUDE_DIRS})
 link_directories(${brofiler_LIBRARY_DIRS})
 
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
-target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES} ${Boost_LIBRARIES})  
-target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES} ${Boost_LIBRARIES})  
+target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES} 
+                                                ${Boost_LIBRARIES}
+                                                ${Pluma_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES} 
+                                            ${Boost_LIBRARIES}
+                                            ${Pluma_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${PROJECT_NAME}/lib

@@ -7,6 +7,7 @@
 #include "brofiler/IActivity.h"
 
 #include <boost/shared_ptr.hpp>
+#include <vector>
 
 class Brofiler_EXPORT Brofiler
 {
@@ -14,6 +15,7 @@ public:
     Brofiler(boost::shared_ptr<IDynBrofiler> givenDynBrofider);
     virtual ~Brofiler();
     
+    void loadDynBrofiler();
     boost::shared_ptr<IActivity> createActivity(const std::string& name) const;
 
 private:

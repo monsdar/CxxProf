@@ -15,7 +15,8 @@ CTEST_EXE = DEV_PATH + "/thirdparty/cmake/ctest.exe"
 def main():
     #set the PATH to find Thirdparty
     os.environ['PATH'] = THIRDPARTY_PATH + '/boost/bin/'
-    os.environ['PATH'] = os.environ['PATH'] + ';' + THIRDPARTY_PATH + '/cmake/'
+    os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/pluma/bin/'
+    os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/cmake/'
     
     #find our own components, set the PATH for them
     matches = []
@@ -39,7 +40,7 @@ def main():
             testCmd.append(".")
             process = subprocess.Popen(testCmd)
             process.wait()
-            print "Testing executed with errorcode: " + str(process.returncode)
+            print "Tests executed with errorcode: " + str(process.returncode)
 
 if __name__=="__main__":
     main()
