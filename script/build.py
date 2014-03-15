@@ -1,4 +1,27 @@
 
+
+'''
+    Builds the components of this selfcontained environment
+    It is optionally possible to just build a specific selection
+    
+    Usage:
+        build.py [--clean] [comp1] [comp2] [compN]
+        Param:  --clean recreates all build files, nothing existing will be reused
+        Param:  compN defines a specific component which should be built. Dependencies are found automatically.
+                If nothing is given, the script builds everything it finds
+    
+    Examples:
+        Build everything from scratch
+            build.py --clean
+        Build everything, try to rebuild when possible
+            build.py
+        Build just a specific component (dependencies are found automatically) from scratch
+            build.py --clean brofiler_testclient
+        Build different specific components, try to rebuild if possible
+            build.py brofiler_testclient brofiler_dyn
+'''
+
+
 import fnmatch
 import os
 import shutil
@@ -7,6 +30,17 @@ import sys
 import multiprocessing
 from xml.etree import ElementTree;
 
+#This switches the parallel build of components on/off
+#MULTITHREADED = False
+MULTITHREADED = True
+
+#NOTE:  This performs the build with an alternative Platform Toolset instead of using the installed version
+#       If it is empty, CMake uses the currently installed toolset
+#       Example: It allows to use Visual Studio 2013 with a v100 toolset
+#USE_ALTERNATIVE_TOOLSET = 'v90'
+#USE_ALTERNATIVE_TOOLSET = 'v100'
+USE_ALTERNATIVE_TOOLSET = ''
+
 #set pathes
 DEV_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../'
 BUILD_PATH = DEV_PATH + "/build/"
@@ -14,16 +48,6 @@ CMAKE_PATH = DEV_PATH + "/cmake/"
 INSTALL_PATH = DEV_PATH + "/install/"
 SRC_PATH = DEV_PATH + "/src/"
 CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake.exe"
-
-#NOTE:  This switches the parallel build of components on/off
-#       It's currently turned off because we had problems with gotest-release and its log-files
-MULTITHREADED = True
-
-#NOTE:  This performs the build with an alternative Platform Toolset instead of using the installed version
-#       Example: It allows to use Visual Studio 2013 with a v100 toolset
-#USE_ALTERNATIVE_TOOLSET = 'v90'
-USE_ALTERNATIVE_TOOLSET = ''
-
 
 class XmlComponent():
     def __init__(self):
@@ -37,14 +61,14 @@ def xmlStrip(givenString):
     givenString = givenString.strip(' ')
     return givenString
     
-def readComponents():
-    components = []
+def readDependencies():
+    dependencies = []
     
     #check if there is a cfg
     depConfig = os.path.dirname(os.path.realpath(__file__)) + '/dependencies.xml'
     if not( os.path.exists(depConfig) ):
         print "No dependencies.xml exists"
-        return components
+        return dependencies
     
     tree = ElementTree.parse(depConfig)
     xmlComponents = tree.findall('component')
@@ -55,10 +79,10 @@ def readComponents():
         xmlDependencies = xmlComponent.find('dependencies').findall('dependency')
         for xmlDependency in list(xmlDependencies):
             newDep = xmlStrip( xmlDependency.text )
-            newComp.dependencies.append( newDep )            
-        components.append( newComp )
+            newComp.dependencies.append( newDep )
+        dependencies.append( newComp )
             
-    return components
+    return dependencies
 
 class Component():
     def __init__(self, cmakePath):
@@ -66,6 +90,60 @@ class Component():
         self.name = os.path.basename( self.fullpath )
         self.buildpath = BUILD_PATH + "/" + self.name
         self.dependencies = []
+    
+def searchComponents(dependencies):
+    #search for all components by their CMakeLists.txt
+    components = []
+    for root, dirnames, filenames in os.walk( SRC_PATH ):
+      for filename in fnmatch.filter(filenames, 'CMakeLists.txt'):
+            newComp = Component( os.path.join(root, filename) )
+            for depComp in dependencies:
+                if(depComp.name == newComp.name):
+                    newComp.dependencies = depComp.dependencies
+            components.append(newComp)
+    return components
+    
+def getCompsAndDependencies(searchedComponents, allComponents):
+    lenBeforeSearch = len(searchedComponents)
+    for searchedComp in searchedComponents:
+        for dep in searchedComp.dependencies:
+            for comp in allComponents:
+                if( dep == comp.name ):
+                    #NOTE: This extends the list we're iterating over...
+                    searchedComponents.append(comp)
+
+    #remove duplicates
+    searchedComponents = list(set(searchedComponents))
+
+    #do another search if we found new dependencies
+    if not( lenBeforeSearch == len(searchedComponents)):
+        searchedComponents = getCompsAndDependencies(searchedComponents, allComponents)
+
+    return searchedComponents
+    
+def getComponentsToBuild(arguments, components):
+    #check if all components should be built
+    if( "all" in arguments ):
+        return components
+    if( "--clean" in arguments and len(arguments) == 2 or
+        len(arguments) == 1):
+        return components
+
+    #check the given components
+    buildComponents = []
+    for arg in arguments[1:]:
+        if( arg == "--clean" ):
+            continue
+        for comp in components:
+            if( arg == comp.name ):
+                buildComponents.append( comp )
+
+    #remove duplicates from our list of components to build
+    buildComponents = list(set(buildComponents))
+
+    #search the depending components
+    buildComponents = getCompsAndDependencies( buildComponents, components )
+    return buildComponents
 
 def createBuildFiles(component):    
     #create the build environment with cmake
@@ -149,7 +227,7 @@ def cleanup():
 def main():
 
     #clean the development if parameter clean is given
-    if( sys.argv[-1].lower() == "clean"):
+    if( "--clean" in sys.argv):
         print "Cleaning up..."
         cleanup();
         
@@ -159,29 +237,26 @@ def main():
     except:
         pass
     
-    #first read the dependency config
-    dependencies = readComponents()
+    #first read the dependencies and components, see what should be built
+    dependencies = readDependencies()
+    components = searchComponents(dependencies)
+    componentsToBuild = getComponentsToBuild(sys.argv, components)
     
-    #search for all components by their CMakeLists.txt
-    components = []
-    for root, dirnames, filenames in os.walk( SRC_PATH ):
-      for filename in fnmatch.filter(filenames, 'CMakeLists.txt'):
-            newComp = Component( os.path.join(root, filename) )
-            for depComp in dependencies:
-                if(depComp.name == newComp.name):
-                    newComp.dependencies = depComp.dependencies
-            components.append(newComp)
-          
+    print ""
+    print " ---------------------------------------------------------------------------"
+    print "| Let's build the following components:"
+    for comp in componentsToBuild:
+        print "| -- " + comp.name
+    
     #let's keep a list of components we already built,
     #this is needed to see if all dependencies have been built
     doneComponents = []
-    while( components ): #check if the components-list is empty
-    
+    while( componentsToBuild ): #check if the components-list is empty
         #this contains the components we will build this iteration
         buildComponents = []
         
         #check which components we can build, according to their dependencies
-        for comp in components:
+        for comp in componentsToBuild:
             buildComp = True
             for depName in comp.dependencies:
                 if depName in doneComponents:
@@ -194,17 +269,17 @@ def main():
                 
         #now remove the soon to be built components from our components list
         for comp in buildComponents:
-            components.remove(comp)
+            componentsToBuild.remove(comp)
 
         #check if there are components to build, if not and there are still some left we have a dependency problem
-        if( (not buildComponents) and components):
+        if( (not buildComponents) and componentsToBuild):
             print "=========== ERROR =============="
             print "There seems to be a dependency problem, cannot resolve all dependencies!!"
             print "Compiled Components:"
             for comp in doneComponents:
                 print " -- " + comp
             print "Components left:"
-            for comp in components:
+            for comp in componentsToBuild:
                 print " -- " + comp.name
             exit(-1)
 
@@ -238,7 +313,8 @@ def main():
             if( not worker.exitcode == 0 ):
                 print "Errors occured, stopping the build..."
                 exit(-1)
-                
+
+    print ""
     print "================================="
     print "====== BUILD SUCCESSFUL ========="
     print "================================="
