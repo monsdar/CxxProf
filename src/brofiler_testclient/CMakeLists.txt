@@ -36,3 +36,7 @@ set( ADDITIONALSOURCES ${Sources} ${Headers})
 
 #create the actual tests
 createTest(BrofilerSimple)
+
+#this installs the dyntest-plugin to the build-directory for testing it
+install(FILES ${CMAKE_INSTALL_PREFIX}/brofiler_dyntest/bin/brofiler_dyntest.dll
+        DESTINATION ${CMAKE_BINARY_DIR})
