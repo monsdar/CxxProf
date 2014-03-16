@@ -33,6 +33,13 @@ target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES}
                                             ${brofiler_dyn_Debug_LIBRARIES}
                                             ${Boost_LIBRARIES})
 
+#-- Set the Debug and Release names for the libraries
+SET_TARGET_PROPERTIES( ${PROJECT_NAME}
+    PROPERTIES
+    DEBUG_OUTPUT_NAME ${PROJECT_NAME}${CMAKE_DEBUG_POSTFIX}
+    RELEASE_OUTPUT_NAME ${PROJECT_NAME}
+)
+                                            
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${PROJECT_NAME}/bin)
 
