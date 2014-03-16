@@ -5,6 +5,8 @@
 #include <exception>
 #include <iostream>
 
+const std::string PLUGINDIR = ".";
+
 Brofiler::Brofiler() :
     dynBrofiler_(NULL),
     manager_( new pluma::Pluma() )
@@ -15,14 +17,13 @@ Brofiler::~Brofiler()
 
 void Brofiler::loadDynBrofiler()
 {
-    const std::string PLUGINDIR = ".";
     manager_->acceptProviderType< IDynBrofilerProvider >();
     manager_->loadFromFolder(PLUGINDIR);
-    std::cout << "Directory: " << PLUGINDIR << std::endl;
     
     std::vector<IDynBrofilerProvider*> providers;
     manager_->getProviders(providers);
     
+    std::cout << "Loaded " << providers.size() << " DynBrofilerProviders" << std::endl;
     if (providers.begin() != providers.end())
     {
         std::cout << "Loaded a DynBrofiler" << std::endl;
