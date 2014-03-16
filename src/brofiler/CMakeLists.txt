@@ -22,7 +22,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
                     ${Boost_INCLUDE_DIRS}
                     ${Pluma_INCLUDE_DIRS})
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
-target_link_libraries(${PROJECT_NAME} ${Pluma_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} optimized ${Pluma_Release_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} debug ${Pluma_Debug_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${PROJECT_NAME}/lib

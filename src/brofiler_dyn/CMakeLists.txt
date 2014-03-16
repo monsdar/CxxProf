@@ -32,10 +32,10 @@ link_directories(${brofiler_LIBRARY_DIRS})
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES} 
                                                 ${Boost_LIBRARIES}
-                                                ${Pluma_LIBRARIES})
+                                                ${Pluma_Release_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES} 
                                             ${Boost_LIBRARIES}
-                                            ${Pluma_LIBRARIES})
+                                            ${Pluma_Debug_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${PROJECT_NAME}/lib
