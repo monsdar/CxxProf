@@ -11,7 +11,8 @@ public:
     TestBrofiler();
     virtual ~TestBrofiler();
     
-    boost::shared_ptr<IActivity> createActivity(const std::string& name) const;
+    boost::shared_ptr<IActivity> createActivity(const std::string& name);
+    std::string toString() const;
 };
 
 #endif //_TEST_BROFILER_H_

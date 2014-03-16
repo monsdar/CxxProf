@@ -9,7 +9,8 @@ class IDynBrofiler
 {
 public:
     virtual ~IDynBrofiler() {};
-    virtual boost::shared_ptr<IActivity> createActivity(const std::string& name) const = 0;
+    virtual boost::shared_ptr<IActivity> createActivity(const std::string& name) = 0;
+    virtual std::string toString() const = 0;
 };
 
 #endif //_I_DYN_BROFILER_H_

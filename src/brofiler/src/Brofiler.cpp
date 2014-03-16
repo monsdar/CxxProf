@@ -23,15 +23,14 @@ void Brofiler::loadDynBrofiler()
     std::vector<IDynBrofilerProvider*> providers;
     manager_->getProviders(providers);
     
-    std::cout << "Loaded " << providers.size() << " DynBrofilerProviders" << std::endl;
     if (providers.begin() != providers.end())
     {
-        std::cout << "Loaded a DynBrofiler" << std::endl;
         dynBrofiler_ = (*providers.begin())->create();
+        std::cout << "Loaded DynBrofiler: " << dynBrofiler_->toString() << std::endl;
     }
     else
     {
-        std::cout << "No DynBrofiler loaded..." << std::endl;
+        std::cout << "Cannot find Plugin, no DynBrofiler loaded..." << std::endl;
     }
 }
 
