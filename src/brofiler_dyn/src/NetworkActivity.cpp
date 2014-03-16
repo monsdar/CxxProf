@@ -1,15 +1,15 @@
 
-#include "brofiler_dyntest/TestActivity.h"
+#include "brofiler_dyn/NetworkActivity.h"
 
 #include <iostream>
 
-TestActivity::TestActivity(const std::string& name) :
+NetworkActivity::NetworkActivity(const std::string& name) :
     name_(name)
 {
     std::cout << "Activity " << name_ << " started..." << std::endl;
 }
 
-TestActivity::~TestActivity()
+NetworkActivity::~NetworkActivity()
 {
     std::cout << "Activity " << name_ << " stopped..." << std::endl;
 }

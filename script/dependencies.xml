@@ -2,6 +2,12 @@
 
 <components>
     <component>
+        <name>brofiler_dyn</name>
+        <dependencies>
+            <dependency>brofiler</dependency>
+        </dependencies>
+    </component>
+    <component>
         <name>brofiler_dyntest</name>
         <dependencies>
             <dependency>brofiler</dependency>
@@ -11,6 +17,7 @@
         <name>brofiler_howto</name>
         <dependencies>
             <dependency>brofiler</dependency>
+            <dependency>brofiler_dyn</dependency>
         </dependencies>
     </component>
     <component>

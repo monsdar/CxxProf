@@ -13,18 +13,25 @@ include( setEnv )
 
 #Find the dependencies
 find_package(brofiler)
+find_package(brofiler_dyn)
 
 #Build the actual component
 FILE(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 include_directories(${Boost_INCLUDE_DIRS}
-                    ${brofiler_INCLUDE_DIRS})
-link_directories(${brofiler_LIBRARY_DIRS})
+                    ${brofiler_INCLUDE_DIRS}
+                    ${brofiler_dyn_INCLUDE_DIRS})
+link_directories(   ${brofiler_LIBRARY_DIRS}
+                    ${brofiler_dyn_LIBRARY_DIRS})
 
 add_executable(${PROJECT_NAME} ${Sources} ${Headers})
-target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES} ${Boost_LIBRARIES})  
-target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES} ${Boost_LIBRARIES})  
+target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES}
+                                                ${brofiler_dyn_Release_LIBRARIES}
+                                                ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES}
+                                            ${brofiler_dyn_Debug_LIBRARIES}
+                                            ${Boost_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${PROJECT_NAME}/bin)

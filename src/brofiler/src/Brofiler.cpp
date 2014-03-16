@@ -15,20 +15,17 @@ Brofiler::~Brofiler()
 
 void Brofiler::loadDynBrofiler()
 {
+    const std::string PLUGINDIR = ".";
     manager_->acceptProviderType< IDynBrofilerProvider >();
-    manager_->loadFromFolder(".");
+    manager_->loadFromFolder(PLUGINDIR);
+    std::cout << "Directory: " << PLUGINDIR << std::endl;
     
     std::vector<IDynBrofilerProvider*> providers;
     manager_->getProviders(providers);
     
-    if(providers.size() == 1)
+    if (providers.begin() != providers.end())
     {
         std::cout << "Loaded a DynBrofiler" << std::endl;
-        dynBrofiler_ = (*providers.begin())->create();
-    }
-    else if(providers.size() > 1)
-    {
-        std::cout << "Loaded " << providers.size() << " DynBrofilers, using the first one" << std::endl;
         dynBrofiler_ = (*providers.begin())->create();
     }
     else
@@ -41,7 +38,7 @@ boost::shared_ptr<IActivity> Brofiler::createActivity(const std::string& name) c
 {
     if(dynBrofiler_ == NULL)
     {
-        throw std::exception();
+        return boost::shared_ptr<IActivity>();
     }
     
     return dynBrofiler_->createActivity(name);

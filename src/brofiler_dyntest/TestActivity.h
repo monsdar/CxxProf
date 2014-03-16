@@ -11,8 +11,6 @@ public:
     TestActivity(const std::string& name);
     virtual ~TestActivity();
     
-    std::string getName() const;
-    
 private:
     std::string name_;
 };
