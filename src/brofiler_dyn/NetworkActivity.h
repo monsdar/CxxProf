@@ -33,6 +33,9 @@ private:
     unsigned int actId_;
     unsigned int parentId_;
     ResultCallback callback_;
+    unsigned int startTime_;
+
+    unsigned int getCurrentTime();
 };
 
 #endif //_NETWORK_ACTIVITY_H_

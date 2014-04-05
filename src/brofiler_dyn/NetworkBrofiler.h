@@ -20,9 +20,10 @@ public:
     
 private:
     void addResult(const ActivityResult& result);
+    void printDepth();
     
     unsigned int actCounter_;
-	std::stack<unsigned int> activeActivity_;
+    std::stack<unsigned int> activeActivity_;
 };
 
 #endif //_NETWORK_BROFILER_H_

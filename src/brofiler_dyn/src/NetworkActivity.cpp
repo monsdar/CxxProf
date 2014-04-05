@@ -1,6 +1,7 @@
 
 #include "brofiler_dyn/NetworkActivity.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <iostream>
 
 NetworkActivity::NetworkActivity() :
@@ -19,8 +20,8 @@ NetworkActivity::~NetworkActivity()
         result.ThreadId = threadId_;
         result.ActId = actId_;
         result.ParentId = parentId_;
-        result.StartTime = 0;
-        result.StopTime = 0;
+        result.StartTime = startTime_;
+        result.StopTime = getCurrentTime();
         
         callback_(result);
     }
@@ -50,5 +51,16 @@ void NetworkActivity::setResultCallback(ResultCallback callback)
 
 void NetworkActivity::start()
 {
-    std::cout << "Activity " << name_ << " started..." << std::endl;
+    startTime_ = getCurrentTime();
+}
+
+unsigned int NetworkActivity::getCurrentTime()
+{
+    //TODO: Find a better (read: faster) method of getting the current time...
+    //TODO: Use some sort of global starttime-object here instead of this string-based method...
+    boost::posix_time::ptime epoch = boost::posix_time::time_from_string("2014-04-05 00:00:00.000");
+    boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+
+    boost::posix_time::time_duration const diff = now - epoch;
+    return diff.total_milliseconds();
 }

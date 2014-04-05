@@ -7,37 +7,55 @@
 
 NetworkBrofiler::NetworkBrofiler() :
     actCounter_(1)
-{
-	//zero means that there are no activities yet
-	activeActivity_.push(0);
-}
+{}
 
 NetworkBrofiler::~NetworkBrofiler()
 {}
 
 boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& name)
 {
-	unsigned int newActId = actCounter_++;
+    unsigned int newActId = actCounter_++;
 
     boost::shared_ptr<NetworkActivity> newAct( new NetworkActivity() );
     newAct->setName(name);
-	newAct->setActId(newActId);
-	newAct->setParentId(activeActivity_.top());
+    newAct->setActId(newActId);
     newAct->setThreadId(0);
     newAct->setResultCallback( boost::bind( &NetworkBrofiler::addResult, this, _1 ) );
     
+    //check if this is the newest Activity
+    if (activeActivity_.empty())
+    {
+        newAct->setParentId(0);
+    }
+    else
+    {
+        newAct->setParentId(activeActivity_.top());
+    }
+
+    //make the new activity the active one
     newAct->start();
-	activeActivity_.push(newActId);
+    activeActivity_.push(newActId);
+
+    printDepth();
+    std::cout << name << " started" << std::endl;
     
     return newAct;
 }
 
 void NetworkBrofiler::addResult(const ActivityResult& result)
 {
-    std::cout << "Activity " << result.Name << " ended. Parent: " << result.ParentId << "..." << std::endl;
-	activeActivity_.pop();
-	std::cout << "Current active Activity: " << activeActivity_.top() << std::endl;
-	
+    printDepth();
+    std::cout << result.Name << " ended: " << result.StopTime - result.StartTime << " millisec" << std::endl;
+
+    activeActivity_.pop();
+}
+
+void NetworkBrofiler::printDepth()
+{
+    for (unsigned int depth = 0; depth < activeActivity_.size(); ++depth)
+    {
+        std::cout << "| ";
+    }
 }
 
 std::string NetworkBrofiler::toString() const
