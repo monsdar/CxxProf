@@ -23,7 +23,7 @@ int recursiveOperation(int someValue)
     
     if(someValue < 5)
     {
-        someValue = recursiveOperation(someValue++);
+        someValue = recursiveOperation(++someValue);
     }
     
     return someValue;
@@ -44,5 +44,5 @@ int main()
     
     longOperation();
     longOperation();
-    //recursiveOperation(1);    
+    recursiveOperation(1);    
 }
