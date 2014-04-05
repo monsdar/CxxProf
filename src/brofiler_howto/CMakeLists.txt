@@ -22,16 +22,11 @@ FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 include_directories(${Boost_INCLUDE_DIRS}
                     ${brofiler_INCLUDE_DIRS}
                     ${brofiler_dyn_INCLUDE_DIRS})
-link_directories(   ${brofiler_LIBRARY_DIRS}
-                    ${brofiler_dyn_LIBRARY_DIRS})
 
 add_executable(${PROJECT_NAME} ${Sources} ${Headers})
-target_link_libraries(${PROJECT_NAME} optimized ${brofiler_Release_LIBRARIES}
-                                                ${brofiler_dyn_Release_LIBRARIES}
-                                                ${Boost_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} debug ${brofiler_Debug_LIBRARIES}
-                                            ${brofiler_dyn_Debug_LIBRARIES}
-                                            ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}   ${brofiler_LIBRARIES}
+                                        ${brofiler_dyn_LIBRARIES}
+                                        ${Boost_LIBRARIES})
 
 #-- Set the Debug and Release names for the libraries
 SET_TARGET_PROPERTIES( ${PROJECT_NAME}

@@ -4,11 +4,14 @@
 # SetEnv.cmake prepares the environment. It provides Variables pointing to Thirdparty.
 #
 # Thirdparty Variables
-#   Boost_INCLUDE_DIRS      - Include directory for Boost
-#   Boost_LIBRARIES         - Libraries (shared) of Boost
-#   Pluma_INCLUDE_DIRS      - Includes for Pluma
-#   Pluma_Release_LIBRARIES - Release Libraries (shared) for Pluma
-#   Pluma_Debug_LIBRARIES   - Debug Libraries (shared) for Pluma
+#
+#   Boost
+#     Boost_INCLUDE_DIRS
+#     Boost_LIBRARIES
+#
+#   Pluma
+#     Pluma_INCLUDE_DIRS
+#     Pluma_LIBRARIES
 #
 #######################################
 
@@ -39,6 +42,6 @@ ENDIF(NOT Boost_FOUND)
 
 #sets the Pluma variables
 set( Pluma_INCLUDE_DIRS      ${THIRDPARTY_DIR}/pluma/include)
-set( Pluma_Release_LIBRARIES ${THIRDPARTY_DIR}/pluma/lib/pluma.lib)
-set( Pluma_Debug_LIBRARIES   ${THIRDPARTY_DIR}/pluma/lib/pluma-d.lib)
+set( Pluma_LIBRARIES    optimized ${THIRDPARTY_DIR}/pluma/lib/pluma.lib
+                        debug ${THIRDPARTY_DIR}/pluma/lib/pluma-d.lib)
 
