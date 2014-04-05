@@ -21,11 +21,18 @@ int recursiveOperation(int someValue)
     boost::shared_ptr<IActivity> act;
     act = mainBro_->createActivity("recursiveOperation");
     
+
+	if (someValue == 3)
+	{
+		boost::shared_ptr<IActivity> act;
+		act = mainBro_->createActivity("recursiveOperation::middle");
+		boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+	}
     if(someValue < 5)
     {
         someValue = recursiveOperation(++someValue);
     }
-    
+
     return someValue;
 }
 
@@ -44,5 +51,5 @@ int main()
     
     longOperation();
     longOperation();
-    recursiveOperation(1);    
+    recursiveOperation(1);
 }
