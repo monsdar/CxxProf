@@ -16,7 +16,8 @@ find_package(brofiler)
 
 #This is needed for the dllexport mechanism
 add_definitions(-DBROFILER_DYN)
-add_definitions(-DPLUGIN_EXPORTS) #needed for Pluma
+add_definitions(-DPLUGIN_EXPORTS)   #needed for Pluma
+#add_definitions(-DZMQ_STATIC)       #needed for ZMQ
 
 #Build the actual component
 file(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -25,11 +26,13 @@ file(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
                     ${brofiler_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
+                    ${Zeromq_INCLUDE_DIRS}
                     ${Pluma_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
-target_link_libraries(${PROJECT_NAME}   ${brofiler_LIBRARIES} 
+target_link_libraries(${PROJECT_NAME}   ${brofiler_LIBRARIES}
                                         ${Boost_LIBRARIES}
+                                        ${Zeromq_LIBRARIES}
                                         ${Pluma_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}

@@ -10,6 +10,7 @@ REM copy %~dp0\..\..\brofiler_dyn\bin\brofiler_dyn_debug.dll .
 
 set PATH=%PATH%;../../../thirdparty/boost/bin/
 set PATH=%PATH%;../../../thirdparty/pluma/bin/
+set PATH=%PATH%;../../../thirdparty/zmq/bin/
 set PATH=%PATH%;../../brofiler/bin/
 
 brofiler_howto.exe

@@ -3,7 +3,9 @@
 #define _NETWORK_BROFILER_H_
 
 #include <stack>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "brofiler_dyn/common.h"
 #include "brofiler/IDynBrofiler.h"
@@ -26,6 +28,10 @@ private:
     unsigned int actCounter_;
     std::stack<unsigned int> activeActivity_;
     boost::posix_time::ptime profilingStart_;
+
+    //NOTE: Tried shared-ptrs here, which should work but did not...
+    void* zmqContext_;
+    void* zmqSender_;
 };
 
 #endif //_NETWORK_BROFILER_H_

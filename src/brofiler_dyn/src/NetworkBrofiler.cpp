@@ -2,16 +2,24 @@
 #include "brofiler_dyn/NetworkBrofiler.h"
 #include "brofiler_dyn/NetworkActivity.h"
 
+#include <zhelpers.h>
 #include <boost/bind.hpp>
 #include <iostream>
 
 NetworkBrofiler::NetworkBrofiler() :
     actCounter_(1),
-    profilingStart_(boost::posix_time::microsec_clock::local_time())
-{}
+    profilingStart_(boost::posix_time::microsec_clock::local_time()),
+    zmqContext_(zmq_ctx_new()),
+    zmqSender_(zmq_socket(zmqContext_, ZMQ_PUSH))
+{
+    zmq_connect(zmqSender_, "tcp://localhost:15232");
+}
 
 NetworkBrofiler::~NetworkBrofiler()
-{}
+{
+    zmq_close(zmqSender_);
+    zmq_ctx_destroy(zmqContext_);
+}
 
 boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& name)
 {
@@ -48,8 +56,10 @@ void NetworkBrofiler::addResult(const ActivityResult& result)
 {
     printDepth();
     std::cout << result.Name << " ended: " << result.StopTime - result.StartTime << " millisec" << std::endl;
-
     activeActivity_.pop();
+
+    //send the activity data via network
+    s_send(zmqSender_, "YEAH!");
 }
 
 void NetworkBrofiler::printDepth()
