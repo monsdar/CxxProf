@@ -13,6 +13,10 @@
 #     Pluma_INCLUDE_DIRS
 #     Pluma_LIBRARIES
 #
+#   ZeroMQ
+#     Zeromq_INCLUDE_DIRS
+#     Zeromq_LIBRARIES
+#
 #######################################
 
 #set the project name according to where the CMakeLists.txt is located
@@ -29,7 +33,7 @@ GET_FILENAME_COMPONENT(SCRIPT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 set( THIRDPARTY_DIR ${SCRIPT_DIR}/../thirdparty/)
 set( SOURCE_DIR ${SCRIPT_DIR}/../src/)
 
-#this sets the Boost environment (just once)
+#Boost
 IF(NOT Boost_FOUND)
     set(BOOST_ROOT ${THIRDPARTY_DIR}/Boost)
     set(Boost_USE_STATIC_LIBS OFF)
@@ -40,8 +44,13 @@ IF(NOT Boost_FOUND)
     find_package(Boost 1.55.0 REQUIRED COMPONENTS system unit_test_framework thread date_time chrono)
 ENDIF(NOT Boost_FOUND)
 
-#sets the Pluma variables
-set( Pluma_INCLUDE_DIRS      ${THIRDPARTY_DIR}/pluma/include)
+#Pluma
+set( Pluma_INCLUDE_DIRS ${THIRDPARTY_DIR}/pluma/include)
 set( Pluma_LIBRARIES    optimized ${THIRDPARTY_DIR}/pluma/lib/pluma.lib
                         debug ${THIRDPARTY_DIR}/pluma/lib/pluma-d.lib)
+                        
+#ZeroMQ
+set( Zeromq_INCLUDE_DIRS    ${THIRDPARTY_DIR}/zmq/include)
+set( Zeromq_LIBRARIES       optimized ${THIRDPARTY_DIR}/zmq/lib/libzmq-v120-mt-4_0_4.lib
+                            debug ${THIRDPARTY_DIR}/zmq/lib/libzmq-v120-mt-gd-4_0_4.lib)
 
