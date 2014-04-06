@@ -7,8 +7,9 @@
 #include "brofiler_dyn/common.h"
 #include "brofiler_dyn/ActivityResult.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/function.hpp>
-#include <stdint.h>
+#include <string>
 
 class Brofiler_EXPORT NetworkActivity: public IActivity
 {
@@ -17,6 +18,7 @@ public:
 
 public:
     NetworkActivity();
+    NetworkActivity(const std::string& name, unsigned int actId, unsigned int threadId, unsigned int parentId, const boost::posix_time::ptime& profilingStart, ResultCallback callback);
     virtual ~NetworkActivity();
 
     void setName(const std::string& name);
@@ -24,6 +26,7 @@ public:
     void setActId(unsigned int actId);
     void setParentId(unsigned int parentId);
     void setResultCallback(ResultCallback callback);
+    void setProfilingStart(const boost::posix_time::ptime& profilingStart);
     
     void start();
     
@@ -34,6 +37,7 @@ private:
     unsigned int parentId_;
     ResultCallback callback_;
     unsigned int startTime_;
+    boost::posix_time::ptime profilingStart_;
 
     unsigned int getCurrentTime();
 };

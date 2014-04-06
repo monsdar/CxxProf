@@ -1,14 +1,21 @@
 
 #include "brofiler_dyn/NetworkActivity.h"
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <iostream>
-
 NetworkActivity::NetworkActivity() :
     name_(""),
     threadId_(0),
     actId_(0),
-    parentId_(0)
+    parentId_(0),
+    profilingStart_(boost::posix_time::time_from_string("2014-01-01 00:00:00.000"))
+{}
+
+NetworkActivity::NetworkActivity(const std::string& name, unsigned int actId, unsigned int threadId, unsigned int parentId, const boost::posix_time::ptime& profilingStart, ResultCallback callback) :
+    name_(name),
+    threadId_(threadId),
+    actId_(actId),
+    parentId_(parentId),
+    callback_(callback),
+    profilingStart_(profilingStart)
 {}
 
 NetworkActivity::~NetworkActivity()
@@ -49,6 +56,11 @@ void NetworkActivity::setResultCallback(ResultCallback callback)
     callback_ = callback;
 }
 
+void NetworkActivity::setProfilingStart(const boost::posix_time::ptime& profilingStart)
+{
+    profilingStart_ = profilingStart;
+}
+
 void NetworkActivity::start()
 {
     startTime_ = getCurrentTime();
@@ -56,11 +68,6 @@ void NetworkActivity::start()
 
 unsigned int NetworkActivity::getCurrentTime()
 {
-    //TODO: Find a better (read: faster) method of getting the current time...
-    //TODO: Use some sort of global starttime-object here instead of this string-based method...
-    boost::posix_time::ptime epoch = boost::posix_time::time_from_string("2014-04-05 00:00:00.000");
-    boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
-
-    boost::posix_time::time_duration const diff = now - epoch;
+    boost::posix_time::time_duration const diff = boost::posix_time::microsec_clock::local_time() - profilingStart_;
     return diff.total_milliseconds();
 }

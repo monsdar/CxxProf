@@ -6,7 +6,8 @@
 #include <iostream>
 
 NetworkBrofiler::NetworkBrofiler() :
-    actCounter_(1)
+    actCounter_(1),
+    profilingStart_(boost::posix_time::microsec_clock::local_time())
 {}
 
 NetworkBrofiler::~NetworkBrofiler()
@@ -16,11 +17,12 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
 {
     unsigned int newActId = actCounter_++;
 
-    boost::shared_ptr<NetworkActivity> newAct( new NetworkActivity() );
-    newAct->setName(name);
-    newAct->setActId(newActId);
-    newAct->setThreadId(0);
-    newAct->setResultCallback( boost::bind( &NetworkBrofiler::addResult, this, _1 ) );
+    boost::shared_ptr<NetworkActivity> newAct(new NetworkActivity(  name, 
+                                                                    newActId, 
+                                                                    0, //TODO: Get a Thread-ID
+                                                                    0, //we're setting the parentId later
+                                                                    profilingStart_,
+                                                                    boost::bind(&NetworkBrofiler::addResult, this, _1)));
     
     //check if this is the newest Activity
     if (activeActivity_.empty())
