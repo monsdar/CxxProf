@@ -1,10 +1,13 @@
 
 #include "brofiler_dyn/NetworkBrofiler.h"
 #include "brofiler_dyn/NetworkActivity.h"
+#include "brofiler_dyn/Serializers.h"
 
 #include <zhelpers.h>
 #include <boost/bind.hpp>
+
 #include <iostream>
+#include <sstream>
 
 NetworkBrofiler::NetworkBrofiler() :
     actCounter_(1),
@@ -33,6 +36,7 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
                                                                     boost::bind(&NetworkBrofiler::addResult, this, _1)));
     
     //check if this is the newest Activity
+    //set the ParentId then
     if (activeActivity_.empty())
     {
         newAct->setParentId(0);
@@ -45,29 +49,22 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
     //make the new activity the active one
     newAct->start();
     activeActivity_.push(newActId);
-
-    printDepth();
-    std::cout << name << " started" << std::endl;
     
     return newAct;
 }
 
 void NetworkBrofiler::addResult(const ActivityResult& result)
 {
-    printDepth();
-    std::cout << result.Name << " ended: " << result.StopTime - result.StartTime << " millisec" << std::endl;
     activeActivity_.pop();
 
-    //send the activity data via network
-    s_send(zmqSender_, "YEAH!");
-}
+    //serialize the result
+    std::ostringstream serializeStream;
+    boost::archive::text_oarchive oa(serializeStream);
+    oa << result;
 
-void NetworkBrofiler::printDepth()
-{
-    for (unsigned int depth = 0; depth < activeActivity_.size(); ++depth)
-    {
-        std::cout << "| ";
-    }
+    //send the activity data via network
+    std::string serializeString = serializeStream.str();
+    zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
 }
 
 std::string NetworkBrofiler::toString() const
