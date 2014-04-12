@@ -12,7 +12,7 @@
 
 #include "brofiler_dyn/ActivityResult.h"
 
-class Brofiler_EXPORT NetworkBrofiler: public IDynBrofiler
+class Brofiler_Dyn_EXPORT NetworkBrofiler : public IDynBrofiler
 {
 public:
     NetworkBrofiler();

@@ -2,7 +2,8 @@
 #ifndef _SERIALIZERS_H_
 #define _SERIALIZERS_H_
 
-#include <boost/archive/text_oarchive.hpp> 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 #include "brofiler_dyn/ActivityResult.h"
 

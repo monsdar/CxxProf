@@ -5,7 +5,7 @@
 #include "brofiler_dyn/common.h"
 #include <string>
 
-struct Brofiler_EXPORT ActivityResult
+struct Brofiler_Dyn_EXPORT ActivityResult
 {
     std::string Name;
     unsigned int ThreadId;

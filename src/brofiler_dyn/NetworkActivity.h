@@ -11,7 +11,7 @@
 #include <boost/function.hpp>
 #include <string>
 
-class Brofiler_EXPORT NetworkActivity: public IActivity
+class Brofiler_Dyn_EXPORT NetworkActivity : public IActivity
 {
 public:
     typedef boost::function1<void, const ActivityResult&> ResultCallback;

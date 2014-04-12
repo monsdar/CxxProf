@@ -3,8 +3,15 @@
 #include "brofiler_dyn/NetworkActivity.h"
 #include "brofiler_dyn/Serializers.h"
 
-#include <zhelpers.h>
 #include <boost/bind.hpp>
+
+//NOTE: We need to use the C-API of ZMQ here because Pluma and WinSock2.h both implement a connect() function
+//      Due to extern C in the WinSock part it is not possible to have both defined in the global space -.-
+//
+//Error Message when using zhelpers.hpp here:
+//      C2733: 'connect': second C linkage of overloaded function not allowed
+//
+#include <zhelpers.h>
 
 #include <iostream>
 #include <sstream>

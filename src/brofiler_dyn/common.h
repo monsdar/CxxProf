@@ -1,12 +1,12 @@
 
-#ifndef __COMMON_H_
-#define __COMMON_H_
+#ifndef _BROFILER_DYN_COMMON_H_
+#define _BROFILER_DYN_COMMON_H_
 
 #ifdef BROFILER_DYN
-    #define Brofiler_EXPORT __declspec( dllexport )
+    #define Brofiler_Dyn_EXPORT __declspec( dllexport )
 #else
-    #define Brofiler_EXPORT __declspec( dllimport )
+    #define Brofiler_Dyn_EXPORT __declspec( dllimport )
 #endif //BROFILER_DYN
 
 
-#endif //__COMMON_H_
+#endif //_BROFILER_DYN_COMMON_H_
