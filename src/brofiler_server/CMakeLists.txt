@@ -24,7 +24,8 @@ include_directories(${Boost_INCLUDE_DIRS}
 
 add_executable(${PROJECT_NAME} ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME}   ${Boost_LIBRARIES}
-                                        ${Zeromq_LIBRARIES})
+                                        ${Zeromq_LIBRARIES}
+                                        ${brofiler_dyn_LIBRARIES})
 
 #-- Set the Debug and Release names for the libraries
 SET_TARGET_PROPERTIES( ${PROJECT_NAME}
