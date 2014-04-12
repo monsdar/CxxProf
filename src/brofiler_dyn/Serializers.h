@@ -13,11 +13,12 @@ namespace boost {
 template <typename Archive>
 void serialize(Archive &ar, ActivityResult &instance, const unsigned int version)
 {
+    ar & instance.Name;
+    ar & instance.ThreadId;
     ar & instance.ActId;
     ar & instance.ParentId;
     ar & instance.StartTime;
     ar & instance.StopTime;
-    ar & instance.ThreadId;
 }
 
 
