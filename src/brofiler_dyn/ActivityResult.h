@@ -12,6 +12,15 @@ struct Brofiler_EXPORT ActivityResult
     unsigned int ParentId;
     unsigned int StartTime;
     unsigned int StopTime;
+    
+    ActivityResult::ActivityResult() :
+        Name(""),
+        ThreadId(0),
+        ActId(0),
+        ParentId(0),
+        StartTime(0),
+        StopTime(0)
+    {}
 };
 
 #endif //_ACTIVITY_RESULT_H_
