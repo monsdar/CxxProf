@@ -1,7 +1,8 @@
 
 @echo off
 
-DEL brofiler_dyn_debug.dll
+REM Copy to install/bin directory and execute
+
 DEL brofiler_dyn.dll
 copy ..\install\brofiler_dyn\bin\brofiler_dyn.dll .
 copy ..\install\brofiler_howto\bin\brofiler_howto.exe .
