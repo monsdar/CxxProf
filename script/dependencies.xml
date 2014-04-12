@@ -8,16 +8,22 @@
         </dependencies>
     </component>
     <component>
-        <name>brofiler_dyntest</name>
-        <dependencies>
-            <dependency>brofiler</dependency>
-        </dependencies>
-    </component>
-    <component>
         <name>brofiler_howto</name>
         <dependencies>
             <dependency>brofiler</dependency>
             <dependency>brofiler_dyn</dependency>
+        </dependencies>
+    </component>
+    <component>
+        <name>brofiler_server</name>
+        <dependencies>
+            <dependency>brofiler_dyn</dependency>
+        </dependencies>
+    </component>
+    <component>
+        <name>brofiler_dyntest</name>
+        <dependencies>
+            <dependency>brofiler</dependency>
         </dependencies>
     </component>
     <component>
