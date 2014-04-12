@@ -3,6 +3,7 @@
 #define _ACTIVITY_RESULT_H_
 
 #include "brofiler_dyn/common.h"
+#include <string>
 
 struct Brofiler_EXPORT ActivityResult
 {
