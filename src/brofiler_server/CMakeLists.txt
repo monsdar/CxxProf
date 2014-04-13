@@ -20,11 +20,15 @@ FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 include_directories(${Boost_INCLUDE_DIRS}
                     ${Zeromq_INCLUDE_DIRS}
+                    ${Sqlite3_INCLUDE_DIRS}
+                    ${Sqlite3cc_INCLUDE_DIRS}
                     ${brofiler_dyn_network_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME}   ${Boost_LIBRARIES}
                                         ${Zeromq_LIBRARIES}
+                                        ${Sqlite3_LIBRARIES}
+                                        ${Sqlite3cc_LIBRARIES}
                                         ${brofiler_dyn_network_LIBRARIES})
 
 #-- Set the Debug and Release names for the libraries
@@ -39,4 +43,8 @@ install(TARGETS ${PROJECT_NAME}
 
 #this installs the start.bat
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startServer.bat
+        DESTINATION ${PROJECT_NAME}/bin)
+        
+#this installs the database
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/data.s3db
         DESTINATION ${PROJECT_NAME}/bin)
