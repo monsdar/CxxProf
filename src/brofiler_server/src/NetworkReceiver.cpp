@@ -3,6 +3,8 @@
 
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
+
+#include <sstream>
 #include <string>
 
 NetworkReceiver::NetworkReceiver() :
@@ -54,7 +56,7 @@ void NetworkReceiver::receive()
             }
         }
 
-        //this interruption point is needed if we do not want this thread to suck up 100% CPU
+        //let's give this thread a break every now and then... CPU will thank us ;)
         boost::this_thread::sleep( boost::posix_time::milliseconds(0) );
     }
 }

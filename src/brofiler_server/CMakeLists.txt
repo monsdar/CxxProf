@@ -46,6 +46,3 @@ install(TARGETS ${PROJECT_NAME}
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startServer.bat
         DESTINATION ${PROJECT_NAME}/bin)
         
-#this installs the database
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/data.s3db
-        DESTINATION ${PROJECT_NAME}/bin)
