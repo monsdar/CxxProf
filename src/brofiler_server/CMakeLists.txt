@@ -36,3 +36,7 @@ SET_TARGET_PROPERTIES( ${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${PROJECT_NAME}/bin)
+
+#this installs the start.bat
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startServer.bat
+        DESTINATION ${PROJECT_NAME}/bin)
