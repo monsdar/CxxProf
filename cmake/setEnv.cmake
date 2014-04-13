@@ -49,7 +49,7 @@ IF(NOT Boost_FOUND)
     set(Boost_USE_MULTITHREADED ON)
     add_definitions( -DBOOST_ALL_NO_LIB )   #needed for VisualStudio
     add_definitions( -DBOOST_ALL_DYN_LINK ) #needed for VisualStudio
-    find_package(Boost 1.55.0 REQUIRED COMPONENTS serialization system unit_test_framework thread date_time chrono)
+    find_package(Boost 1.55.0 REQUIRED COMPONENTS filesystem serialization system unit_test_framework thread date_time chrono)
 ENDIF(NOT Boost_FOUND)
 
 #Pluma
