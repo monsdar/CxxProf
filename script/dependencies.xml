@@ -2,35 +2,34 @@
 
 <components>
     <component>
-        <name>brofiler_dyn</name>
+        <name>brofiler_dyn_network</name>
         <dependencies>
-            <dependency>brofiler</dependency>
+            <dependency>brofiler_static</dependency>
         </dependencies>
     </component>
     <component>
         <name>brofiler_howto</name>
         <dependencies>
-            <dependency>brofiler</dependency>
-            <dependency>brofiler_dyn</dependency>
+            <dependency>brofiler_static</dependency>
         </dependencies>
     </component>
     <component>
         <name>brofiler_server</name>
         <dependencies>
-            <dependency>brofiler_dyn</dependency>
+            <dependency>brofiler_dyn_network</dependency>
         </dependencies>
     </component>
     <component>
-        <name>brofiler_dyntest</name>
+        <name>brofiler_dyn_test</name>
         <dependencies>
-            <dependency>brofiler</dependency>
+            <dependency>brofiler_static</dependency>
         </dependencies>
     </component>
     <component>
-        <name>brofiler_testclient</name>
+        <name>brofiler_interface_test</name>
         <dependencies>
-            <dependency>brofiler</dependency>
-            <dependency>brofiler_dyntest</dependency>
+            <dependency>brofiler_static</dependency>
+            <dependency>brofiler_dyn_test</dependency> <!-- Used as DynBrofiler during tests -->
         </dependencies>
     </component>
 </components>

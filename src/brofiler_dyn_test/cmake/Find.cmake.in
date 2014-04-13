@@ -1,0 +1,21 @@
+
+############################
+# Disclaimer:
+#   This script is NOT a dynamic CMake Find-script as you may know it.
+#   It just works in the Selfcontained environment it is meant for.
+#
+# The following Variables will be filled:
+#   @PROJECT_NAME@_FOUND             - Set to TRUE if the lib has been found
+#   @PROJECT_NAME@_INCLUDE_DIRS      - Set to the directories where the includes are found
+#   @PROJECT_NAME@_LIBRARY_DIRS      - Set to the directories where the libraries are found
+#   @PROJECT_NAME@_Release_LIBRARIES - Release libraries which need to be linked
+#   @PROJECT_NAME@_Debug_LIBRARIES   - Debug libraries which need to be linked
+############################
+
+#get the current script directory
+GET_FILENAME_COMPONENT(SCRIPT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
+
+set( @PROJECT_NAME@_FOUND TRUE )
+set( @PROJECT_NAME@_INCLUDE_DIRS ${SCRIPT_DIR}/../install/@PROJECT_NAME@/include )
+set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@.lib
+                                debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@_debug.lib)
