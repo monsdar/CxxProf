@@ -1,43 +1,15 @@
 
+#include "brofiler_server/NetworkReceiver.h"
 #include "brofiler_dyn_network/ActivityResult.h"
-#include "brofiler_dyn_network/Serializers.h"
 
 #include <boost/thread/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <sqlite3cc.h>
-#include <zhelpers.hpp>
 
 #include <iostream>
 #include <sstream>
 
-zmq::context_t zmqContext_(1);
-zmq::socket_t zmqListener_(zmqContext_, ZMQ_PULL);
-
-void receive()
-{
-    std::string data;
-    while (data.empty())
-    {
-        data = s_recv(zmqListener_);
-        if (data.size() == 0)
-        {
-            std::cout << "Received empty message" << std::endl;
-        }
-        else
-        {
-            std::cout << "Received: " << data << std::endl;
-        }
-    }
-
-    std::cout << "Deserializing Data..." << std::endl;
-    std::stringstream dataStream;
-    dataStream << data;
-    boost::archive::text_iarchive ia(dataStream);
-    ActivityResult result;
-    ia >> result;
-    std::cout << "Received result for " << result.Name << std::endl;
-}
 
 void checkSqliteCode()
 {
@@ -64,15 +36,18 @@ void checkSqliteCode()
     }
 }
 
+void receivedResult(const ActivityResult& result)
+{
+    std::cout << "Received " << result.Name << std::endl;
+}
+
 int main()
 {
-    std::cout << "Starting Server" << std::endl;
-    zmqListener_.bind("tcp://*:15232");
+    //checkSqliteCode();
 
-    checkSqliteCode();
-
-    std::cout << "Listening..." << std::endl;
-    boost::thread listenThread(receive);
+    NetworkReceiver receiver;
+    receiver.setCallback(receivedResult);
+    receiver.startListening();
 
     while(true)
     {

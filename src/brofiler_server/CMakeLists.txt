@@ -16,9 +16,10 @@ find_package(brofiler_dyn_network) #We just need the Headers...
 
 #Build the actual component
 FILE(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+FILE(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
-include_directories(${Boost_INCLUDE_DIRS}
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
+                    ${Boost_INCLUDE_DIRS}
                     ${Zeromq_INCLUDE_DIRS}
                     ${Sqlite3_INCLUDE_DIRS}
                     ${Sqlite3cc_INCLUDE_DIRS}
