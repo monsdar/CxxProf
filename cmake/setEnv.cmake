@@ -17,6 +17,14 @@
 #     Zeromq_INCLUDE_DIRS
 #     Zeromq_LIBRARIES
 #
+#   Sqlite3
+#     Sqlite3_INCLUDE_DIRS
+#     Sqlite3_LIBRARIES
+#
+#   Sqlite3cc
+#     Sqlite3cc_INCLUDE_DIRS
+#     Sqlite3cc_LIBRARIES
+#
 #######################################
 
 #set the project name according to where the CMakeLists.txt is located
@@ -48,9 +56,19 @@ ENDIF(NOT Boost_FOUND)
 set( Pluma_INCLUDE_DIRS ${THIRDPARTY_DIR}/pluma/include)
 set( Pluma_LIBRARIES    optimized ${THIRDPARTY_DIR}/pluma/lib/pluma.lib
                         debug ${THIRDPARTY_DIR}/pluma/lib/pluma-d.lib)
-                        
+
 #ZeroMQ
 set( Zeromq_INCLUDE_DIRS    ${THIRDPARTY_DIR}/zmq/include)
 set( Zeromq_LIBRARIES       optimized ${THIRDPARTY_DIR}/zmq/lib/libzmq-v120-mt-4_0_4.lib
                             debug ${THIRDPARTY_DIR}/zmq/lib/libzmq-v120-mt-gd-4_0_4.lib)
+
+#Sqlite3
+set( Sqlite3_INCLUDE_DIRS   ${THIRDPARTY_DIR}/sqlite3/include)
+set( Sqlite3_LIBRARIES      optimized ${THIRDPARTY_DIR}/sqlite3/lib/sqlite3_vc120.lib
+                            debug ${THIRDPARTY_DIR}/sqlite3/lib/sqlite3_vc120.lib)
+
+#Sqlite3cc
+set( Sqlite3cc_INCLUDE_DIRS ${THIRDPARTY_DIR}/sqlite3cc/include)
+set( Sqlite3cc_LIBRARIES    optimized ${THIRDPARTY_DIR}/sqlite3cc/lib/sqlite3cc-vc120-0_1_1.lib
+                            debug ${THIRDPARTY_DIR}/sqlite3cc/lib/sqlite3cc-vc120-0_1_1.lib)
 
