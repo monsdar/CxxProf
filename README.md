@@ -29,6 +29,8 @@ The server runs as a separate process on the local host or even on a remote mach
 ###UI
 The UI application connects to the server and shows the data which has been recorded previously. The format is some kind of a timeline where the execution of the code can be seen over time. That way it is easily possible to see how your application behaves during its lifecycle and how different states affect the performance.
 
+![Image of Architecture](http://yuml.me/f0c03470)
+
 ##References
 There are different existing Profiling libraries for C++ available. Most of them are quite minimalistic, others are too pricy/restrictive for smaller open source projects. The following projects are used as references for Brofiler:
 * https://code.google.com/p/profiny/
