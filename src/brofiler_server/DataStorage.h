@@ -17,6 +17,7 @@ public:
 
 private:
     void initDatabase(const std::string& filename);
+    std::string getCurrentDateStr();
 
     boost::shared_ptr<sqlite::connection> connection_;
 

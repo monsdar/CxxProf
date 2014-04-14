@@ -1,13 +1,16 @@
 
 #include "brofiler_server/DataStorage.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+
 #include <boost/filesystem.hpp>
+#include <ctime>
 
 DataStorage::DataStorage()
 {
-    //TODO: Create a new database at each startup? Is there a case where we need to reuse the database?
-
-    std::string dbName = "data.db";
+    //create a new database for each session
+    std::string dbName = "session_" + getCurrentDateStr() + ".db";
     bool isInitNeeded = !boost::filesystem::exists(dbName);
     connection_.reset(new sqlite::connection(dbName));
 
@@ -23,6 +26,17 @@ DataStorage::~DataStorage()
     {
         connection_->close();
     }
+}
+
+std::string DataStorage::getCurrentDateStr()
+{
+    boost::posix_time::ptime currentTime = boost::posix_time::second_clock::local_time();
+    static std::locale loc(std::cout.getloc(), new boost::posix_time::time_facet("%d%b%Y_%H%M%S"));
+    std::ostringstream dtStream;
+    dtStream.imbue(loc);
+    dtStream << currentTime;
+
+    return dtStream.str();
 }
 
 void DataStorage::initDatabase(const std::string& filename)
