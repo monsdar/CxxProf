@@ -31,6 +31,26 @@ The UI application connects to the server and shows the data which has been reco
 
 ![Image of Architecture](http://yuml.me/f0c03470)
 
+##Usage
+Please use the following steps to integrate Brofiler into your project:
+TODO: This needs to be documented with a lot more detail
+Compiling:
+* Define the Preprocessor directive USEBROFILER
+* Link to brofiler_static.lib
+* Add Activities, Marks and Plots
+* Compile everything
+
+Runtime:
+* Put the brofiler_dyn_network.dll into your execution directory
+* Add the following libs to your path:
+** Boost
+** Pluma
+** Zmq
+** SQLite3
+** SQLite3cc
+* Start the brofiler_server.exe
+* Start your application and wait for the data to come in
+
 ##References
 There are different existing Profiling libraries for C++ available. Most of them are quite minimalistic, others are too pricy/restrictive for smaller open source projects. The following projects are used as references for Brofiler:
 * https://code.google.com/p/profiny/
