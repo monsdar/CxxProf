@@ -12,6 +12,9 @@ public:
     virtual ~TestBrofiler();
     
     boost::shared_ptr<IActivity> createActivity(const std::string& name);
+    void addMark(const std::string& name);
+    void addPlotValue(const std::string& name, double value);
+
     std::string toString() const;
 };
 

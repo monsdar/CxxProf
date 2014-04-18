@@ -2,7 +2,7 @@
 #include "brofiler_server/NetworkReceiver.h"
 #include "brofiler_server/DataStorage.h"
 
-#include "brofiler_dyn_network/ActivityResult.h"
+#include "brofiler_dyn_network/NetworkObjects.h"
 
 #include <boost/thread/thread.hpp>
 #include <boost/shared_ptr.hpp>
@@ -11,16 +11,16 @@
 
 DataStorage storage_;
 
-void receivedResult(const ActivityResult& result)
+void receivedObjects(const NetworkObjects& objects)
 {
-    std::cout << "Received result for " << result.Name << std::endl;
-    storage_.storeResult(result);
+    std::cout << "Received objects..." << std::endl;
+    storage_.storeResult(objects);
 }
 
 int main()
 {
     NetworkReceiver receiver;
-    receiver.setCallback(receivedResult);
+    receiver.setCallback(receivedObjects);
     receiver.startListening();
 
     while(true)

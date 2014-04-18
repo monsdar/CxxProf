@@ -2,7 +2,7 @@
 #ifndef _DATA_STORAGE_H_
 #define _DATA_STORAGE_H_
 
-#include "brofiler_dyn_network/ActivityResult.h"
+#include "brofiler_dyn_network/NetworkObjects.h"
 
 #include <boost/shared_ptr.hpp>
 #include <sqlite3cc.h>
@@ -13,7 +13,7 @@ public:
     DataStorage();
     virtual ~DataStorage();
 
-    void storeResult(const ActivityResult& result);
+    void storeResult(const NetworkObjects& objects);
 
 private:
     void initDatabase(const std::string& filename);

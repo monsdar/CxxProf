@@ -2,7 +2,7 @@
 #ifndef _NETWORK_RECEIVER_H_
 #define _NETWORK_RECEIVER_H_
 
-#include "brofiler_dyn_network/ActivityResult.h"
+#include "brofiler_dyn_network/NetworkObjects.h"
 #include "brofiler_dyn_network/Serializers.h"
 
 #include <boost/function.hpp>
@@ -14,13 +14,13 @@
 class NetworkReceiver
 {
 public:
-    typedef boost::function1<void, const ActivityResult&> ResultCallback;
+    typedef boost::function1<void, const NetworkObjects&> ReceiveCallback;
 
 public:
     NetworkReceiver();
     virtual ~NetworkReceiver();
 
-    void setCallback(ResultCallback givenCallback);
+    void setCallback(ReceiveCallback givenCallback);
     void startListening();
 
 private:
@@ -28,7 +28,7 @@ private:
 
     bool isRunning_;
 
-    ResultCallback callback_;
+    ReceiveCallback callback_;
     boost::shared_ptr<boost::thread> listenThread_;
     boost::shared_ptr<zmq::context_t> zmqContext_;
     boost::shared_ptr<zmq::socket_t> zmqListener_;

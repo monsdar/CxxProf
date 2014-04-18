@@ -20,7 +20,7 @@ NetworkReceiver::~NetworkReceiver()
     isRunning_ = false;
 }
 
-void NetworkReceiver::setCallback(ResultCallback givenCallback)
+void NetworkReceiver::setCallback(ReceiveCallback givenCallback)
 {
     callback_ = givenCallback;
 }
@@ -47,12 +47,12 @@ void NetworkReceiver::receive()
             std::stringstream dataStream;
             dataStream << data;
             boost::archive::text_iarchive ia(dataStream);
-            ActivityResult result;
-            ia >> result;
+            NetworkObjects objects;
+            ia >> objects;
 
             if (callback_)
             {
-                callback_(result);
+                callback_(objects);
             }
         }
 

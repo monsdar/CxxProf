@@ -1,8 +1,11 @@
 
 #include "brofiler_dyn_network/NetworkBrofiler.h"
 #include "brofiler_dyn_network/NetworkActivity.h"
+#include "brofiler_dyn_network/NetworkMark.h"
+#include "brofiler_dyn_network/NetworkPlot.h"
 #include "brofiler_dyn_network/Serializers.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 
 //NOTE: We need to use the C-API of ZMQ here because Pluma and WinSock2.h both implement a connect() function
@@ -60,18 +63,53 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
     return newAct;
 }
 
+void NetworkBrofiler::addMark(const std::string& name)
+{
+    //Build the NetworkMark
+    NetworkMark newMark;
+    newMark.Name = name;
+    newMark.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_milliseconds();
+    sendObjects_.Marks.push_back(newMark);
+
+    //Send the objects
+    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
+    sendObjects();
+}
+void NetworkBrofiler::addPlotValue(const std::string& name, double value)
+{
+    //Build the NetworkMark
+    NetworkPlot newPlot;
+    newPlot.Name = name;
+    newPlot.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_milliseconds();
+    newPlot.Value = value;
+    sendObjects_.Plots.push_back(newPlot);
+
+    //Send the objects
+    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
+    sendObjects();
+}
 void NetworkBrofiler::addResult(const ActivityResult& result)
 {
     activeActivity_.pop();
+    sendObjects_.ActivityResults.push_back(result);
 
+    //Send the objects
+    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
+    sendObjects();
+}
+
+void NetworkBrofiler::sendObjects()
+{    
     //serialize the result
     std::ostringstream serializeStream;
     boost::archive::text_oarchive oa(serializeStream);
-    oa << result;
+    oa << sendObjects_;
 
     //send the activity data via network
     std::string serializeString = serializeStream.str();
     zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
+
+    sendObjects_.clear();
 }
 
 std::string NetworkBrofiler::toString() const

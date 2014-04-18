@@ -41,21 +41,41 @@ std::string DataStorage::getCurrentDateStr()
 
 void DataStorage::initDatabase(const std::string& filename)
 {
-    //TODO: We need ActivityId and ThreadId to form a composite Primary Key -> Is this possible with SQLite?
+    //Create table for the Marks
+    sqlite::command initMarkCommand(*connection_,
+        "CREATE TABLE marks ( "
+        "   MarkId INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "   Name TEXT, "
+        "   Timestamp INTEGER "
+        ")");
 
-    sqlite::command initCommand(*connection_,
+
+    //Create table for the Plots
+    sqlite::command initPlotCommand(*connection_,
+        "CREATE TABLE plots ( "
+        "   PlotId INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "   Name TEXT, "
+        "   Value REAL, "
+        "   Timestamp INTEGER "
+        ")");
+
+    //Create table for the activities
+    sqlite::command initActCommand(*connection_,
         "CREATE TABLE activities ( "
-        "   ActivityId INTEGER PRIMARY KEY, "
-        "   ThreadId INTEGER, "
+        "   ActivityId INTEGER NOT NULL, "
+        "   ThreadId INTEGER NOT NULL, "
         "   ParentId INTEGER, "
         "   Starttime INTEGER, "
         "   Stoptime INTEGER, "
-        "   Name TEXT "
+        "   Name TEXT, "
+        "   PRIMARY KEY(ActivityId, ThreadId)"
         ")");
 
     try
     {
-        int error = initCommand.exec();
+        initActCommand.exec();
+        initMarkCommand.exec();
+        initPlotCommand.exec();
     }
     catch (sqlite::sqlite_error& error)
     {
@@ -63,7 +83,7 @@ void DataStorage::initDatabase(const std::string& filename)
     }
 }
 
-void DataStorage::storeResult(const ActivityResult& result)
+void DataStorage::storeResult(const NetworkObjects& objects)
 {
     if (!connection_)
     {
@@ -71,33 +91,102 @@ void DataStorage::storeResult(const ActivityResult& result)
         return;
     }
 
-    //TODO: Check if an ActivityReult with the given ActId is already stored in the database, then react appropriately
-
-    sqlite::command insertCommand(*connection_,
-        "INSERT INTO activities VALUES ( "
-        "?, " //ActivityId
-        "?, " //ThreadId
-        "?, " //ParentId
-        "?, " //Starttime
-        "?, " //Stoptime
-        "? " //Name 
-        ")");
-
-    insertCommand.bind(1, result.ActId);
-    insertCommand.bind(2, result.ThreadId);
-    insertCommand.bind(3, result.ParentId);
-    insertCommand.bind(4, result.StartTime);
-    insertCommand.bind(5, result.StopTime);
-    insertCommand.bind(6, result.Name);
-
-    try
+    //Add the Marks
+    std::vector<NetworkMark>::const_iterator markIter = objects.Marks.begin();
+    for (; markIter != objects.Marks.end(); ++markIter)
     {
-        int error = insertCommand.exec();
+        try
+        {
+            sqlite::command insertCommand(*connection_,
+                "INSERT INTO marks ( "
+                    "Name, "
+                    "Timestamp) "
+                "VALUES ( "
+                    "?, " //Name
+                    "? " //Timestamp
+                ")");
+
+            insertCommand.bind(1, markIter->Name);
+            insertCommand.bind(2, markIter->Timestamp);
+
+            int error = insertCommand.exec();
+        }
+        catch (sqlite::sqlite_error& error)
+        {
+            std::cout << error.what() << std::endl;
+        }
     }
-    catch (sqlite::sqlite_error& error)
+    std::cout << "Added " << objects.Marks.size() << " Marks" << std::endl;
+
+    //Add the Plots
+    std::vector<NetworkPlot>::const_iterator plotIter = objects.Plots.begin();
+    for (; plotIter != objects.Plots.end(); ++plotIter)
     {
-        std::cout << error.what() << std::endl;
+        sqlite::command insertCommand(*connection_,
+            "INSERT INTO plots ("
+                "Name, "
+                "Value, "
+                "Timestamp) "
+            "VALUES ( "
+                "?, " //Name
+                "?, " //Value
+                "? " //Timestamp
+            ")");
+
+        insertCommand.bind(1, plotIter->Name);
+        insertCommand.bind(2, plotIter->Value);
+        insertCommand.bind(3, plotIter->Timestamp);
+
+        try
+        {
+            int error = insertCommand.exec();
+        }
+        catch (sqlite::sqlite_error& error)
+        {
+            std::cout << error.what() << std::endl;
+        }
     }
+    std::cout << "Added " << objects.Plots.size() << " Plots" << std::endl;
+
+    //Add the ActivityResults to the Database
+    std::vector<ActivityResult>::const_iterator actIter = objects.ActivityResults.begin();
+    for (; actIter != objects.ActivityResults.end(); ++actIter)
+    {
+        //TODO: Check if an ActivityResult with the given ActId is already stored in the database, then react appropriately
+        sqlite::command insertCommand(*connection_,
+            "INSERT INTO activities ("
+                "ActivityId,"
+                "ThreadId,"
+                "ParentId,"
+                "Starttime,"
+                "Stoptime,"
+                "Name) "
+            "VALUES ( "
+                "?, " //ActivityId
+                "?, " //ThreadId
+                "?, " //ParentId
+                "?, " //Starttime
+                "?, " //Stoptime
+                "? " //Name 
+            ")");
+
+        insertCommand.bind(1, actIter->ActId);
+        insertCommand.bind(2, actIter->ThreadId);
+        insertCommand.bind(3, actIter->ParentId);
+        insertCommand.bind(4, actIter->StartTime);
+        insertCommand.bind(5, actIter->StopTime);
+        insertCommand.bind(6, actIter->Name);
+
+        try
+        {
+            int error = insertCommand.exec();
+        }
+        catch (sqlite::sqlite_error& error)
+        {
+            std::cout << error.what() << std::endl;
+        }
+    }
+    std::cout << "Added " << objects.ActivityResults.size() << " ActivityResults" << std::endl;
 }
 
 /*

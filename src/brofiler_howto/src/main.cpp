@@ -22,9 +22,12 @@ int recursiveOperation(int someValue)
     boost::shared_ptr<IActivity> act;
     act = mainBro_->createActivity("recursiveOperation");
     
+    //Adding PlotValues helps us to see how the application is handling the change of values over time
+    mainBro_->addPlotValue("SomeValue", someValue);
 
     if (someValue == 3)
     {
+        //Let's add some complexity by sleeping a bit when someValue reaches 3
         boost::shared_ptr<IActivity> act;
         act = mainBro_->createActivity("recursiveOperation::middle");
         boost::this_thread::sleep(boost::posix_time::milliseconds(200));
@@ -45,12 +48,16 @@ int main()
     std::cout << "Loading DynBrofiler" << std::endl;
     mainBro_->loadDynBrofiler();
 
-    //let's call some of the above mentioned functions
-    //of course we're measuring how long this test takes altogether
+    //Measure how long the rest of this main() takes
     boost::shared_ptr<IActivity> act;
     act = mainBro_->createActivity("main");
     
+    //Add a mark for a better overview of which state the application is currently in
+    mainBro_->addMark("LongOperation start");
     longOperation();
     longOperation();
+
+    //And another mark
+    mainBro_->addMark("RecursiveOperation start");
     recursiveOperation(1);
 }

@@ -23,6 +23,8 @@ public:
     
     void loadDynBrofiler();
     boost::shared_ptr<IActivity> createActivity(const std::string& name) const;
+    void addMark(const std::string& name);
+    void addPlotValue(const std::string& name, double value);
 
 private:
     IDynBrofiler* dynBrofiler_;

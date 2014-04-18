@@ -43,3 +43,23 @@ boost::shared_ptr<IActivity> BrofilerStatic::createActivity(const std::string& n
     
     return dynBrofiler_->createActivity(name);
 }
+
+void BrofilerStatic::addMark(const std::string& name)
+{
+    if (dynBrofiler_ == NULL)
+    {
+        //Nothing to do here...
+    }
+
+    return dynBrofiler_->addMark(name);
+}
+
+void BrofilerStatic::addPlotValue(const std::string& name, double value)
+{
+    if (dynBrofiler_ == NULL)
+    {
+        //Nothing to do here...
+    }
+
+    return dynBrofiler_->addPlotValue(name, value);
+}
