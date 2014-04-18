@@ -116,7 +116,6 @@ void DataStorage::storeResult(const NetworkObjects& objects)
             std::cout << error.what() << std::endl;
         }
     }
-    std::cout << "Added " << objects.Marks.size() << " Marks" << std::endl;
 
     //Add the Plots
     std::vector<NetworkPlot>::const_iterator plotIter = objects.Plots.begin();
@@ -146,7 +145,6 @@ void DataStorage::storeResult(const NetworkObjects& objects)
             std::cout << error.what() << std::endl;
         }
     }
-    std::cout << "Added " << objects.Plots.size() << " Plots" << std::endl;
 
     //Add the ActivityResults to the Database
     std::vector<ActivityResult>::const_iterator actIter = objects.ActivityResults.begin();
@@ -186,7 +184,6 @@ void DataStorage::storeResult(const NetworkObjects& objects)
             std::cout << error.what() << std::endl;
         }
     }
-    std::cout << "Added " << objects.ActivityResults.size() << " ActivityResults" << std::endl;
 }
 
 /*

@@ -34,8 +34,11 @@ void BrofilerStatic::loadDynBrofiler()
     }
 }
 
-boost::shared_ptr<IActivity> BrofilerStatic::createActivity(const std::string& name) const
+boost::shared_ptr<IActivity> BrofilerStatic::createActivity(const std::string& name)
 {
+    //this mutex protects the dynBrofiler_
+    boost::mutex::scoped_lock lock(mutex_);
+
     if(dynBrofiler_ == NULL)
     {
         return boost::shared_ptr<IActivity>();
@@ -46,6 +49,9 @@ boost::shared_ptr<IActivity> BrofilerStatic::createActivity(const std::string& n
 
 void BrofilerStatic::addMark(const std::string& name)
 {
+    //this mutex protects the dynBrofiler_
+    boost::mutex::scoped_lock lock(mutex_);
+
     if (dynBrofiler_ == NULL)
     {
         //Nothing to do here...
@@ -56,6 +62,9 @@ void BrofilerStatic::addMark(const std::string& name)
 
 void BrofilerStatic::addPlotValue(const std::string& name, double value)
 {
+    //this mutex protects the dynBrofiler_
+    boost::mutex::scoped_lock lock(mutex_);
+
     if (dynBrofiler_ == NULL)
     {
         //Nothing to do here...

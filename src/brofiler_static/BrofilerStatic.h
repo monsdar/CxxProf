@@ -7,6 +7,7 @@
 #include "brofiler_static/IActivity.h"
 
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 #include <vector>
 
 //forward declaration
@@ -22,12 +23,13 @@ public:
     virtual ~BrofilerStatic();
     
     void loadDynBrofiler();
-    boost::shared_ptr<IActivity> createActivity(const std::string& name) const;
+    boost::shared_ptr<IActivity> createActivity(const std::string& name);
     void addMark(const std::string& name);
     void addPlotValue(const std::string& name, double value);
 
 private:
     IDynBrofiler* dynBrofiler_;
+    boost::mutex mutex_;
     boost::shared_ptr<pluma::Pluma> manager_;
 };
 

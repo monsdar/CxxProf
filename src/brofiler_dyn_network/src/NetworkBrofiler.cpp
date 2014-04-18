@@ -8,7 +8,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 
-//NOTE: We need to use the C-API of ZMQ here because Pluma and WinSock2.h both implement a connect() function
+//NOTE: We need to use the C-API of ZMQ here because Pluma and WinSock2.h both implement a connect() function.
 //      Due to extern C in the WinSock part it is not possible to have both defined in the global space -.-
 //
 //Error Message when using zhelpers.hpp here:
@@ -38,9 +38,24 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
 {
     unsigned int newActId = actCounter_++;
 
+    //get the current Thread Id
+    unsigned int threadId = 0;
+    std::vector<boost::thread::id>::iterator resultIter = std::find(knownThreads_.begin(), knownThreads_.end(), boost::this_thread::get_id());
+    if (resultIter == knownThreads_.end())
+    {
+        knownThreads_.push_back(boost::this_thread::get_id());
+        threadId = knownThreads_.size() - 1;
+    }
+    else
+    {
+        //NOTE: See http://stackoverflow.com/questions/2152986/best-way-to-get-the-index-of-an-iterator
+        //      on why we do not use std::distance here
+        threadId = resultIter - knownThreads_.begin();
+    }
+
     boost::shared_ptr<NetworkActivity> newAct(new NetworkActivity(  name, 
                                                                     newActId, 
-                                                                    0, //TODO: Get a Thread-ID
+                                                                    threadId,
                                                                     0, //we're setting the parentId later
                                                                     profilingStart_,
                                                                     boost::bind(&NetworkBrofiler::addResult, this, _1)));
@@ -90,6 +105,9 @@ void NetworkBrofiler::addPlotValue(const std::string& name, double value)
 }
 void NetworkBrofiler::addResult(const ActivityResult& result)
 {
+    //the mutex protects from different activities calling this callback at once
+    boost::mutex::scoped_lock lock(callbackMutex_);
+
     activeActivity_.pop();
     sendObjects_.ActivityResults.push_back(result);
 

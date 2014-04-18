@@ -6,6 +6,8 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include "brofiler_dyn_network/NetworkObjects.h"
 #include "brofiler_dyn_network/common.h"
@@ -28,9 +30,12 @@ private:
     void addResult(const ActivityResult& result);
     void sendObjects();
     
+    boost::mutex callbackMutex_;
+
     unsigned int actCounter_;
     std::stack<unsigned int> activeActivity_;
     boost::posix_time::ptime profilingStart_;
+    std::vector<boost::thread::id> knownThreads_;
 
     NetworkObjects sendObjects_;
 

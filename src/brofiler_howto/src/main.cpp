@@ -8,6 +8,7 @@
 #include <iostream>
 
 boost::shared_ptr<BrofilerStatic> mainBro_;
+const unsigned int NUM_THREADS = 5;
 
 void longOperation()
 {
@@ -15,6 +16,17 @@ void longOperation()
     act = mainBro_->createActivity("longOperation");
 
     boost::this_thread::sleep(boost::posix_time::seconds(1));
+}
+
+void loopOperation(unsigned int numLoops)
+{
+    boost::shared_ptr<IActivity> act;
+    act = mainBro_->createActivity("loopOperation");
+
+    for (unsigned int index = 0; index < numLoops; ++index)
+    {
+        boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+    }
 }
 
 int recursiveOperation(int someValue)
@@ -57,7 +69,25 @@ int main()
     longOperation();
     longOperation();
 
+    //Start some LoopOperations in extra Threads
+    mainBro_->addMark("LoopThread start");
+    std::vector< boost::shared_ptr<boost::thread> > threads;
+    for (unsigned int index = 0; index < NUM_THREADS; ++index)
+    {
+        boost::shared_ptr<boost::thread> loopThread( new boost::thread(boost::bind(loopOperation, 5)) );
+        threads.push_back(loopThread);
+    }
+
     //And another mark
     mainBro_->addMark("RecursiveOperation start");
     recursiveOperation(1);
+
+    //wait until the loopThreads are finished
+    std::vector<boost::shared_ptr<boost::thread> >::iterator threadIter = threads.begin();
+    for (; threadIter != threads.end(); ++threadIter)
+    {
+        (*threadIter)->join();
+    }
+
+    return 0;
 }
