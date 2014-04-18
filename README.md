@@ -33,7 +33,9 @@ The UI application connects to the server and shows the data which has been reco
 
 ##Usage
 Please use the following steps to integrate Brofiler into your project:
+
 TODO: This needs to be documented with a lot more detail
+
 Compiling:
 * Define the Preprocessor directive USEBROFILER
 * Link to brofiler_static.lib
@@ -43,11 +45,11 @@ Compiling:
 Runtime:
 * Put the brofiler_dyn_network.dll into your execution directory
 * Add the following libs to your path:
-** Boost
-** Pluma
-** Zmq
-** SQLite3
-** SQLite3cc
+* * Boost
+* * Pluma
+* * Zmq
+* * SQLite3
+* * SQLite3cc
 * Start the brofiler_server.exe
 * Start your application and wait for the data to come in
 
