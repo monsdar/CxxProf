@@ -7,22 +7,39 @@
 
 const std::string PLUGINDIR = ".";
 
+BrofilerStatic* BrofilerStatic::instance_ = NULL;
+
+BrofilerStatic* BrofilerStatic::getBrofiler()
+{
+    if (instance_ == NULL)
+    {
+        std::cout << "Creating BrofilerStatic" << std::endl;
+        instance_ = new BrofilerStatic();
+    }
+
+    return instance_;
+}
+
 BrofilerStatic::BrofilerStatic() :
     dynBrofiler_(NULL),
     manager_( new pluma::Pluma() )
-{}
+{
+    loadDynBrofiler();
+}
 
 BrofilerStatic::~BrofilerStatic()
-{}
+{
+    instance_ = NULL;
+}
 
 void BrofilerStatic::loadDynBrofiler()
 {
     manager_->acceptProviderType< IDynBrofilerProvider >();
     manager_->loadFromFolder(PLUGINDIR);
-    
+
     std::vector<IDynBrofilerProvider*> providers;
     manager_->getProviders(providers);
-    
+
     if (providers.begin() != providers.end())
     {
         dynBrofiler_ = (*providers.begin())->create();
@@ -52,12 +69,10 @@ void BrofilerStatic::addMark(const std::string& name)
     //this mutex protects the dynBrofiler_
     boost::mutex::scoped_lock lock(mutex_);
 
-    if (dynBrofiler_ == NULL)
+    if (dynBrofiler_ != NULL)
     {
-        //Nothing to do here...
+        dynBrofiler_->addMark(name);
     }
-
-    return dynBrofiler_->addMark(name);
 }
 
 void BrofilerStatic::addPlotValue(const std::string& name, double value)
@@ -65,10 +80,8 @@ void BrofilerStatic::addPlotValue(const std::string& name, double value)
     //this mutex protects the dynBrofiler_
     boost::mutex::scoped_lock lock(mutex_);
 
-    if (dynBrofiler_ == NULL)
+    if (dynBrofiler_ != NULL)
     {
-        //Nothing to do here...
+        dynBrofiler_->addPlotValue(name, value);
     }
-
-    return dynBrofiler_->addPlotValue(name, value);
 }

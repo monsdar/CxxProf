@@ -11,6 +11,9 @@ set( SELFCONTAINED_CMAKE ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/)
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${SELFCONTAINED_CMAKE} )
 include( setEnv )
 
+#Use Brofiler (else it wouldn't be used and linked)
+add_definitions(-DUSEBROFILER)
+
 #Find the dependencies
 find_package(brofiler_static)
 

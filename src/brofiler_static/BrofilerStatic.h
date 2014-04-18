@@ -6,6 +6,7 @@
 #include "brofiler_static/IDynBrofiler.h"
 #include "brofiler_static/IActivity.h"
 
+#include <boost/utility.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <vector>
@@ -16,19 +17,23 @@ namespace pluma
     class Pluma;
 };
 
-class BrofilerStatic_EXPORT BrofilerStatic
+class BrofilerStatic_EXPORT BrofilerStatic : boost::noncopyable
 {
 public:
-    BrofilerStatic();
+    static BrofilerStatic* getBrofiler();
     virtual ~BrofilerStatic();
     
-    void loadDynBrofiler();
     boost::shared_ptr<IActivity> createActivity(const std::string& name);
     void addMark(const std::string& name);
     void addPlotValue(const std::string& name, double value);
 
 private:
+    BrofilerStatic();
+    static BrofilerStatic* instance_;
+
+    void loadDynBrofiler();
     IDynBrofiler* dynBrofiler_;
+
     boost::mutex mutex_;
     boost::shared_ptr<pluma::Pluma> manager_;
 };
