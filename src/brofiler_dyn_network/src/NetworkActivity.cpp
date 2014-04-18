@@ -69,5 +69,5 @@ void NetworkActivity::start()
 unsigned int NetworkActivity::getCurrentTime()
 {
     boost::posix_time::time_duration const diff = boost::posix_time::microsec_clock::local_time() - profilingStart_;
-    return diff.total_milliseconds();
+    return diff.total_microseconds();
 }

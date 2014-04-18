@@ -83,7 +83,7 @@ void NetworkBrofiler::addMark(const std::string& name)
     //Build the NetworkMark
     NetworkMark newMark;
     newMark.Name = name;
-    newMark.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_milliseconds();
+    newMark.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_microseconds();
     sendObjects_.Marks.push_back(newMark);
 
     //Send the objects
@@ -95,7 +95,7 @@ void NetworkBrofiler::addPlotValue(const std::string& name, double value)
     //Build the NetworkMark
     NetworkPlot newPlot;
     newPlot.Name = name;
-    newPlot.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_milliseconds();
+    newPlot.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_microseconds();
     newPlot.Value = value;
     sendObjects_.Plots.push_back(newPlot);
 
