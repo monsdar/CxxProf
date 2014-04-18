@@ -91,6 +91,9 @@ void DataStorage::storeResult(const NetworkObjects& objects)
         return;
     }
 
+    //create a deferred transaction for the following commands
+    sqlite::transaction_guard< > transactionGuard(*connection_);
+
     //Add the Marks
     std::vector<NetworkMark>::const_iterator markIter = objects.Marks.begin();
     for (; markIter != objects.Marks.end(); ++markIter)
@@ -104,7 +107,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
                 "VALUES ( "
                     "?, " //Name
                     "? " //Timestamp
-                ")");
+                ");");
 
             insertCommand.bind(1, markIter->Name);
             insertCommand.bind(2, markIter->Timestamp);
@@ -130,7 +133,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
                 "?, " //Name
                 "?, " //Value
                 "? " //Timestamp
-            ")");
+            ");");
 
         insertCommand.bind(1, plotIter->Name);
         insertCommand.bind(2, plotIter->Value);
@@ -166,7 +169,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
                 "?, " //Starttime
                 "?, " //Stoptime
                 "? " //Name 
-            ")");
+            ");");
 
         insertCommand.bind(1, actIter->ActId);
         insertCommand.bind(2, actIter->ThreadId);
@@ -184,32 +187,9 @@ void DataStorage::storeResult(const NetworkObjects& objects)
             std::cout << error.what() << std::endl;
         }
     }
+
+    //commit the transaction (or it will rollback)
+    transactionGuard.commit();
 }
 
-/*
-void checkSqliteCode()
-{
-sqlite::connection conn("data.s3db");
-sqlite::query queryAllActivities(conn, "SELECT * FROM activities");
-std::cout << "Results: " << queryAllActivities.num_results() << std::endl;
-
-for (sqlite::query::iterator iter = queryAllActivities.begin(); iter != queryAllActivities.end(); iter++)
-{
-unsigned int actId = iter->column< unsigned int >(0);
-unsigned int threadId = iter->column< unsigned int >(1);
-unsigned int parentId = iter->column< unsigned int >(2);
-unsigned int startTime = iter->column< unsigned int >(3);
-unsigned int stopTime = iter->column< unsigned int >(4);
-std::string name = iter->column< std::string >(5);
-
-std::cout << std::endl;
-std::cout << "Row Number: " << iter->row_number() << std::endl;
-std::cout << "Activity " << name << " (" << actId << ")" << std::endl;
-std::cout << "Thread: " << threadId << std::endl;
-std::cout << "Parent: " << parentId << std::endl;
-std::cout << "Start: " << startTime << std::endl;
-std::cout << "Stop: " << stopTime << std::endl;
-}
-}
-*/
 

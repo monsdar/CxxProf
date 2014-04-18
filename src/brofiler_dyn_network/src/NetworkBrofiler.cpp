@@ -23,13 +23,17 @@ NetworkBrofiler::NetworkBrofiler() :
     actCounter_(1),
     profilingStart_(boost::posix_time::microsec_clock::local_time()),
     zmqContext_(zmq_ctx_new()),
-    zmqSender_(zmq_socket(zmqContext_, ZMQ_PUSH))
+    zmqSender_(zmq_socket(zmqContext_, ZMQ_PUSH)),
+    isSending_(false)
 {
     zmq_connect(zmqSender_, "tcp://localhost:15232");
+
+    sendThread_ = boost::thread(boost::bind(&NetworkBrofiler::sendObjects, this));
 }
 
 NetworkBrofiler::~NetworkBrofiler()
 {
+    isSending_ = false;
     zmq_close(zmqSender_);
     zmq_ctx_destroy(zmqContext_);
 }
@@ -84,11 +88,10 @@ void NetworkBrofiler::addMark(const std::string& name)
     NetworkMark newMark;
     newMark.Name = name;
     newMark.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_microseconds();
-    sendObjects_.Marks.push_back(newMark);
 
-    //Send the objects
-    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
-    sendObjects();
+    //Protect the SendObjects_
+    boost::mutex::scoped_lock lock(sendMutex_);
+    sendObjects_.Marks.push_back(newMark);
 }
 void NetworkBrofiler::addPlotValue(const std::string& name, double value)
 {
@@ -97,37 +100,53 @@ void NetworkBrofiler::addPlotValue(const std::string& name, double value)
     newPlot.Name = name;
     newPlot.Timestamp = (boost::posix_time::microsec_clock::local_time() - profilingStart_).total_microseconds();
     newPlot.Value = value;
-    sendObjects_.Plots.push_back(newPlot);
 
-    //Send the objects
-    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
-    sendObjects();
+    //Protect the SendObjects_
+    boost::mutex::scoped_lock lock(sendMutex_);
+    sendObjects_.Plots.push_back(newPlot);
 }
 void NetworkBrofiler::addResult(const ActivityResult& result)
 {
     //the mutex protects from different activities calling this callback at once
-    boost::mutex::scoped_lock lock(callbackMutex_);
+    boost::mutex::scoped_lock callbackLock(callbackMutex_);
 
     activeActivity_.pop();
-    sendObjects_.ActivityResults.push_back(result);
 
-    //Send the objects
-    //TODO: Do not send as soon as something new is in. Send in longer intervals timed by an additional thread or something like that.
-    sendObjects();
+    //Protect the SendObjects_
+    boost::mutex::scoped_lock sendLock(sendMutex_);
+    sendObjects_.ActivityResults.push_back(result);
 }
 
 void NetworkBrofiler::sendObjects()
-{    
-    //serialize the result
-    std::ostringstream serializeStream;
-    boost::archive::text_oarchive oa(serializeStream);
-    oa << sendObjects_;
+{   
+    isSending_ = true;
+    while (isSending_)
+    {
+        //sleep a bit and wait for more objects
+        boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
 
-    //send the activity data via network
-    std::string serializeString = serializeStream.str();
-    zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
+        //serialize the result
+        std::ostringstream serializeStream;
 
-    sendObjects_.clear();
+        //Protect the SendObjects_
+        {
+            boost::mutex::scoped_lock lock(sendMutex_);
+
+            //let's just check if there is anything to send...
+            if (sendObjects_.size() == 0)
+            {
+                continue;
+            }
+
+            boost::archive::text_oarchive oa(serializeStream);
+            oa << sendObjects_;
+            sendObjects_.clear();
+        }
+
+        //send the activity data via network
+        std::string serializeString = serializeStream.str();
+        zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
+    }
 }
 
 std::string NetworkBrofiler::toString() const

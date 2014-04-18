@@ -28,10 +28,13 @@ public:
     
 private:
     void addResult(const ActivityResult& result);
-    void sendObjects();
-    
     boost::mutex callbackMutex_;
 
+    bool isSending_;
+    boost::thread sendThread_;
+    boost::mutex sendMutex_;
+    void sendObjects();
+    
     unsigned int actCounter_;
     std::stack<unsigned int> activeActivity_;
     boost::posix_time::ptime profilingStart_;

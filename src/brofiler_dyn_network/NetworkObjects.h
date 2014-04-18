@@ -20,6 +20,15 @@ struct Brofiler_Dyn_Network_EXPORT NetworkObjects
         Plots.clear();
         ActivityResults.clear();
     }
+
+    unsigned int NetworkObjects::size() const
+    {
+        return Marks.size() + Plots.size() + ActivityResults.size();
+    }
+    unsigned int NetworkObjects::empty() const
+    {
+        return Marks.empty() || Plots.empty() || ActivityResults.empty();
+    }
 };
 
 #endif //_NETWORK_OBJECTS_H_

@@ -13,8 +13,11 @@ DataStorage storage_;
 
 void receivedObjects(const NetworkObjects& objects)
 {
-    std::cout << "Received objects..." << std::endl;
+    //std::cout << "Received " << objects.size() << " objects..." << std::endl;
+    //boost::posix_time::ptime start = boost::posix_time::microsec_clock::local_time();
     storage_.storeResult(objects);
+    //boost::posix_time::time_duration const diff = boost::posix_time::microsec_clock::local_time() - start;
+    //std::cout << "Storing took " << diff.total_milliseconds() << " milliseconds" << std::endl;
 }
 
 int main()
