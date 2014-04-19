@@ -2,60 +2,11 @@
 
 Brofiler is a manual instrumented Profiling library for C++.
 
-##Goals
-These are the main goals for the project:
-* Easy integration
-* Easily remove the lib during compile time
-* Easily remove the lib during runtime
-* Support for multithreaded applications
-* Support for distributed systems
- 
-With the primary goals in mind the project aims to also achieve the following:
-* Best performance possible
-* Little overhead as possible
+Please take a look at our Wiki to get information about the following topics:
 
-##Overall Architecture
-Brofiler consists of 3 components:
-* Client library - This is what you integrate into your code. The client sends measurement data to the server
-* Server application - This receives and stores the data
-* UI application - This queries the server and displays the data in a timeline
-
-###Client
-The client consists of a static and a dynamic library. You're compiling to the static library, which lazy loads the dynamic library during runtime. If the dynamic library could not be found, Brofiler will not run and limit its overhead to the minimum. This allows for switching between profiling and not profiling by just removing the dynamic library from your execution directory.
-
-###Server
-The server runs as a separate process on the local host or even on a remote machine. This allows for the storage of data to be as performant as possible. It also enables the profiling of a distributed system where different components run as different processes or even on different hosts. That way it is easily possible to measure networking code and how it performs during certain situations.
-
-###UI
-The UI application connects to the server and shows the data which has been recorded previously. The format is some kind of a timeline where the execution of the code can be seen over time. That way it is easily possible to see how your application behaves during its lifecycle and how different states affect the performance.
-
-![Image of Architecture](http://yuml.me/f0c03470)
-
-##Usage
-Please use the following steps to integrate Brofiler into your project:
-
-TODO: This needs to be documented with a lot more detail
-
-Compiling:
-* Define the Preprocessor directive USEBROFILER
-* Link to brofiler_static.lib
-* Add Activities, Marks and Plots
-* Compile everything
-
-Runtime:
-* Put the brofiler_dyn_network.dll into your execution directory
-* Add the following libs to your path:
-* * Boost
-* * Pluma
-* * Zmq
-* * SQLite3
-* * SQLite3cc
-* Start the brofiler_server.exe
-* Start your application and wait for the data to come in
-
-##References
-There are different existing Profiling libraries for C++ available. Most of them are quite minimalistic, others are too pricy/restrictive for smaller open source projects. The following projects are used as references for Brofiler:
-* https://code.google.com/p/profiny/
-* https://code.google.com/p/easyprofiler/
-* http://docs.oracle.com/cd/E19205-01/819-5264/afagr/index.html
-* http://www.radgametools.com/telemetry.htm
+* [What is Brofiler?](https://github.com/monsdar/Brofiler/wiki/What-is-Brofiler%3F)
+* [Projects using Brofiler (Screenshots and Sample data)](https://github.com/monsdar/Brofiler/wiki/Projects-using-Brofiler-(Screenshots-and-Sample-data))
+* [How to integrate Brofiler into your project](https://github.com/monsdar/Brofiler/wiki/How-to-integrate-Brofiler-into-your-project)
+* [Architecture Overview](https://github.com/monsdar/Brofiler/wiki/Architecture-Overview)
+* [DevGuide: How to compile Brofiler](https://github.com/monsdar/Brofiler/wiki/DevGuide:-How-to-compile-Brofiler)
+* [Comparison of existing Profilers](https://github.com/monsdar/Brofiler/wiki/Comparison-of-existing-Profilers)
