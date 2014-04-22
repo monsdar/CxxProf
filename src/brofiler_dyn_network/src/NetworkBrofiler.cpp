@@ -28,7 +28,7 @@ NetworkBrofiler::NetworkBrofiler() :
 {
     zmq_connect(zmqSender_, "tcp://localhost:15232");
 
-    sendThread_ = boost::thread(boost::bind(&NetworkBrofiler::sendObjects, this));
+    sendThread_ = boost::thread(boost::bind(&NetworkBrofiler::sendLoop, this));
 }
 
 NetworkBrofiler::~NetworkBrofiler()
@@ -78,6 +78,9 @@ boost::shared_ptr<IActivity> NetworkBrofiler::createActivity(const std::string& 
     //make the new activity the active one
     newAct->start();
     activeActivity_.push(newActId);
+
+    boost::weak_ptr<NetworkActivity> weakAct(newAct);
+    activities_[newActId] = weakAct;
     
     return newAct;
 }
@@ -111,22 +114,34 @@ void NetworkBrofiler::addResult(const ActivityResult& result)
     boost::mutex::scoped_lock callbackLock(callbackMutex_);
 
     activeActivity_.pop();
-
+    activities_.erase(result.ActId);
+    
     //Protect the SendObjects_
     boost::mutex::scoped_lock sendLock(sendMutex_);
     sendObjects_.ActivityResults.push_back(result);
 }
 
-void NetworkBrofiler::sendObjects()
-{   
+void NetworkBrofiler::shutdown()
+{
+    //shutdown all active Activities
+    std::map<unsigned int, boost::weak_ptr<NetworkActivity> >::iterator actIter = activities_.begin();
+    for (; actIter != activities_.end(); ++actIter)
+    {
+        boost::shared_ptr<NetworkActivity> lockerAct = actIter->second.lock();
+        lockerAct->shutdown();
+    }
+
+    //Send the objects
+    sendObjects();
+}
+
+void NetworkBrofiler::sendLoop()
+{
     isSending_ = true;
     while (isSending_)
     {
         //sleep a bit and wait for more objects
         boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-
-        //serialize the result
-        std::ostringstream serializeStream;
 
         //Protect the SendObjects_
         {
@@ -137,16 +152,30 @@ void NetworkBrofiler::sendObjects()
             {
                 continue;
             }
-
-            boost::archive::text_oarchive oa(serializeStream);
-            oa << sendObjects_;
-            sendObjects_.clear();
         }
 
-        //send the activity data via network
-        std::string serializeString = serializeStream.str();
-        zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
+        //send everything we have
+        sendObjects();
     }
+}
+
+void NetworkBrofiler::sendObjects()
+{
+    //serialize the result
+    std::ostringstream serializeStream;
+
+    //Protect the SendObjects_
+    {
+        boost::mutex::scoped_lock lock(sendMutex_);
+
+        boost::archive::text_oarchive oa(serializeStream);
+        oa << sendObjects_;
+        sendObjects_.clear();
+    }
+
+    //send the activity data via network
+    std::string serializeString = serializeStream.str();
+    zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
 }
 
 std::string NetworkBrofiler::toString() const

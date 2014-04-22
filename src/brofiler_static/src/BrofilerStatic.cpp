@@ -85,3 +85,14 @@ void BrofilerStatic::addPlotValue(const std::string& name, double value)
         dynBrofiler_->addPlotValue(name, value);
     }
 }
+
+void BrofilerStatic::shutdown()
+{
+    //this mutex protects the dynBrofiler_
+    boost::mutex::scoped_lock lock(mutex_);
+
+    if (dynBrofiler_ != NULL)
+    {
+        dynBrofiler_->shutdown();
+    }
+}

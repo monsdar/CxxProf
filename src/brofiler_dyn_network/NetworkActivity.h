@@ -29,8 +29,11 @@ public:
     void setProfilingStart(const boost::posix_time::ptime& profilingStart);
     
     void start();
+    void shutdown();
     
 private:
+    void executeCallback();
+
     std::string name_;
     unsigned int threadId_;
     unsigned int actId_;

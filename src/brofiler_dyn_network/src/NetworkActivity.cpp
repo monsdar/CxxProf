@@ -1,6 +1,8 @@
 
 #include "brofiler_dyn_network/NetworkActivity.h"
 
+#include <iostream>
+
 NetworkActivity::NetworkActivity() :
     name_(""),
     threadId_(0),
@@ -20,18 +22,7 @@ NetworkActivity::NetworkActivity(const std::string& name, unsigned int actId, un
 
 NetworkActivity::~NetworkActivity()
 {
-    if(callback_)
-    {
-        ActivityResult result;
-        result.Name = name_;
-        result.ThreadId = threadId_;
-        result.ActId = actId_;
-        result.ParentId = parentId_;
-        result.StartTime = startTime_;
-        result.StopTime = getCurrentTime();
-        
-        callback_(result);
-    }
+    executeCallback();
 }
 
 void NetworkActivity::setName(const std::string& name)
@@ -64,6 +55,28 @@ void NetworkActivity::setProfilingStart(const boost::posix_time::ptime& profilin
 void NetworkActivity::start()
 {
     startTime_ = getCurrentTime();
+}
+
+void NetworkActivity::shutdown()
+{
+    executeCallback();
+    callback_ = 0;
+}
+
+void NetworkActivity::executeCallback()
+{
+    if (callback_)
+    {
+        ActivityResult result;
+        result.Name = name_;
+        result.ThreadId = threadId_;
+        result.ActId = actId_;
+        result.ParentId = parentId_;
+        result.StartTime = startTime_;
+        result.StopTime = getCurrentTime();
+
+        callback_(result);
+    }
 }
 
 unsigned int NetworkActivity::getCurrentTime()

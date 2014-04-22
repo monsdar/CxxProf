@@ -27,6 +27,8 @@ public:
     void addMark(const std::string& name);
     void addPlotValue(const std::string& name, double value);
 
+    void shutdown();
+
 private:
     BrofilerStatic();
     static BrofilerStatic* instance_;

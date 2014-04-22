@@ -18,7 +18,11 @@
 #define BROFILER_PLOT(NAME, VALUE) \
     BrofilerStatic::getBrofiler()->addPlotValue(NAME, VALUE);
 
+#define BROFILER_SHUTDOWN() \
+    BrofilerStatic::getBrofiler()->shutdown();
+
 // helper macros, see stackoverflow question #10379691
+// DO NOT USE THESE
 #define BROFILER_HELPER_COMBINE1(X,Y) X##Y  
 #define BROFILER_HELPER_COMBINE(X,Y) BROFILER_HELPER_COMBINE1(X,Y)
 
@@ -28,6 +32,10 @@
 #define BROFILER_ACTIVITY(NAME) 
 #define BROFILER_MARK(NAME) 
 #define BROFILER_PLOT(NAME, VALUE) 
+#define BROFILER_SHUTDOWN() 
+
+#define BROFILER_HELPER_COMBINE1(X,Y) 
+#define BROFILER_HELPER_COMBINE(X,Y) 
 
 #endif //USEBROFILER
 

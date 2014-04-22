@@ -22,6 +22,10 @@ void TestBrofiler::addPlotValue(const std::string& name, double value)
 {
     std::cout << "Adding plot value " << name << " with value " << value << std::endl;
 }
+void TestBrofiler::shutdown()
+{
+    std::cout << "Shutdown called" << std::endl;
+}
 
 std::string TestBrofiler::toString() const
 {

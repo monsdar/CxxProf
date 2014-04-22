@@ -75,5 +75,14 @@ int main()
         (*threadIter)->join();
     }
 
+    for (unsigned int index = 0; index < 5; index++)
+    {
+        BROFILER_ACTIVITY("dtorTest");
+        BROFILER_ACTIVITY("dtorTest");
+    }
+
+    //Shutdown the Brofiler cleanly
+    BROFILER_SHUTDOWN();
+
     return 0;
 }
