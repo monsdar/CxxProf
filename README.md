@@ -9,6 +9,7 @@ Please take a look at the Wiki to get information about the following topics:
 * [Screenshots and Examples](https://github.com/monsdar/Brofiler/wiki/Screenshots-and-Examples)
 * [Architecture Overview](https://github.com/monsdar/Brofiler/wiki/Architecture-Overview)
 * [Usage: Integrate Brofiler into your project](https://github.com/monsdar/Brofiler/wiki/Usage:-Integrate-Brofiler-into-your-project)
+* [Usage: Using the Chromium Tracing interface](https://github.com/monsdar/Brofiler/wiki/Using-the-Chromium-Tracing-interface)
 * [DevGuide: How to compile Brofiler](https://github.com/monsdar/Brofiler/wiki/DevGuide:-How-to-compile-Brofiler)
 * [List of existing Profilers (References)](https://github.com/monsdar/Brofiler/wiki/List-of-existing-Profilers-(References))
 
