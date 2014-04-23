@@ -8,6 +8,12 @@
 #include <string>
 #include <iostream>
 
+//This is a test which simply calls all of the CxxProf macros in their respective order...
+//Nothing special to see here... There's also nothing really to Unittest here :/
+
+//TODO: Perhaps we could integrate a mocking framework instead of the dyn_test plugin.
+//      Another interesting thing would be to do some integration tests with dyn_test and a mock-server
+//      or something like that.
 BOOST_AUTO_TEST_CASE(simpleTest)
 {
     //Init the CxxProf first
@@ -22,8 +28,10 @@ BOOST_AUTO_TEST_CASE(simpleTest)
     //Create an Activity
     CXXPROF_ACTIVITY("TestActivity1");
     {
+        //This activity should end before TestActivity1 and TestActivity3...
         CXXPROF_ACTIVITY("TestActivity2");
     }
+    //just to see if it works that there are multiple activities created in the same scope...
     CXXPROF_ACTIVITY("TestActivity3");
 
     //Shutdown the CxxProf cleanly
