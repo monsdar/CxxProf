@@ -11,7 +11,7 @@
 
 DataStorage storage_;
 
-void receivedObjects(const NetworkObjects& objects)
+void receivedObjects(const Brofiler::NetworkObjects& objects)
 {
     //std::cout << "Received " << objects.size() << " objects..." << std::endl;
     //boost::posix_time::ptime start = boost::posix_time::microsec_clock::local_time();

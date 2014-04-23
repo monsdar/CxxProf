@@ -9,6 +9,11 @@
 
 #include "brofiler_dyn_network/NetworkBrofiler.h"
 
-PLUMA_INHERIT_PROVIDER(NetworkBrofiler, IDynBrofiler);
+namespace Brofiler
+{
+
+    PLUMA_INHERIT_PROVIDER(NetworkBrofiler, IDynBrofiler);
+
+}
 
 #endif //_PLUMA_PLUGIN_PROVIDER_H_

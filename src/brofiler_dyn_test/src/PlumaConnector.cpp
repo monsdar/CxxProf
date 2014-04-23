@@ -6,6 +6,6 @@
 
 PLUMA_CONNECTOR
 bool connect(pluma::Host& host){
-    host.add( new TestBrofilerProvider() );
+    host.add( new Brofiler::TestBrofilerProvider() );
     return true;
 }

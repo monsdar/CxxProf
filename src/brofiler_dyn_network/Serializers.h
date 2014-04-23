@@ -16,7 +16,7 @@ namespace boost {
 
 
 template <typename Archive>
-void serialize(Archive &ar, ActivityResult &instance, const unsigned int version)
+void serialize(Archive &ar, Brofiler::ActivityResult &instance, const unsigned int version)
 {
     ar & instance.Name;
     ar & instance.ThreadId;
@@ -27,14 +27,14 @@ void serialize(Archive &ar, ActivityResult &instance, const unsigned int version
 }
 
 template <typename Archive>
-void serialize(Archive &ar, NetworkMark &instance, const unsigned int version)
+void serialize(Archive &ar, Brofiler::NetworkMark &instance, const unsigned int version)
 {
     ar & instance.Name;
     ar & instance.Timestamp;
 }
 
 template <typename Archive>
-void serialize(Archive &ar, NetworkPlot &instance, const unsigned int version)
+void serialize(Archive &ar, Brofiler::NetworkPlot &instance, const unsigned int version)
 {
     ar & instance.Name;
     ar & instance.Timestamp;
@@ -42,7 +42,7 @@ void serialize(Archive &ar, NetworkPlot &instance, const unsigned int version)
 }
 
 template <typename Archive>
-void serialize(Archive &ar, NetworkObjects &instance, const unsigned int version)
+void serialize(Archive &ar, Brofiler::NetworkObjects &instance, const unsigned int version)
 {
     ar & instance.ActivityResults;
     ar & instance.Marks;

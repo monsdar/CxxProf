@@ -5,18 +5,23 @@
 #include "brofiler_dyn_test/common.h"
 #include "brofiler_static/IDynBrofiler.h"
 
-class Brofiler_Dyn_Test_EXPORT TestBrofiler: public IDynBrofiler
+namespace Brofiler
 {
-public:
-    TestBrofiler();
-    virtual ~TestBrofiler();
-    
-    boost::shared_ptr<IActivity> createActivity(const std::string& name);
-    void addMark(const std::string& name);
-    void addPlotValue(const std::string& name, double value);
-    void shutdown();
 
-    std::string toString() const;
-};
+    class Brofiler_Dyn_Test_EXPORT TestBrofiler : public IDynBrofiler
+    {
+    public:
+        TestBrofiler();
+        virtual ~TestBrofiler();
+
+        boost::shared_ptr<IActivity> createActivity(const std::string& name);
+        void addMark(const std::string& name);
+        void addPlotValue(const std::string& name, double value);
+        void shutdown();
+
+        std::string toString() const;
+    };
+
+}
 
 #endif //_TEST_BROFILER_H_

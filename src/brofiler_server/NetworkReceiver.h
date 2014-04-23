@@ -14,7 +14,7 @@
 class NetworkReceiver
 {
 public:
-    typedef boost::function1<void, const NetworkObjects&> ReceiveCallback;
+    typedef boost::function1<void, const Brofiler::NetworkObjects&> ReceiveCallback;
 
 public:
     NetworkReceiver();

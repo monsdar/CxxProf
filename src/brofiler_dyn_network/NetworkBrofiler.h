@@ -16,40 +16,45 @@
 #include "brofiler_static/IDynBrofiler.h"
 
 
-class Brofiler_Dyn_Network_EXPORT NetworkBrofiler : public IDynBrofiler
+namespace Brofiler
 {
-public:
-    NetworkBrofiler();
-    virtual ~NetworkBrofiler();
-    
-    boost::shared_ptr<IActivity> createActivity(const std::string& name);
-    void addMark(const std::string& name);
-    void addPlotValue(const std::string& name, double value);
-    void shutdown();
 
-    std::string toString() const;
-    
-private:
-    void addResult(const ActivityResult& result);
-    boost::mutex callbackMutex_;
+    class Brofiler_Dyn_Network_EXPORT NetworkBrofiler : public IDynBrofiler
+    {
+    public:
+        NetworkBrofiler();
+        virtual ~NetworkBrofiler();
 
-    bool isSending_;
-    boost::thread sendThread_;
-    boost::mutex sendMutex_;
-    void sendLoop();
-    void sendObjects();
-    
-    unsigned int actCounter_;
-    std::stack<unsigned int> activeActivity_;
-    std::map<unsigned int, boost::weak_ptr<NetworkActivity> > activities_;
-    boost::posix_time::ptime profilingStart_;
-    std::vector<boost::thread::id> knownThreads_;
+        boost::shared_ptr<IActivity> createActivity(const std::string& name);
+        void addMark(const std::string& name);
+        void addPlotValue(const std::string& name, double value);
+        void shutdown();
 
-    NetworkObjects sendObjects_;
+        std::string toString() const;
 
-    //NOTE: Tried shared-ptrs here, which should work but did not...
-    void* zmqContext_;
-    void* zmqSender_;
-};
+    private:
+        void addResult(const ActivityResult& result);
+        boost::mutex callbackMutex_;
+
+        bool isSending_;
+        boost::thread sendThread_;
+        boost::mutex sendMutex_;
+        void sendLoop();
+        void sendObjects();
+
+        unsigned int actCounter_;
+        std::stack<unsigned int> activeActivity_;
+        std::map<unsigned int, boost::weak_ptr<NetworkActivity> > activities_;
+        boost::posix_time::ptime profilingStart_;
+        std::vector<boost::thread::id> knownThreads_;
+
+        NetworkObjects sendObjects_;
+
+        //NOTE: Tried shared-ptrs here, which should work but did not...
+        void* zmqContext_;
+        void* zmqSender_;
+    };
+
+}
 
 #endif //_NETWORK_BROFILER_H_

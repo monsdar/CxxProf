@@ -10,16 +10,16 @@
 #include <brofiler_static/IActivity.h>
 
 #define BROFILER_ACTIVITY(NAME) \
-    boost::shared_ptr<IActivity> BROFILER_HELPER_COMBINE(newActivity, __LINE__) = BrofilerStatic::getBrofiler()->createActivity(NAME);
+    boost::shared_ptr<Brofiler::IActivity> BROFILER_HELPER_COMBINE(newActivity, __LINE__) = Brofiler::BrofilerStatic::getBrofiler()->createActivity(NAME);
 
 #define BROFILER_MARK(NAME) \
-    BrofilerStatic::getBrofiler()->addMark(NAME);
+    Brofiler::BrofilerStatic::getBrofiler()->addMark(NAME);
 
 #define BROFILER_PLOT(NAME, VALUE) \
-    BrofilerStatic::getBrofiler()->addPlotValue(NAME, VALUE);
+    Brofiler::BrofilerStatic::getBrofiler()->addPlotValue(NAME, VALUE);
 
 #define BROFILER_SHUTDOWN() \
-    BrofilerStatic::getBrofiler()->shutdown();
+    Brofiler::BrofilerStatic::getBrofiler()->shutdown();
 
 // helper macros, see stackoverflow question #10379691
 // DO NOT USE THESE

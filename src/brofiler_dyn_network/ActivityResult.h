@@ -5,23 +5,28 @@
 #include "brofiler_dyn_network/common.h"
 #include <string>
 
-struct Brofiler_Dyn_Network_EXPORT ActivityResult
+namespace Brofiler
 {
-    std::string Name;
-    unsigned int ThreadId;
-    unsigned int ActId;
-    unsigned int ParentId;
-    unsigned int StartTime;
-    unsigned int StopTime;
-    
-    ActivityResult::ActivityResult() :
-        Name(""),
-        ThreadId(0),
-        ActId(0),
-        ParentId(0),
-        StartTime(0),
-        StopTime(0)
-    {}
-};
+
+    struct Brofiler_Dyn_Network_EXPORT ActivityResult
+    {
+        std::string Name;
+        unsigned int ThreadId;
+        unsigned int ActId;
+        unsigned int ParentId;
+        unsigned int StartTime;
+        unsigned int StopTime;
+
+        ActivityResult::ActivityResult() :
+            Name(""),
+            ThreadId(0),
+            ActId(0),
+            ParentId(0),
+            StartTime(0),
+            StopTime(0)
+        {}
+    };
+
+}
 
 #endif //_ACTIVITY_RESULT_H_

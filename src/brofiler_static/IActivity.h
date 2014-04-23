@@ -4,10 +4,13 @@
 
 #include <string>
 
-class IActivity
+namespace Brofiler
 {
-public:
-    virtual ~IActivity() {};
-};
+    class IActivity
+    {
+    public:
+        virtual ~IActivity() {};
+    };
 
+} //namespace Brofiler
 #endif //_I_ACTIVITY_H_

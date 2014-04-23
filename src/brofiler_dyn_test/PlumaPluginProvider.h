@@ -9,6 +9,11 @@
 
 #include "brofiler_dyn_test/TestBrofiler.h"
 
-PLUMA_INHERIT_PROVIDER(TestBrofiler, IDynBrofiler);
+namespace Brofiler
+{
+
+    PLUMA_INHERIT_PROVIDER(TestBrofiler, IDynBrofiler);
+
+}
 
 #endif //_PLUMA_PLUGIN_PROVIDER_H_

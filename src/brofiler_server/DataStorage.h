@@ -13,7 +13,7 @@ public:
     DataStorage();
     virtual ~DataStorage();
 
-    void storeResult(const NetworkObjects& objects);
+    void storeResult(const Brofiler::NetworkObjects& objects);
 
 private:
     void initDatabase(const std::string& filename);

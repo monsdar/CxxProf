@@ -5,17 +5,22 @@
 #include "brofiler_static/IActivity.h"
 #include <boost/shared_ptr.hpp>
 
-class IDynBrofiler
+namespace Brofiler
 {
-public:
-    virtual ~IDynBrofiler() {};
 
-    virtual boost::shared_ptr<IActivity> createActivity(const std::string& name) = 0;
-    virtual void addMark(const std::string& name) = 0;
-    virtual void addPlotValue(const std::string& name, double value) = 0;
-    virtual void shutdown() = 0;
+    class IDynBrofiler
+    {
+    public:
+        virtual ~IDynBrofiler() {};
 
-    virtual std::string toString() const = 0;
-};
+        virtual boost::shared_ptr<IActivity> createActivity(const std::string& name) = 0;
+        virtual void addMark(const std::string& name) = 0;
+        virtual void addPlotValue(const std::string& name, double value) = 0;
+        virtual void shutdown() = 0;
+
+        virtual std::string toString() const = 0;
+    };
+
+} //namespace Brofiler
 
 #endif //_I_DYN_BROFILER_H_

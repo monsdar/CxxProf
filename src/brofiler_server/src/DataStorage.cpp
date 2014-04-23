@@ -83,7 +83,7 @@ void DataStorage::initDatabase(const std::string& filename)
     }
 }
 
-void DataStorage::storeResult(const NetworkObjects& objects)
+void DataStorage::storeResult(const Brofiler::NetworkObjects& objects)
 {
     if (!connection_)
     {
@@ -95,7 +95,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
     sqlite::transaction_guard< > transactionGuard(*connection_);
 
     //Add the Marks
-    std::vector<NetworkMark>::const_iterator markIter = objects.Marks.begin();
+    std::vector<Brofiler::NetworkMark>::const_iterator markIter = objects.Marks.begin();
     for (; markIter != objects.Marks.end(); ++markIter)
     {
         try
@@ -121,7 +121,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
     }
 
     //Add the Plots
-    std::vector<NetworkPlot>::const_iterator plotIter = objects.Plots.begin();
+    std::vector<Brofiler::NetworkPlot>::const_iterator plotIter = objects.Plots.begin();
     for (; plotIter != objects.Plots.end(); ++plotIter)
     {
         sqlite::command insertCommand(*connection_,
@@ -150,7 +150,7 @@ void DataStorage::storeResult(const NetworkObjects& objects)
     }
 
     //Add the ActivityResults to the Database
-    std::vector<ActivityResult>::const_iterator actIter = objects.ActivityResults.begin();
+    std::vector<Brofiler::ActivityResult>::const_iterator actIter = objects.ActivityResults.begin();
     for (; actIter != objects.ActivityResults.end(); ++actIter)
     {
         //TODO: Check if an ActivityResult with the given ActId is already stored in the database, then react appropriately
@@ -191,5 +191,3 @@ void DataStorage::storeResult(const NetworkObjects& objects)
     //commit the transaction (or it will rollback)
     transactionGuard.commit();
 }
-
-

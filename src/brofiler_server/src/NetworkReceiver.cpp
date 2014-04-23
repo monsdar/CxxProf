@@ -47,7 +47,7 @@ void NetworkReceiver::receive()
             std::stringstream dataStream;
             dataStream << data;
             boost::archive::text_iarchive ia(dataStream);
-            NetworkObjects objects;
+            Brofiler::NetworkObjects objects;
             ia >> objects;
 
             if (callback_)
