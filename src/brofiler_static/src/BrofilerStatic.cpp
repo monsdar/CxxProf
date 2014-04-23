@@ -52,6 +52,12 @@ namespace Brofiler
         }
     }
 
+    void BrofilerStatic::initialize()
+    {
+        //Nothing to do here for now
+        //This part later could be used to initialize via configuration or something similar
+    }
+
     boost::shared_ptr<IActivity> BrofilerStatic::createActivity(const std::string& name)
     {
         //this mutex protects the dynBrofiler_

@@ -47,6 +47,9 @@ int recursiveOperation(int someValue)
 
 int main()
 {
+    //Initialize Brofiler first
+    BROFILER_INIT();
+
     //Measure how long the rest of this main() takes
     BROFILER_ACTIVITY("main");
     
@@ -75,6 +78,8 @@ int main()
         (*threadIter)->join();
     }
 
+    //See that it's possible to create multiple Activities with the same name in the same scope
+    BROFILER_MARK("ScopeTest start");
     for (unsigned int index = 0; index < 5; index++)
     {
         BROFILER_ACTIVITY("dtorTest");

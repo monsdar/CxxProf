@@ -9,6 +9,9 @@
 #include <brofiler_static/BrofilerStatic.h>
 #include <brofiler_static/IActivity.h>
 
+#define BROFILER_INIT() \
+    Brofiler::BrofilerStatic::getBrofiler()->initialize();
+
 #define BROFILER_ACTIVITY(NAME) \
     boost::shared_ptr<Brofiler::IActivity> BROFILER_HELPER_COMBINE(newActivity, __LINE__) = Brofiler::BrofilerStatic::getBrofiler()->createActivity(NAME);
 
@@ -29,6 +32,7 @@
 #else
 
 //Define empty macros
+#define BROFILER_INIT() 
 #define BROFILER_ACTIVITY(NAME) 
 #define BROFILER_MARK(NAME) 
 #define BROFILER_PLOT(NAME, VALUE) 

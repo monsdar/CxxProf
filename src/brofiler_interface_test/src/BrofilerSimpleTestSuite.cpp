@@ -10,24 +10,21 @@
 
 BOOST_AUTO_TEST_CASE(simpleTest)
 {
+    //Init the Brofiler first
+    BROFILER_INIT();
+
     //Create a Mark
-    std::cout << "Mark test..." << std::endl;
     BROFILER_MARK("TestMark");
-    std::cout << "...Mark test ended" << std::endl;
 
     //Create a Plot
-    std::cout << "Plot test..." << std::endl;
     BROFILER_PLOT("TestPlot", 1337.0);
-    std::cout << "...Plot test ended" << std::endl;
 
     //Create an Activity
-    std::cout << "Activity test..." << std::endl;
     BROFILER_ACTIVITY("TestActivity1");
     {
         BROFILER_ACTIVITY("TestActivity2");
     }
     BROFILER_ACTIVITY("TestActivity3");
-    std::cout << "...Activity test ended" << std::endl;
 
     //Shutdown the Brofiler cleanly
     BROFILER_SHUTDOWN();

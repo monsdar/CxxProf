@@ -30,6 +30,7 @@ namespace Brofiler
         void addMark(const std::string& name);
         void addPlotValue(const std::string& name, double value);
 
+        void initialize();
         void shutdown();
 
     private:
