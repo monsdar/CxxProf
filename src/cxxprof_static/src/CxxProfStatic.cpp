@@ -12,6 +12,7 @@ namespace CxxProf
 
     CxxProfStatic* CxxProfStatic::getCxxProf()
     {
+        //TODO: We probably should add a mutex here? o0
         if (instance_ == NULL)
         {
             std::cout << "Creating CxxProfStatic" << std::endl;
@@ -25,6 +26,7 @@ namespace CxxProf
         dynCxxProf_(NULL),
         manager_(new pluma::Pluma())
     {
+        //load the plugin during instantiation of the CxxProfStatic
         loadDynCxxProf();
     }
 
@@ -41,6 +43,10 @@ namespace CxxProf
         std::vector<IDynCxxProfProvider*> providers;
         manager_->getProviders(providers);
 
+        //Just load a plugin if there has been one found
+        //If there are multiple plugins found, load the first you find. This
+        //is not the best method, but there also is no way (yet) to tell
+        //the user that he wanted to load multiple plugins.
         if (providers.begin() != providers.end())
         {
             dynCxxProf_ = (*providers.begin())->create();
@@ -63,6 +69,9 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
+        //Return an empty Activity if there is no plugin loaded
+        //This seems to be the best thing we can do here, everything else
+        //involves the user
         if (dynCxxProf_ == NULL)
         {
             return boost::shared_ptr<IActivity>();
