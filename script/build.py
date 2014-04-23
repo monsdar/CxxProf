@@ -16,9 +16,9 @@
         Build everything, try to rebuild when possible
             build.py
         Build just a specific component (dependencies are found automatically) from scratch
-            build.py --clean brofiler_testclient
+            build.py --clean cxxprof_howto
         Build different specific components, try to rebuild if possible
-            build.py brofiler_testclient brofiler_dyn
+            build.py cxxprof_static cxxprof_dyn_network
 '''
 
 

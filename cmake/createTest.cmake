@@ -8,10 +8,6 @@
 #   - Fill the LibraryDir, IncludeDir and Library lists
 #   - Add your test via the createTest command
 #
-#  Variables
-#    Boost_INCLUDE_DIRS	- Include directory for Boost
-#    Boost_LIBRARIES    - Libraries (shared) of Boost (needed for linking)
-#
 #######################################
 
 
