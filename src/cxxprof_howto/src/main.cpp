@@ -7,21 +7,17 @@
 
 #include "cxxprof_static/CxxProf.h"
 
+//This is for the Threading-Test, more then 5 seem to clutter the resulting data
 const unsigned int NUM_THREADS = 5;
 
-void longOperation()
+/**
+ * This is simply a method which takes a lot of time and therefore should
+ * produce a very long activity
+ */
+void longOperation(double givenTime)
 {
     CXXPROF_ACTIVITY("longOperation");
-    boost::this_thread::sleep(boost::posix_time::seconds(1));
-}
-
-void loopOperation(unsigned int numLoops)
-{
-    CXXPROF_ACTIVITY("loopOperation");
-    for (unsigned int index = 0; index < numLoops; ++index)
-    {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(200));
-    }
+    boost::this_thread::sleep(boost::posix_time::milliseconds(givenTime));
 }
 
 int recursiveOperation(int someValue)
@@ -35,10 +31,12 @@ int recursiveOperation(int someValue)
     {
         //Let's add some complexity by sleeping a bit when someValue reaches 3
         CXXPROF_ACTIVITY("recursiveOperation::middle");
-        boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+        longOperation(200.0);        
     }
-    if(someValue < 5)
+    if(someValue < 5) //do recursion until the value hits 5
     {
+        //just sleep a bit to simulate something costly going on here...
+        longOperation(50.0);
         someValue = recursiveOperation(++someValue);
     }
 
@@ -55,38 +53,41 @@ int main()
     
     //Add a mark for a better overview of which state the application is currently in
     CXXPROF_MARK("LongOperation start");
-    longOperation();
-    longOperation();
+    longOperation(1000.0);
+    longOperation(800.0);
 
     //Start some LoopOperations in extra Threads
-    CXXPROF_MARK("LoopThread start");
+    CXXPROF_MARK("Threading start");
     std::vector< boost::shared_ptr<boost::thread> > threads;
     for (unsigned int index = 0; index < NUM_THREADS; ++index)
     {
-        boost::shared_ptr<boost::thread> loopThread( new boost::thread(boost::bind(loopOperation, 5)) );
-        threads.push_back(loopThread);
+        //create a new thread which waits 100 millisecs
+        boost::shared_ptr<boost::thread> newThread( new boost::thread(boost::bind(longOperation, 100.0)) );
+        threads.push_back(newThread);
     }
 
-    //And another mark
+    //As long as the threads are running let's do the recursive test
+    //This should result in some activities which are stacked upon each other
     CXXPROF_MARK("RecursiveOperation start");
     recursiveOperation(1);
 
-    //wait until the loopThreads are finished
+    //Now let's wait until the loopThreads are finished
     std::vector<boost::shared_ptr<boost::thread> >::iterator threadIter = threads.begin();
     for (; threadIter != threads.end(); ++threadIter)
     {
         (*threadIter)->join();
     }
 
-    //See that it's possible to create multiple Activities with the same name in the same scope
+    //Here it is demonstrated that we can also create multiple Activities in the same scope
     CXXPROF_MARK("ScopeTest start");
-    for (unsigned int index = 0; index < 5; index++)
     {
-        CXXPROF_ACTIVITY("dtorTest");
-        CXXPROF_ACTIVITY("dtorTest");
+        CXXPROF_ACTIVITY("scopeTest");
+        CXXPROF_ACTIVITY("scopeTest");
     }
 
     //Shutdown the CxxProf cleanly
+    //This ends the 'main' activity and everything else which is still running (probably the scopeTest)
+    //It also takes care of sending the data which hasn't been sent yet
     CXXPROF_SHUTDOWN();
 
     return 0;
