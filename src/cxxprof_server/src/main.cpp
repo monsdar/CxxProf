@@ -7,6 +7,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <map>
 #include <iostream>
 
 //Storage will create the session.db during initialization
@@ -15,8 +16,8 @@ DataStorage storage_;
 
 void receivedObjects(const CxxProf::NetworkObjects& objects)
 {
-    std::cout << "Received " << objects.size() << " objects..." << std::endl;
-    
+    std::cout << "Received " << objects.size() << " objects from " << objects.Info.Name << "..." << std::endl;
+
     //NOTE: The outcommented code is a very basic way to profile the code.
     //      What about using CxxProf here? How do we need to set up everything for this to work?
     //boost::posix_time::ptime start = boost::posix_time::microsec_clock::local_time();

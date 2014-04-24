@@ -17,6 +17,9 @@ include( createTest )
 #This enables testing for this project
 enable_testing()
 
+#Use CxxProf (else it wouldn't be used and linked)
+add_definitions(-DUSECXXPROF)
+
 #Find the dependencies
 find_package(cxxprof_static)
 find_package(cxxprof_dyntest)

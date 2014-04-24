@@ -47,6 +47,8 @@ int main()
 {
     //Initialize CxxProf first
     CXXPROF_INIT();
+    CXXPROF_PROCESS_ALIAS("cxxprof_howto");
+    CXXPROF_THREAD_ALIAS("MainThread");
 
     //Measure how long the rest of this main() takes
     CXXPROF_ACTIVITY("main");
@@ -62,6 +64,7 @@ int main()
     for (unsigned int index = 0; index < NUM_THREADS; ++index)
     {
         //create a new thread which waits 100 millisecs
+        //NOTE: Do not set a Thread Alias here. Brofiler will generate something automatically
         boost::shared_ptr<boost::thread> newThread( new boost::thread(boost::bind(longOperation, 100.0)) );
         threads.push_back(newThread);
     }

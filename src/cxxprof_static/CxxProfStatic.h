@@ -67,6 +67,18 @@ namespace CxxProf
          * In short: Plots show the context in which the data has to be read
          */
         void addPlotValue(const std::string& name, double value);
+        /**
+         * Sets the alias for the current process. CxxProf will use the given alias for this process
+         * in all the data that is being published.
+         * If no alias is set, CxxProf will use a automatically generated ID.
+         */
+        void setProcessAlias(const std::string name);
+        /**
+         * Sets the alias for the current thread. CxxProf will automatically set the alias
+         * to the thread where this command is called from
+         * If no alias is set, CxxProf will use a automatically generated ID.
+         */
+        void setThreadAlias(const std::string name);
 
         /**
          * This initializes the CxxProf environment

@@ -10,6 +10,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
 
+#include "cxxprof_dyn_network/AppInfo.h"
 #include "cxxprof_dyn_network/NetworkActivity.h"
 #include "cxxprof_dyn_network/NetworkObjects.h"
 #include "cxxprof_dyn_network/common.h"
@@ -28,6 +29,8 @@ namespace CxxProf
         boost::shared_ptr<IActivity> createActivity(const std::string& name);
         void addMark(const std::string& name);
         void addPlotValue(const std::string& name, double value);
+        void setProcessAlias(const std::string name);
+        void setThreadAlias(const std::string name);
         void shutdown();
 
         std::string toString() const;
@@ -35,6 +38,9 @@ namespace CxxProf
     private:
         void addResult(const ActivityResult& result);
         boost::mutex callbackMutex_;
+
+        AppInfo info_;
+        std::string getAppname(const std::string& appName);
 
         bool isSending_;
         boost::thread sendThread_;
@@ -47,6 +53,10 @@ namespace CxxProf
         std::map<unsigned int, boost::weak_ptr<NetworkActivity> > activities_;
         boost::posix_time::ptime profilingStart_;
         std::vector<boost::thread::id> knownThreads_;
+        /**
+         * Returns the current Thread Id, creates it if the current thread has no Id yet
+         */
+        unsigned int checkThreads();
 
         NetworkObjects sendObjects_;
 

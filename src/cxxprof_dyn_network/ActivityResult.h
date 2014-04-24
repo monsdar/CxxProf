@@ -14,16 +14,16 @@ namespace CxxProf
         unsigned int ThreadId;
         unsigned int ActId;
         unsigned int ParentId;
-        unsigned int StartTime;
-        unsigned int StopTime;
+        unsigned int Starttime;
+        unsigned int Stoptime;
 
         ActivityResult::ActivityResult() :
             Name(""),
             ThreadId(0),
             ActId(0),
             ParentId(0),
-            StartTime(0),
-            StopTime(0)
+            Starttime(0),
+            Stoptime(0)
         {}
     };
 

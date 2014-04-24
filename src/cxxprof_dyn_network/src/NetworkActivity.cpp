@@ -57,7 +57,7 @@ namespace CxxProf
 
     void NetworkActivity::start()
     {
-        startTime_ = getCurrentTime();
+        starttime_ = getCurrentTime();
     }
 
     void NetworkActivity::shutdown()
@@ -75,8 +75,8 @@ namespace CxxProf
             result.ThreadId = threadId_;
             result.ActId = actId_;
             result.ParentId = parentId_;
-            result.StartTime = startTime_;
-            result.StopTime = getCurrentTime();
+            result.Starttime = starttime_;
+            result.Stoptime = getCurrentTime();
 
             callback_(result);
         }

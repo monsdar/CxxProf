@@ -37,6 +37,27 @@ private:
      * DDMonYYYY_HHMMSS -> 31Apr2014_235959
      */
     std::string getCurrentDateStr();
+    /**
+    * Checks if the AppInfo has been added yet, then adds it if needed
+    * Returns: The AppId which is given for this app
+    */
+    unsigned int updateAppInfo(const CxxProf::AppInfo& info);
+    /**
+    * Adds the marks to the database
+    */
+    void updateMarks(const std::vector<CxxProf::NetworkMark>& marks, unsigned int appId);
+    /**
+    * Adds the plots to the database
+    */
+    void updatePlots(const std::vector<CxxProf::NetworkPlot>& plots, unsigned int appId);
+    /**
+     * Adds the activities to the database
+     */
+    void updateActivities(const std::vector<CxxProf::ActivityResult>& activities, unsigned int appId);
+    /**
+     * Checks if the ThreadInfo has been added yet, adds and updates it if needed
+     */
+    void updateThreadInfo(const CxxProf::AppInfo& info, unsigned int appId);
 
     /**
      * This is the connection to the database

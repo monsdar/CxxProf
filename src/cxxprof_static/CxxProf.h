@@ -87,6 +87,22 @@
     CxxProf::CxxProfStatic::getCxxProf()->shutdown();
 
 /**
+ * Sets the alias for the current process. CxxProf will use the given alias for this process
+ * in all the data that is being published.
+ * If no alias is set, CxxProf will use a automatically generated ID.
+ */
+#define CXXPROF_PROCESS_ALIAS(NAME) \
+    CxxProf::CxxProfStatic::getCxxProf()->setProcessAlias(NAME);
+
+/**
+ * Sets the alias for the current thread. CxxProf will automatically set the alias
+ * to the thread where this command is called from
+ * If no alias is set, CxxProf will use a automatically generated ID.
+ */
+#define CXXPROF_THREAD_ALIAS(NAME) \
+    CxxProf::CxxProfStatic::getCxxProf()->setThreadAlias(NAME);
+
+/**
  * DO NOT USE THESE
  * 
  * These are helper macros to help create unique object names for the activities.
@@ -108,6 +124,8 @@
 #define CXXPROF_MARK(NAME) 
 #define CXXPROF_PLOT(NAME, VALUE) 
 #define CXXPROF_SHUTDOWN() 
+#define CXXPROF_PROCESS_ALIAS(NAME) 
+#define CXXPROF_THREAD_ALIAS(NAME) 
 
 /**
  * These shouldn't be needed to get removed, but you never know if the user used them for anything...

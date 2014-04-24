@@ -25,6 +25,14 @@ namespace CxxProf
     {
         std::cout << "Adding plot value " << name << " with value " << value << std::endl;
     }
+    void TestCxxProf::setProcessAlias(const std::string name)
+    {
+        std::cout << "New process alias: " << name << std::endl;
+    }
+    void TestCxxProf::setThreadAlias(const std::string name)
+    {
+        std::cout << "New thread alias: " << name << std::endl;
+    }
     void TestCxxProf::shutdown()
     {
         std::cout << "Shutdown called" << std::endl;

@@ -8,6 +8,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 
+#include <stdlib.h> //needed for rand() and srand()
+#include <time.h>   //needed for time() -> used for seeding
+
 //NOTE: We need to use the C-API of ZMQ here because Pluma and WinSock2.h both implement a connect() function.
 //      Due to extern C in the WinSock part it is not possible to have both defined in the global space -.-
 //
@@ -29,8 +32,22 @@ namespace CxxProf
         zmqSender_(zmq_socket(zmqContext_, ZMQ_PUSH)),
         isSending_(false)
     {
+        //Initialize the AppInfo, this is needed to identify this application in the data
+        //The Starttime is needed to determine when this application has been started. It is important
+        //to know when all our events started happening in relation to other applications
+        //TODO: How to get a good base value?
+        //      - Using the microseconds since 1970 would be a too big value
+        //      - We need to have the starttime in microseconds reolution, like the rest
+        //      - Perhaps we can assume that the test is started at the same day or something like that...
+        info_.Starttime = 0; //profilingStart_
+
+        //The Appname is important for identifying this specific application
+        info_.Name = getAppname("App");
+
+        //Connect the sender, this will send every message to the below address
         zmq_connect(zmqSender_, "tcp://localhost:15232");
 
+        //Start the sending Thread. This thread will send the received data every x milliseconds
         sendThread_ = boost::thread(boost::bind(&NetworkCxxProf::sendLoop, this));
     }
 
@@ -41,25 +58,29 @@ namespace CxxProf
         zmq_ctx_destroy(zmqContext_);
     }
 
+    std::string NetworkCxxProf::getAppname(const std::string& appName)
+    {
+        //The following just generates a random number between 0 and 9999. This is probably
+        //good enough to not have the same application number twice.
+        //TODO: We should find a better (portable!) way to identify the current application.
+
+        //get the current time via boost (needed to get a unique seed)
+        boost::posix_time::ptime time_t_epoch(boost::gregorian::date(2014, 1, 1));
+        boost::posix_time::ptime currentTime = boost::posix_time::microsec_clock::local_time();
+        boost::posix_time::time_duration diff = time_t_epoch - currentTime;
+        srand( diff.total_microseconds() );
+        unsigned int randomInt = rand() % 9999;
+        std::string returnName = appName + "(" + boost::lexical_cast<std::string>(randomInt)+")";
+        return returnName;
+    }
+
     boost::shared_ptr<IActivity> NetworkCxxProf::createActivity(const std::string& name)
     {
         unsigned int newActId = actCounter_++;
 
-        //get the current Thread Id
-        unsigned int threadId = 0;
-        std::vector<boost::thread::id>::iterator resultIter = std::find(knownThreads_.begin(), knownThreads_.end(), boost::this_thread::get_id());
-        if (resultIter == knownThreads_.end())
-        {
-            knownThreads_.push_back(boost::this_thread::get_id());
-            threadId = knownThreads_.size() - 1;
-        }
-        else
-        {
-            //NOTE: See http://stackoverflow.com/questions/2152986/best-way-to-get-the-index-of-an-iterator
-            //      on why we do not use std::distance here
-            threadId = resultIter - knownThreads_.begin();
-        }
-
+        //get the current Thread Id, create it if the Thread has no ID yet
+        unsigned int threadId = checkThreads();
+        
         boost::shared_ptr<NetworkActivity> newAct(new NetworkActivity(name,
             newActId,
             threadId,
@@ -86,6 +107,30 @@ namespace CxxProf
         activities_[newActId] = weakAct;
 
         return newAct;
+    }
+
+    unsigned int NetworkCxxProf::checkThreads()
+    {
+        unsigned int threadId = 0;
+
+        //check if the ThreadId already exists
+        std::vector<boost::thread::id>::iterator resultIter = std::find(knownThreads_.begin(), knownThreads_.end(), boost::this_thread::get_id());
+        if (resultIter == knownThreads_.end()) //if not, add it to the list of known IDs
+        {
+            knownThreads_.push_back(boost::this_thread::get_id());
+            threadId = knownThreads_.size() - 1;
+
+            //also add it to the ThreadIdentifiers
+            info_.ThreadAliases[threadId] = "Thread #" + boost::lexical_cast<std::string>(threadId);
+        }
+        else //if the Id exists, add it as threadId
+        {
+            //NOTE: See http://stackoverflow.com/questions/2152986/best-way-to-get-the-index-of-an-iterator
+            //      on why we do not use std::distance here
+            threadId = resultIter - knownThreads_.begin();
+        }
+
+        return threadId;
     }
 
     void NetworkCxxProf::addMark(const std::string& name)
@@ -122,6 +167,26 @@ namespace CxxProf
         //Protect the SendObjects_
         boost::mutex::scoped_lock sendLock(sendMutex_);
         sendObjects_.ActivityResults.push_back(result);
+    }
+    void NetworkCxxProf::setProcessAlias(const std::string name)
+    {
+        //TODO: It should be checked if there has already been an info sent, if that is the case we shouldn't
+        //      change the name anymore.
+        //      This can be checked by seeing if addMark, addPlot or addActivity has been called before
+        //NOTE: The method getAppName suffixes the given name with a random identifier, just in case that two instances
+        //      of the same App are talking to the server
+        info_.Name = getAppname(name);
+    }
+    void NetworkCxxProf::setThreadAlias(const std::string name)
+    {
+        //TODO: Ensure that the ThreadAlias is only set once, it would get quite complicated
+        //      if it changes during we're collecting data.
+
+        //first ensure that the current Thread is known
+        unsigned int threadId = checkThreads();
+
+        //then set the alias to the given value
+        info_.ThreadAliases[threadId] = name;
     }
 
     void NetworkCxxProf::shutdown()
@@ -170,6 +235,10 @@ namespace CxxProf
         //Protect the SendObjects_
         {
             boost::mutex::scoped_lock lock(sendMutex_);
+
+            //Put the AppInfo into each packet we're sending
+            //This is not the most performant way to do this, but it ensures that the server gets our data 
+            sendObjects_.Info = info_;
 
             boost::archive::text_oarchive oa(serializeStream);
             oa << sendObjects_;

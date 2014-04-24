@@ -16,6 +16,12 @@
 //      or something like that.
 BOOST_AUTO_TEST_CASE(simpleTest)
 {
+    //Set the alias for this process
+    CXXPROF_PROCESS_ALIAS("cxxprof_interface_test");
+
+    //Set the alias for this thread
+    CXXPROF_THREAD_ALIAS("MainThread");
+
     //Init the CxxProf first
     CXXPROF_INIT();
 

@@ -42,7 +42,7 @@ namespace CxxProf
         unsigned int actId_;
         unsigned int parentId_;
         ResultCallback callback_;
-        unsigned int startTime_;
+        unsigned int starttime_;
         boost::posix_time::ptime profilingStart_;
 
         unsigned int getCurrentTime();

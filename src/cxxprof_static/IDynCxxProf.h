@@ -49,6 +49,20 @@ namespace CxxProf
          * In short: Plots show the context in which the data has to be read
          */
         virtual void addPlotValue(const std::string& name, double value) = 0;
+
+        /**
+         * Sets the alias for the current process. CxxProf will use the given alias for this process
+         * in all the data that is being published.
+         * If no alias is set, CxxProf will use a automatically generated ID.
+         */
+        virtual void setProcessAlias(const std::string name) = 0;
+        /**
+         * Sets the alias for the current thread. CxxProf will automatically set the alias
+         * to the thread where this command is called from
+         * If no alias is set, CxxProf will use a automatically generated ID.
+         */
+        virtual void setThreadAlias(const std::string name) = 0;
+
         /**
          * This shuts down Brofiler cleanly.
          * Cleanly means that it ends all active Activities and sends all the remaining data to the server.

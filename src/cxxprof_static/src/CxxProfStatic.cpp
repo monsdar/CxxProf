@@ -102,6 +102,27 @@ namespace CxxProf
         }
     }
 
+    void CxxProfStatic::setProcessAlias(const std::string name)
+    {
+        //this mutex protects the dynCxxProf_
+        boost::mutex::scoped_lock lock(mutex_);
+
+        if (dynCxxProf_ != NULL)
+        {
+            dynCxxProf_->setProcessAlias(name);
+        }
+    }
+    void CxxProfStatic::setThreadAlias(const std::string name)
+    {
+        //this mutex protects the dynCxxProf_
+        boost::mutex::scoped_lock lock(mutex_);
+
+        if (dynCxxProf_ != NULL)
+        {
+            dynCxxProf_->setThreadAlias(name);
+        }
+    }
+
     void CxxProfStatic::shutdown()
     {
         //this mutex protects the dynCxxProf_

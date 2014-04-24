@@ -3,6 +3,7 @@
 #define _NETWORK_OBJECTS_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include "cxxprof_dyn_network/AppInfo.h"
 #include "cxxprof_dyn_network/NetworkMark.h"
 #include "cxxprof_dyn_network/NetworkPlot.h"
 #include "cxxprof_dyn_network/ActivityResult.h"
@@ -13,6 +14,7 @@ namespace CxxProf
 
     struct CxxProf_Dyn_Network_EXPORT NetworkObjects
     {
+        AppInfo Info;
         std::vector<NetworkMark> Marks;
         std::vector<NetworkPlot> Plots;
         std::vector<ActivityResult> ActivityResults;

@@ -17,6 +17,8 @@ namespace CxxProf
         boost::shared_ptr<IActivity> createActivity(const std::string& name);
         void addMark(const std::string& name);
         void addPlotValue(const std::string& name, double value);
+        void setProcessAlias(const std::string name);
+        void setThreadAlias(const std::string name);
         void shutdown();
 
         std::string toString() const;
