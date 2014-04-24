@@ -1,6 +1,10 @@
 language: cpp
 compiler:
   - gcc
-before_script: ./script/getThirdparty.py
+before_script: 
+ - chmod +x ./script/getThirdparty.py
+ - chmod +x ./script/build.py
+ - chmod +x ./script/test.py
+ - ./script/getThirdparty.py
 script: ./script/build.py
 after_script: ./script/test.py
