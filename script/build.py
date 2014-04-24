@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 
 '''
     Builds the components of this selfcontained environment

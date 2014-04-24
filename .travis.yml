@@ -1,0 +1,6 @@
+language: cpp
+compiler:
+  - gcc
+before_script: ./script/getThirdparty.py
+script: ./script/build.py
+after_script: ./script/test.py
