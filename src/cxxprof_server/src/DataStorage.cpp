@@ -14,6 +14,8 @@ DataStorage::DataStorage()
     bool isInitNeeded = !boost::filesystem::exists(dbName);
     connection_.reset(new sqlite::connection(dbName));
 
+    //NOTE: Init is alway needed, because we're creating a new database at each startup
+    //      Perhaps we should treat it like an error if there is no init needed...
     if (isInitNeeded)
     {
         initDatabase(dbName);
@@ -79,6 +81,7 @@ void DataStorage::initDatabase(const std::string& filename)
     }
     catch (sqlite::sqlite_error& error)
     {
+        //TODO: How could we react better on errors? What errors are possible?
         std::cout << error.what() << std::endl;
     }
 }
@@ -92,6 +95,7 @@ void DataStorage::storeResult(const CxxProf::NetworkObjects& objects)
     }
 
     //create a deferred transaction for the following commands
+    //Simple explanation: If we do not wrap everything into a transaction here the performance would be VERY bad
     sqlite::transaction_guard< > transactionGuard(*connection_);
 
     //Add the Marks
@@ -112,10 +116,12 @@ void DataStorage::storeResult(const CxxProf::NetworkObjects& objects)
             insertCommand.bind(1, markIter->Name);
             insertCommand.bind(2, markIter->Timestamp);
 
+            //We do not use the error-code here, but it is good to know that there is one if we need it
             int error = insertCommand.exec();
         }
         catch (sqlite::sqlite_error& error)
         {
+            //TODO: How could we react better on errors? What errors are possible?
             std::cout << error.what() << std::endl;
         }
     }
@@ -141,10 +147,12 @@ void DataStorage::storeResult(const CxxProf::NetworkObjects& objects)
 
         try
         {
+            //We do not use the error-code here, but it is good to know that there is one if we need it
             int error = insertCommand.exec();
         }
         catch (sqlite::sqlite_error& error)
         {
+            //TODO: How could we react better on errors? What errors are possible?
             std::cout << error.what() << std::endl;
         }
     }
@@ -180,10 +188,12 @@ void DataStorage::storeResult(const CxxProf::NetworkObjects& objects)
 
         try
         {
+            //We do not use the error-code here, but it is good to know that there is one if we need it
             int error = insertCommand.exec();
         }
         catch (sqlite::sqlite_error& error)
         {
+            //TODO: How could we react better on errors? What errors are possible?
             std::cout << error.what() << std::endl;
         }
     }
