@@ -9,6 +9,8 @@ Please take a look at the Wiki to get information about the following topics:
 * [Screenshots and Examples](https://github.com/monsdar/CxxProf/wiki/Screenshots-and-Examples)
 * [Architecture Overview](https://github.com/monsdar/CxxProf/wiki/Architecture-Overview)
 * [Usage: Integrate CxxProf into your project](https://github.com/monsdar/CxxProf/wiki/Usage:-Integrate-CxxProf-into-your-project)
+* 
+* [Usage: A coding tutorial](https://github.com/monsdar/CxxProf/wiki/Usage:-A-coding-tutorial)
 * [Usage: Using the Chromium Tracing interface](https://github.com/monsdar/CxxProf/wiki/Using-the-Chromium-Tracing-interface)
 * [DevGuide: How to compile CxxProf](https://github.com/monsdar/CxxProf/wiki/DevGuide:-How-to-compile-CxxProf)
 * [List of existing Profilers (References)](https://github.com/monsdar/CxxProf/wiki/List-of-existing-Profilers-(References))
