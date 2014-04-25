@@ -14,6 +14,12 @@
         </dependencies>
     </component>
     <component>
+        <name>cxxprof_tutorial</name>
+        <dependencies>
+            <dependency>cxxprof_static</dependency>
+        </dependencies>
+    </component>
+    <component>
         <name>cxxprof_server</name>
         <dependencies>
             <dependency>cxxprof_dyn_network</dependency>
@@ -29,7 +35,7 @@
         <name>cxxprof_interface_test</name>
         <dependencies>
             <dependency>cxxprof_static</dependency>
-            <dependency>cxxprof_dyn_test</dependency> <!-- Used as Dyncxxprof during tests -->
+            <dependency>cxxprof_dyn_test</dependency> <!-- Used as plugin during tests -->
         </dependencies>
     </component>
 </components>
