@@ -54,14 +54,22 @@ def findThirdparty():
         print "No clang++ environment available for now"
         exit(1)
     else:
-        #return VS13 by default... this should be changed
+        #TODO: return VS13 by default... this should be changed
         return VS13_URL
         
 def downloadThirdparty(url):
     print "Downloading " + url.split('/')[-1] + " --- patience please..."
     urllib.urlretrieve(url, "master.zip")
     
+    if( not os.path.isfile("master.zip") ):
+        print "Downloading the master.zip failed"
+        exit(1)
+    
 def unpackThirdparty():
+    if( not os.path.isfile("master.zip") ):
+        print "master.zip is missing, cannot unzip"
+        exit(1)
+        
     fileHandle = open('master.zip', 'rb')
     zipHandle = zipfile.ZipFile(fileHandle)
     print "Extracting master.zip with " + str(len(zipHandle.namelist())) + " files, this could take some time..."
@@ -71,9 +79,11 @@ def unpackThirdparty():
 def moveThirdparty(thirdpartyUrl):
     repoName = thirdpartyUrl.split('/')[-1]
     dirName = repoName + "-master"
+    
     try:
         shutil.move(dirName + "/thirdparty", "../")
     except:
+        print "Moving failed"
         pass
 
 def main():
