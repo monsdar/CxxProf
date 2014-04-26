@@ -54,11 +54,11 @@ if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
 
 #before anything happens check if the Thirdparty is there
-if( not os.path.isfile("thirdparty") ):
+if( not os.path.exists("thirdparty") ):
     print "No thirdparty found, please use getThirdparty.py or provide your own libs"
     exit(1)
     
-if( not os.path.isfile(CMAKE_EXE) ):
+if( not os.path.exists(CMAKE_EXE) ):
     print "No cmake executable found, please check your Thirdparty"
     exit(1)
     

@@ -61,12 +61,12 @@ def downloadThirdparty(url):
     print "Downloading " + url.split('/')[-1] + " --- patience please..."
     urllib.urlretrieve(url, "master.zip")
     
-    if( not os.path.isfile("master.zip") ):
+    if( not os.path.exists("master.zip") ):
         print "Downloading the master.zip failed"
         exit(1)
     
 def unpackThirdparty():
-    if( not os.path.isfile("master.zip") ):
+    if( not os.path.exists("master.zip") ):
         print "master.zip is missing, cannot unzip"
         exit(1)
         
