@@ -13,6 +13,7 @@ Please take a look at the Wiki to get information about the following topics:
 * [Usage: Using the Chromium Tracing interface](https://github.com/monsdar/CxxProf/wiki/Using-the-Chromium-Tracing-interface)
 * [DevGuide: How to compile CxxProf](https://github.com/monsdar/CxxProf/wiki/DevGuide:-How-to-compile-CxxProf)
 * [List of existing Profilers (References)](https://github.com/monsdar/CxxProf/wiki/List-of-existing-Profilers-(References))
+* [Useful Links](https://github.com/monsdar/CxxProf/wiki/Useful-Links)
 
 ### Thirdparty
 CxxProf uses different Thirdparty libraries to provide the best functionality possible. Please take a look at the [Thirdparty Repository](https://github.com/monsdar/CxxProf-Thirdparty-vc120) to get detailed information about the used software, versions and where to get them for yourself.
