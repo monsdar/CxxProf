@@ -14,7 +14,7 @@ namespace CxxProf
         unsigned int Timestamp;
         double Value;
 
-        NetworkPlot::NetworkPlot() :
+        NetworkPlot() :
             Name(""),
             Timestamp(0),
             Value(0.0)

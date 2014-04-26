@@ -15,7 +15,7 @@ namespace CxxProf
         unsigned int Starttime;
         std::map<unsigned int, std::string> ThreadAliases;
 
-        AppInfo::AppInfo() :
+        AppInfo() :
             Name(""),
             Starttime(0)
         {}

@@ -47,4 +47,6 @@ install(TARGETS ${PROJECT_NAME}
 #this installs the start.bat
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startServer.bat
         DESTINATION ${PROJECT_NAME}/bin)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startServer.sh
+        DESTINATION ${PROJECT_NAME}/bin)
         

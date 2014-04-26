@@ -47,7 +47,11 @@ BUILD_PATH = DEV_PATH + "/build/"
 CMAKE_PATH = DEV_PATH + "/cmake/"
 INSTALL_PATH = DEV_PATH + "/install/"
 SRC_PATH = DEV_PATH + "/src/"
-CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake.exe"
+CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake"
+
+#NOTE: append the .exe suffix if we're on Windows
+if(os.name == "nt" ):
+    CMAKE_EXE += ".exe"
 
 class XmlComponent():
     def __init__(self):
@@ -223,7 +227,7 @@ def cleanup():
                 os.remove( os.path.join(root, filename) )
             except:
                 pass
-    
+
 def main():
 
     #clean the development if parameter clean is given
@@ -241,7 +245,7 @@ def main():
     dependencies = readDependencies()
     components = searchComponents(dependencies)
     componentsToBuild = getComponentsToBuild(sys.argv, components)
-    
+
     print ""
     print " ---------------------------------------------------------------------------"
     print "| Let's build the following components:"

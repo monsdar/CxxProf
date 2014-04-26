@@ -15,7 +15,14 @@
 #get the current script directory
 GET_FILENAME_COMPONENT(SCRIPT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 
-set( @PROJECT_NAME@_FOUND TRUE )
-set( @PROJECT_NAME@_INCLUDE_DIRS ${SCRIPT_DIR}/../install/@PROJECT_NAME@/include )
-set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@.lib
-                                debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@_debug.lib)
+if(WIN32)
+	set( @PROJECT_NAME@_FOUND TRUE )
+	set( @PROJECT_NAME@_INCLUDE_DIRS ${SCRIPT_DIR}/../install/@PROJECT_NAME@/include )
+	set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@.lib
+	                                debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/@PROJECT_NAME@_debug.lib)
+else()
+	set( @PROJECT_NAME@_FOUND TRUE )
+	set( @PROJECT_NAME@_INCLUDE_DIRS ${SCRIPT_DIR}/../install/@PROJECT_NAME@/include )
+	set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@.so
+        	                        debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@_debug.so)
+endif()

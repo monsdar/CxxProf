@@ -17,7 +17,7 @@ namespace CxxProf
         unsigned int Starttime;
         unsigned int Stoptime;
 
-        ActivityResult::ActivityResult() :
+        ActivityResult() :
             Name(""),
             ThreadId(0),
             ActId(0),

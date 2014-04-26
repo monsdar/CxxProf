@@ -30,6 +30,15 @@ add_executable(${PROJECT_NAME} ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME}   ${cxxprof_static_LIBRARIES}
                                         ${Boost_LIBRARIES})
 
+#NOTE: What about clang-based systems?
+if(UNIX)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME}   ${CMAKE_DL_LIBS}
+					${CMAKE_THREAD_LIBS_INIT}
+					rt)
+endif()
+
+
 #-- Set the Debug and Release names for the libraries
 SET_TARGET_PROPERTIES( ${PROJECT_NAME}
     PROPERTIES
@@ -42,6 +51,8 @@ install(TARGETS ${PROJECT_NAME}
 
 #this installs the start.bat
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startHowto.bat
+        DESTINATION ${PROJECT_NAME}/bin)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/startHowto.sh
         DESTINATION ${PROJECT_NAME}/bin)
 
         

@@ -13,7 +13,7 @@ namespace CxxProf
         std::string Name;
         unsigned int Timestamp;
 
-        NetworkMark::NetworkMark() :
+        NetworkMark() :
             Name(""),
             Timestamp(0)
         {}

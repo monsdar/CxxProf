@@ -39,5 +39,10 @@ set( ADDITIONALSOURCES ${Sources} ${Headers})
 createTest(CxxProfSimple)
 
 #this installs the dyntest-plugin to the build-directory for testing it
+if(WIN32)
 install(FILES ${CMAKE_INSTALL_PREFIX}/cxxprof_dyn_test/bin/cxxprof_dyn_test.dll
         DESTINATION ${CMAKE_BINARY_DIR})
+else()
+install(FILES ${CMAKE_INSTALL_PREFIX}/cxxprof_dyn_test/lib/libcxxprof_dyn_test.so
+        DESTINATION ${CMAKE_BINARY_DIR})
+endif()

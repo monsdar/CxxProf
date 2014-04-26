@@ -19,18 +19,18 @@ namespace CxxProf
         std::vector<NetworkPlot> Plots;
         std::vector<ActivityResult> ActivityResults;
 
-        void NetworkObjects::clear()
+        void clear()
         {
             Marks.clear();
             Plots.clear();
             ActivityResults.clear();
         }
 
-        unsigned int NetworkObjects::size() const
+        unsigned int size() const
         {
             return Marks.size() + Plots.size() + ActivityResults.size();
         }
-        unsigned int NetworkObjects::empty() const
+        unsigned int empty() const
         {
             return Marks.empty() || Plots.empty() || ActivityResults.empty();
         }
