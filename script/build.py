@@ -58,6 +58,10 @@ if( not os.path.isfile("thirdparty") ):
     print "No thirdparty found, please use getThirdparty.py or provide your own libs"
     exit(1)
     
+if( not os.path.isfile(CMAKE_EXE) ):
+    print "No cmake executable found, please check your Thirdparty"
+    exit(1)
+    
 class XmlComponent():
     def __init__(self):
         self.name = ""
