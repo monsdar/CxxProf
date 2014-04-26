@@ -53,6 +53,11 @@ CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake"
 if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
 
+#before anything happens check if the Thirdparty is there
+if( not os.path.isfile("thirdparty") ):
+    print "No thirdparty found, please use getThirdparty.py or provide your own libs"
+    exit(1)
+    
 class XmlComponent():
     def __init__(self):
         self.name = ""
