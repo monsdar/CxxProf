@@ -16,7 +16,11 @@ Please take a look at the Wiki to get information about the following topics:
 * [Useful Links](https://github.com/monsdar/CxxProf/wiki/Useful-Links)
 
 ### Thirdparty
-CxxProf uses different Thirdparty libraries to provide the best functionality possible. Please take a look at the [Thirdparty Repository](https://github.com/monsdar/CxxProf-Thirdparty-vc120) to get detailed information about the used software, versions and where to get them for yourself.
+CxxProf uses different Thirdparty libraries to provide the best functionality possible. We have precompiled repositores for the following systems available:
+* [CxxProf Precompiled: Microsoft Visual Compiler v120](https://github.com/monsdar/CxxProf-Thirdparty-vc120)
+* [CxxProf Precompiled: GNU gcc 4.4.5](https://github.com/monsdar/CxxProf-Thirdparty-gcc)
+
+Please take a look at the respective repositories to get information about the used versions and where you can obtain a copy of that Thirdparty for yourself.
 
 ### Copying
 Free use of this software is granted under the terms of the GNU Lesser General Public License (LGPL). For details see the files `COPYING` and `COPYING.LESSER` included with the CxxProf distribution.
