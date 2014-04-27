@@ -47,14 +47,15 @@ BUILD_PATH = DEV_PATH + "/build/"
 CMAKE_PATH = DEV_PATH + "/cmake/"
 INSTALL_PATH = DEV_PATH + "/install/"
 SRC_PATH = DEV_PATH + "/src/"
-CMAKE_EXE = DEV_PATH + "/thirdparty/cmake/cmake"
+THIRDPARTY_PATH = DEV_PATH + "/thirdparty/"
+CMAKE_EXE = THIRDPARTY_PATH + "/cmake/cmake"
 
 #NOTE: append the .exe suffix if we're on Windows
 if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
 
 #before anything happens check if the Thirdparty is there
-if( not os.path.exists("thirdparty") ):
+if( not os.path.exists(THIRDPARTY_PATH) ):
     print "No thirdparty found, please use getThirdparty.py or provide your own libs"
     exit(1)
     
