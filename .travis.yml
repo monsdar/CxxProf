@@ -8,4 +8,8 @@ before_script:
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
 script: ./script/build.py
-after_script: ./script/test.py
+after_script:
+ - cat ./build/cxxprof_static/cmake_cxxprof_static_out.log
+ - cat ./build/cxxprof_static/cmake_cxxprof_static_err.log
+ - cat ./build/cxxprof_static/build_cxxprof_static_release_out.log
+ - ./script/test.py
