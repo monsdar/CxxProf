@@ -5,9 +5,10 @@ before_script:
  - wget https://github.com/monsdar/CxxProf-Thirdparty-gcc/archive/master.zip 
  - unzip -o master.zip >> /dev/null
  - mv CxxProf-Thirdparty-gcc-master/thirdparty .
+ - ls -l ./thirdparty/
+ - ls -l ./thirdparty/cmake/
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
- - chmod +x ./thirdparty/cmake/cmake
- - chmod +x ./thirdparty/cmake/ctest
+ - cmake --version
 script: ./script/build.py
 after_script: ./script/test.py
