@@ -7,5 +7,7 @@ before_script:
  - mv CxxProf-Thirdparty-gcc-master/thirdparty .
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
+ - chmod +x ./thirdparty/cmake/cmake
+ - chmod +x ./thirdparty/cmake/ctest
 script: ./script/build.py
 after_script: ./script/test.py
