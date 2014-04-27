@@ -55,6 +55,8 @@ if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
 #use the preinstalled cmake if we're on travis
 if(os.environ.get("TRAVIS") == "TRUE"):
+    print "Found Travis-CI environment"
+    print " - using pre-installed cmake"
     CMAKE_EXE = "cmake"
 
 #before anything happens check if the Thirdparty is there
@@ -184,6 +186,8 @@ def createBuildFiles(component):
     
     #build for 32bit on travis-machines (default is 64bit, but we do not have the Thirdparty for that)
     if(os.environ.get("TRAVIS") == "TRUE"):
+        print "Found Travis-CI environment"
+        print " - Forcing 32bit build"
         cmakeCreate.append("-DCMAKE_CXX_FLAGS=-m32")
         cmakeCreate.append("-DCMAKE_C_FLAGS=-m32")
         cmakeCreate.append("-DCMAKE_SHARED_LINKER_FLAGS=-m32")
