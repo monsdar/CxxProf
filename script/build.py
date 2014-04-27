@@ -56,6 +56,9 @@ if(os.name == "nt" ):
 #use the preinstalled cmake if we're on travis
 if(os.environ.get("CXX") == "g++"):
     CMAKE_EXE = "cmake"
+    
+    #build for 32bit on travis-machines (default is 64bit, but we do not have the Thirdparty for that)
+    CMAKE_EXE += " -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_SHARED_LINKER_FLAGS=-m32"
 
 #before anything happens check if the Thirdparty is there
 if( not os.path.exists(THIRDPARTY_PATH) ):
