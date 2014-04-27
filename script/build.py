@@ -54,7 +54,7 @@ CMAKE_EXE = THIRDPARTY_PATH + "/cmake/cmake"
 if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
 #use the preinstalled cmake if we're on travis
-if(os.environ.get("CXX") == "g++"):
+if(os.environ.get("TRAVIS") == "TRUE"):
     CMAKE_EXE = "cmake"
 
 #before anything happens check if the Thirdparty is there
@@ -65,10 +65,6 @@ if( not os.path.exists(THIRDPARTY_PATH) ):
 if( not os.path.exists(CMAKE_EXE) ):
     print "No cmake executable found, please check your Thirdparty"
     exit(1)
-    
-#build for 32bit on travis-machines (default is 64bit, but we do not have the Thirdparty for that)
-if(os.environ.get("CXX") == "g++"):
-    CMAKE_EXE += " -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_SHARED_LINKER_FLAGS=-m32"
     
 class XmlComponent():
     def __init__(self):
@@ -185,6 +181,12 @@ def createBuildFiles(component):
     cmakeCreate.append( CMAKE_EXE )
     cmakeCreate.append( component.fullpath )
     cmakeCreate.append( "-DCMAKE_INSTALL_PREFIX=" + INSTALL_PATH )
+    
+    #build for 32bit on travis-machines (default is 64bit, but we do not have the Thirdparty for that)
+    if(os.environ.get("TRAVIS") == "TRUE"):
+        cmakeCreate.append("-DCMAKE_CXX_FLAGS=-m32")
+        cmakeCreate.append("-DCMAKE_C_FLAGS=-m32")
+        cmakeCreate.append("-DCMAKE_SHARED_LINKER_FLAGS=-m32")
     
     if( USE_ALTERNATIVE_TOOLSET ):
         cmakeCreate.append( "-T" )
