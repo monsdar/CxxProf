@@ -69,6 +69,10 @@ if( not os.path.exists(CMAKE_EXE) ):
     print "No cmake executable found, please check your Thirdparty"
     exit(1)
     
+#build for 32bit on travis-machines (default is 64bit, but we do not have the Thirdparty for that)
+if(os.environ.get("CXX") == "g++"):
+    CMAKE_EXE += " -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_SHARED_LINKER_FLAGS=-m32"
+    
 class XmlComponent():
     def __init__(self):
         self.name = ""
