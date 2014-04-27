@@ -1,10 +1,9 @@
 language: cpp
 compiler:
   - gcc
-before_script: 
- - pwd
+before_script:
  - wget https://github.com/monsdar/CxxProf-Thirdparty-gcc/archive/master.zip 
- - unzip master.zip
+ - unzip -o master.zip >> /dev/null
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
 script: ./script/build.py
