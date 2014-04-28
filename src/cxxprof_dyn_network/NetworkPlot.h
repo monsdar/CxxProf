@@ -3,6 +3,7 @@
 #define _NETWORK_PLOT_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <stdint.h>
 #include <string>
 
 namespace CxxProf
@@ -11,7 +12,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT NetworkPlot
     {
         std::string Name;
-        unsigned int Timestamp;
+        uint64_t Timestamp;
         double Value;
 
         NetworkPlot() :

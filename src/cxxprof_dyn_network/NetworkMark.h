@@ -3,6 +3,7 @@
 #define _NETWORK_MARK_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <stdint.h>
 #include <string>
 
 namespace CxxProf
@@ -11,7 +12,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT NetworkMark
     {
         std::string Name;
-        unsigned int Timestamp;
+        uint64_t Timestamp;
 
         NetworkMark() :
             Name(""),

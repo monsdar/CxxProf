@@ -3,6 +3,7 @@
 #define _ACTIVITY_RESULT_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <stdint.h>
 #include <string>
 
 namespace CxxProf
@@ -14,8 +15,8 @@ namespace CxxProf
         unsigned int ThreadId;
         unsigned int ActId;
         unsigned int ParentId;
-        unsigned int Starttime;
-        unsigned int Stoptime;
+        uint64_t Starttime;
+        uint64_t Stoptime;
 
         ActivityResult() :
             Name(""),

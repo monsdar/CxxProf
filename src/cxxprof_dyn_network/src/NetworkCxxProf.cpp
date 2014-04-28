@@ -68,7 +68,7 @@ namespace CxxProf
         boost::posix_time::ptime time_t_epoch(boost::gregorian::date(2014, 1, 1));
         boost::posix_time::ptime currentTime = boost::posix_time::microsec_clock::local_time();
         boost::posix_time::time_duration diff = time_t_epoch - currentTime;
-        srand( diff.total_microseconds() );
+        srand( int(diff.total_microseconds()) ); //int is good enough here... just convert in order to avoid the warning
         unsigned int randomInt = rand() % 9999;
         std::string returnName = appName + "(" + boost::lexical_cast<std::string>(randomInt)+")";
         return returnName;
