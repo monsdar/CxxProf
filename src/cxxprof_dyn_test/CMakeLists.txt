@@ -3,9 +3,6 @@
 #The minimum CMake version which is needed
 cmake_minimum_required(VERSION 2.8)
 
-######################
-# TODO: Please check if the ../../ are correct for SELFCONTAINED_CMAKE
-######################
 #This includes the environment
 set( SELFCONTAINED_CMAKE ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/)
 set( SELFCONTAINED_THIRDPARTY ${CMAKE_CURRENT_SOURCE_DIR}/../../thirdparty/)

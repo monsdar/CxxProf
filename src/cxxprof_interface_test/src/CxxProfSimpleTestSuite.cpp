@@ -11,9 +11,9 @@
 //This is a test which simply calls all of the CxxProf macros in their respective order...
 //Nothing special to see here... There's also nothing really to Unittest here :/
 
-//TODO: Perhaps we could integrate a mocking framework instead of the dyn_test plugin.
-//      Another interesting thing would be to do some integration tests with dyn_test and a mock-server
-//      or something like that.
+//Perhaps we could integrate a mocking framework instead of the dyn_test plugin.
+//Another interesting thing would be to do some integration tests with dyn_test and a mock-server
+//or something like that.
 BOOST_AUTO_TEST_CASE(simpleTest)
 {
     //Set the alias for this process

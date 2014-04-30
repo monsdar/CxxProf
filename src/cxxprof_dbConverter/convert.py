@@ -100,7 +100,7 @@ def convertDb(givenDb):
         
         appName = applications[int(row[2])].Name
         threadName = applications[int(row[2])].Threads[int(row[1])].Name
-        #TODO: As soon as we have support for different processes we need to alter the following line to support that
+        
         actObject = {"cat":"CxxProf", "pid":appName, "tid":threadName, "ts":starttime, "ph":"X", "name":row[6], "dur": duration}
         traceEvents.append(actObject)
         
@@ -111,7 +111,6 @@ def convertDb(givenDb):
         #apply the app.Starttime to the timestamp
         timestamp = int(row[3]) + applications[int(row[1])].Starttime
         
-        #TODO: As soon as we have support for different processes we need to alter the following line to support that
         markObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":timestamp, "ph":"I", "name":row[2], "s":"p"}
         traceEvents.append(markObject)
         
@@ -122,7 +121,6 @@ def convertDb(givenDb):
         #apply the app.Starttime to the timestamp
         timestamp = int(row[4]) + applications[int(row[1])].Starttime
         
-        #TODO: As soon as we have support for different processes we need to alter the following line to support that
         plotObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":timestamp, "ph":"C", "name":row[2], "args":{}}
         countObject = {row[2]:int(row[3])}
         plotObject["args"] = countObject
