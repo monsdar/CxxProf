@@ -35,11 +35,10 @@ namespace CxxProf
         //Initialize the AppInfo, this is needed to identify this application in the data
         //The Starttime is needed to determine when this application has been started. It is important
         //to know when all our events started happening in relation to other applications
-        //TODO: How to get a good base value?
-        //      - Using the microseconds since 1970 would be a too big value
-        //      - We need to have the starttime in microseconds reolution, like the rest
-        //      - Perhaps we can assume that the test is started at the same day or something like that...
-        info_.Starttime = 0; //profilingStart_
+        //NOTE: The below assumes that the application has been started after 01.01.2014
+        //      (which should be the case, given the current date)
+        boost::posix_time::ptime baseTime(boost::gregorian::date(2014, 1, 1));
+        info_.Starttime = (profilingStart_ - baseTime).total_microseconds();
 
         //The Appname is important for identifying this specific application
         info_.Name = getAppname("App");

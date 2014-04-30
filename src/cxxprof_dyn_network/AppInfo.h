@@ -4,6 +4,7 @@
 
 #include "cxxprof_dyn_network/common.h"
 #include <map>
+#include <stdint.h>
 #include <string>
 
 namespace CxxProf
@@ -12,7 +13,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT AppInfo
     {
         std::string Name;
-        unsigned int Starttime;
+        int64_t Starttime;
         std::map<unsigned int, std::string> ThreadAliases;
 
         AppInfo() :

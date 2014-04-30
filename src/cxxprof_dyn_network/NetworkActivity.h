@@ -9,6 +9,7 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/function.hpp>
+#include <stdint.h>
 #include <string>
 
 namespace CxxProf
@@ -45,7 +46,7 @@ namespace CxxProf
         unsigned int starttime_;
         boost::posix_time::ptime profilingStart_;
 
-        unsigned int getCurrentTime();
+        int64_t getCurrentTime();
     };
 
 }

@@ -15,8 +15,8 @@ namespace CxxProf
         unsigned int ThreadId;
         unsigned int ActId;
         unsigned int ParentId;
-        uint64_t Starttime;
-        uint64_t Stoptime;
+        int64_t Starttime;
+        int64_t Stoptime;
 
         ActivityResult() :
             Name(""),

@@ -12,7 +12,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT NetworkPlot
     {
         std::string Name;
-        uint64_t Timestamp;
+        int64_t Timestamp;
         double Value;
 
         NetworkPlot() :
