@@ -39,6 +39,9 @@ def convertDb(givenDb):
     #this is where we're storing the application and thread aliases
     applications = {}
     
+    #this value stores the earliest app starttime, so we can order the times around that value
+    earliestStarttime = 0;
+    
     #this reads in the applications, we need these values later to get the right data to the right places
     getAllApps = "SELECT * FROM appinfo ORDER BY AppId;"
     for row in sqliteCursor.execute(getAllApps):
@@ -47,7 +50,17 @@ def convertDb(givenDb):
         newApp.Name = row[1]
         newApp.Starttime = int(row[2])
         
+        #check if we have a new earliestStarttime here
+        if( earliestStarttime == 0 ):
+            earliestStarttime = newApp.Starttime
+        if( earliestStarttime >= newApp.Starttime):
+            earliestStarttime = newApp.Starttime
+            
         applications[newApp.AppId] = newApp
+        
+    #now apply the earliestStarttime to each apps starttime
+    for index, app in applications.iteritems():
+        app.Starttime = app.Starttime - earliestStarttime
         
     #same as above with the applications, just with threads
     getAllThreads = "SELECT * FROM threadinfo ORDER BY ThreadId;"
@@ -82,24 +95,35 @@ def convertDb(givenDb):
         previousDuration = duration
         previousTimestamp = starttime
         
+        #apply the app.Starttime to the starttime
+        starttime = starttime + applications[int(row[2])].Starttime
+        
         appName = applications[int(row[2])].Name
         threadName = applications[int(row[2])].Threads[int(row[1])].Name
         #TODO: As soon as we have support for different processes we need to alter the following line to support that
-        actObject = {"cat":"CxxProf", "pid":appName, "tid":threadName, "ts":int(row[4]), "ph":"X", "name":row[6], "dur": duration}
+        actObject = {"cat":"CxxProf", "pid":appName, "tid":threadName, "ts":starttime, "ph":"X", "name":row[6], "dur": duration}
         traceEvents.append(actObject)
         
     getAllMarks = "SELECT * FROM marks ORDER BY MarkId;"
     for row in sqliteCursor.execute(getAllMarks):
         appName = applications[int(row[1])].Name
+        
+        #apply the app.Starttime to the timestamp
+        timestamp = int(row[3]) + applications[int(row[1])].Starttime
+        
         #TODO: As soon as we have support for different processes we need to alter the following line to support that
-        markObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":int(row[3]), "ph":"I", "name":row[2], "s":"p"}
+        markObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":timestamp, "ph":"I", "name":row[2], "s":"p"}
         traceEvents.append(markObject)
         
     getAllPlots = "SELECT * FROM plots ORDER BY PlotId;"
     for row in sqliteCursor.execute(getAllPlots):
         appName = applications[int(row[1])].Name
+        
+        #apply the app.Starttime to the timestamp
+        timestamp = int(row[4]) + applications[int(row[1])].Starttime
+        
         #TODO: As soon as we have support for different processes we need to alter the following line to support that
-        plotObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":int(row[4]), "ph":"C", "name":row[2], "args":{}}
+        plotObject = {"cat":"CxxProf", "pid":appName, "tid":0, "ts":timestamp, "ph":"C", "name":row[2], "args":{}}
         countObject = {row[2]:int(row[3])}
         plotObject["args"] = countObject
         traceEvents.append(plotObject)
