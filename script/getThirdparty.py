@@ -19,7 +19,8 @@ GCC64_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc64"
 
 KNOWN_URLS = []
 KNOWN_URLS.append(VS13_URL)
-KNOWN_URLS.append(GCC_URL)
+KNOWN_URLS.append(GCC32_URL)
+KNOWN_URLS.append(GCC64_URL)
 
 #set pathes
 DEV_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../'
