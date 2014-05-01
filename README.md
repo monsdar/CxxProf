@@ -25,9 +25,9 @@ Please take a look at the respective repositories to get information about the u
 
 ###Continuous Integration
 Service | Status | System
----     | ---    | ---
-Travis CI | [![Build Status](https://travis-ci.org/monsdar/CxxProf.svg?branch=master)](https://travis-ci.org/monsdar/CxxProf) | Ubuntu 64bit, gcc 4.6.3
-drone.io | [![Build Status](https://drone.io/github.com/monsdar/CxxProf/status.png)](https://drone.io/github.com/monsdar/CxxProf/latest) | Ubuntu 64bit, gcc 4.6.3
+:---:     | :---:    | :---
+[Travis CI](https://travis-ci.org/monsdar/CxxProf) | [![Build Status](https://travis-ci.org/monsdar/CxxProf.svg?branch=master)](https://travis-ci.org/monsdar/CxxProf) | Ubuntu 64bit, gcc 4.6.3
+[drone.io](https://drone.io/github.com/monsdar/CxxProf) | [![Build Status](https://drone.io/github.com/monsdar/CxxProf/status.png)](https://drone.io/github.com/monsdar/CxxProf/latest) | Ubuntu 64bit, gcc 4.6.3
 
 ### Copying
 Free use of this software is granted under the terms of the GNU Lesser General Public License (LGPL). For details see the files `COPYING` and `COPYING.LESSER` included with the CxxProf distribution.
