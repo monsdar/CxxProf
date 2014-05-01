@@ -11,4 +11,4 @@ before_script:
 script: ./script/build.py --native-cmake
 after_script:
  - cat ./build/cxxprof_static/build_cxxprof_tutorial_release_out.log
- - ./script/test.py
+ - ./script/test.py --native-ctest
