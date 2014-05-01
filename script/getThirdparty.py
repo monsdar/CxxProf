@@ -46,19 +46,7 @@ def selectThirdparty():
         exit(1)
         
     return KNOWN_URLS[inputNumber]
-
-def findThirdparty():
-    #this is currently just needed for travis-ci.org
-    #to get it working with other systems we should test for OS etc
-    if(os.environ.get("CXX") == "g++"):
-        return GCC64_URL
-    elif(os.environ.get("CXX") == "clang++"):
-        print "No clang++ environment available for now"
-        exit(1)
-    else:
-        #TODO: return VS13 by default... this should be changed
-        return VS13_URL
-        
+    
 def downloadThirdparty(url):
     print "Downloading " + url.split('/')[-1] + " --- patience please..."
     urllib.urlretrieve(url, "master.zip")
@@ -89,12 +77,7 @@ def moveThirdparty(thirdpartyUrl):
         pass
 
 def main():
-    thirdpartyUrl = ""
-    if( "-i" in sys.argv ):
-        thirdpartyUrl = selectThirdparty()
-    else:
-        thirdpartyUrl = findThirdparty()
-
+    thirdpartyUrl = selectThirdparty()
     downloadThirdparty(thirdpartyUrl + ZIP_SUFFIX)
     unpackThirdparty()
     moveThirdparty(thirdpartyUrl)
