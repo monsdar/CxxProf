@@ -22,18 +22,19 @@ if("--native-ctest" in sys.argv):
     sys.argv.remove("--native-ctest")
 
 def main():
-    #set the PATH to find Thirdparty
-    os.environ['PATH'] = THIRDPARTY_PATH + '/boost/bin/'
-    os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/pluma/bin/'
-    os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/cmake/'
+    #set the PATH to find Thirdparty on Windows systems
+    if(os.name == "nt" ):
+        os.environ['PATH'] = THIRDPARTY_PATH + '/boost/bin/'
+        os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/pluma/bin/'
+        os.environ['PATH'] += ';' + THIRDPARTY_PATH + '/cmake/'
     
-    #find our own components, set the PATH for them
-    matches = []
-    for root, dirnames, filenames in os.walk( INSTALL_PATH ):
-        for filename in fnmatch.filter(dirnames, 'bin'):
-            matches.append(os.path.join(root, filename))
-    for path in matches:
-        os.environ['PATH'] = os.environ['PATH'] + ';' + path
+        #find our own components, set the PATH for them
+        matches = []
+        for root, dirnames, filenames in os.walk( INSTALL_PATH ):
+            for filename in fnmatch.filter(dirnames, 'bin'):
+                matches.append(os.path.join(root, filename))
+        for path in matches:
+            os.environ['PATH'] = os.environ['PATH'] + ';' + path
     
     #search for projects which need to be tested
     for root, dirnames, filenames in os.walk( BUILD_PATH ):
