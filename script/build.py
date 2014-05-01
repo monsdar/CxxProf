@@ -53,6 +53,9 @@ CMAKE_EXE = THIRDPARTY_PATH + "/cmake/cmake"
 #NOTE: append the .exe suffix if we're on Windows
 if(os.name == "nt" ):
     CMAKE_EXE += ".exe"
+    
+if("--native-cmake" in sys.argv):
+    CMAKE_EXE = "cmake"
 
 #before anything happens check if the Thirdparty is there
 if( not os.path.exists(THIRDPARTY_PATH) ):
