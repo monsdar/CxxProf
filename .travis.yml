@@ -7,12 +7,8 @@ before_script:
  - mv CxxProf-Thirdparty-gcc64-master/thirdparty .
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
- - sudo apt-get update -qq
- - sudo apt-get install gcc-multilib -y
- - export LD_LIBRARY_PATH=./thirdparty/pluma/lib/
+ - export LD_LIBRARY_PATH=$(pwd)/thirdparty/pluma/lib/
 script: ./script/build.py --native-cmake
 after_script:
- - cat ./build/cxxprof_static/cmake_cxxprof_static_out.log
- - cat ./build/cxxprof_static/cmake_cxxprof_static_err.log
- - cat ./build/cxxprof_static/build_cxxprof_static_release_out.log
+ - cat ./build/cxxprof_static/build_cxxprof_tutorial_release_out.log
  - ./script/test.py
