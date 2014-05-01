@@ -18,7 +18,8 @@ Please take a look at the Wiki to get information about the following topics:
 ### Thirdparty
 CxxProf uses different Thirdparty libraries to provide the best functionality possible. We have precompiled repositores for the following systems available:
 * [CxxProf Precompiled: Microsoft Visual Compiler v120](https://github.com/monsdar/CxxProf-Thirdparty-vc120)
-* [CxxProf Precompiled: GNU gcc 4.4.5](https://github.com/monsdar/CxxProf-Thirdparty-gcc)
+* [CxxProf Precompiled: GNU gcc 4.4.5 32bit](https://github.com/monsdar/CxxProf-Thirdparty-gcc32)
+* [CxxProf Precompiled: GNU gcc 4.8.1 64bit](https://github.com/monsdar/CxxProf-Thirdparty-gcc64)
 
 Please take a look at the respective repositories to get information about the used versions and where you can obtain a copy of that Thirdparty for yourself.
 
