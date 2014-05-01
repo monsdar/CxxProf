@@ -2,9 +2,9 @@ language: cpp
 compiler:
   - gcc
 before_script:
- - wget -q https://github.com/monsdar/CxxProf-Thirdparty-gcc/archive/master.zip 
+ - wget -q https://github.com/monsdar/CxxProf-Thirdparty-gcc64/archive/master.zip 
  - unzip -o -q master.zip
- - mv CxxProf-Thirdparty-gcc-master/thirdparty .
+ - mv CxxProf-Thirdparty-gcc64-master/thirdparty .
  - chmod +x ./script/build.py
  - chmod +x ./script/test.py
  - sudo apt-get update -qq

@@ -14,7 +14,8 @@ import zipfile
 
 ZIP_SUFFIX = "/archive/master.zip"
 VS13_URL = "https://github.com/monsdar/CxxProf-Thirdparty-vc120"
-GCC_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc"
+GCC32_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc32"
+GCC64_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc64"
 
 KNOWN_URLS = []
 KNOWN_URLS.append(VS13_URL)
@@ -49,7 +50,7 @@ def findThirdparty():
     #this is currently just needed for travis-ci.org
     #to get it working with other systems we should test for OS etc
     if(os.environ.get("CXX") == "g++"):
-        return GCC_URL
+        return GCC64_URL
     elif(os.environ.get("CXX") == "clang++"):
         print "No clang++ environment available for now"
         exit(1)
