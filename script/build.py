@@ -56,6 +56,7 @@ if(os.name == "nt" ):
     
 if("--native-cmake" in sys.argv):
     CMAKE_EXE = "cmake"
+    sys.argv.remove("--native-cmake")
 
 #before anything happens check if the Thirdparty is there
 if( not os.path.exists(THIRDPARTY_PATH) ):
