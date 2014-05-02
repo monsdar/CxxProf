@@ -191,11 +191,13 @@ namespace CxxProf
     void NetworkCxxProf::shutdown()
     {
         //shutdown all active Activities
-        std::map<unsigned int, boost::weak_ptr<NetworkActivity> >::iterator actIter = activities_.begin();
-        for (; actIter != activities_.end(); ++actIter)
+        //NOTE: We cannot simply iterate through activities_ because when calling Activity::shutdown
+        //      this triggers NetworkCxxProf::addResults which removes the activity from activities_
+        //      Therefore we would destroy elements from activities_ while we're iterating over them
+        while (!activities_.empty())
         {
-            boost::shared_ptr<NetworkActivity> lockerAct = actIter->second.lock();
-            lockerAct->shutdown();
+            boost::shared_ptr<NetworkActivity> lockerAct = activities_.begin()->second.lock();
+            lockerAct->shutdown(); //this effectively removes the activity from activities_
         }
 
         //Send the objects
