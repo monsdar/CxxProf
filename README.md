@@ -26,7 +26,7 @@ Please take a look at the respective repositories to get information about the u
 ###Continuous Integration
 Service | Status | System
 :---:     | :---:    | :---
-[Travis CI](https://travis-ci.org/monsdar/CxxProf) | [![Build Status](https://travis-ci.org/monsdar/CxxProf.svg?branch=master)](https://travis-ci.org/monsdar/CxxProf) | Ubuntu 64bit, gcc 4.6.3
+[Travis CI](https://travis-ci.org/monsdar/CxxProf) | [![Build Status](https://travis-ci.org/monsdar/CxxProf.svg?branch=master)](https://travis-ci.org/monsdar/CxxProf) | Ubuntu 64bit, gcc 4.6.3<br>Ubuntu 64bit, clang 3.4
 [drone.io](https://drone.io/github.com/monsdar/CxxProf) | [![Build Status](https://drone.io/github.com/monsdar/CxxProf/status.png)](https://drone.io/github.com/monsdar/CxxProf/latest) | Ubuntu 64bit, gcc 4.6.3
 
 ### Copying
