@@ -3,6 +3,7 @@
 #define _NETWORK_PLOT_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <boost/cstdint.hpp>
 #include <stdint.h>
 #include <string>
 
@@ -12,7 +13,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT NetworkPlot
     {
         std::string Name;
-        int64_t Timestamp;
+        boost::int64_t Timestamp;
         double Value;
 
         NetworkPlot() :

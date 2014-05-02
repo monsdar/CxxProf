@@ -3,6 +3,7 @@
 #define _ACTIVITY_RESULT_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <boost/cstdint.hpp>
 #include <stdint.h>
 #include <string>
 
@@ -15,8 +16,8 @@ namespace CxxProf
         unsigned int ThreadId;
         unsigned int ActId;
         unsigned int ParentId;
-        int64_t Starttime;
-        int64_t Stoptime;
+        boost::int64_t Starttime;
+        boost::int64_t Stoptime;
 
         ActivityResult() :
             Name(""),

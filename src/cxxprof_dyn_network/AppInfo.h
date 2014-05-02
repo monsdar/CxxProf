@@ -3,6 +3,7 @@
 #define _APP_INFO_H_
 
 #include "cxxprof_dyn_network/common.h"
+#include <boost/cstdint.hpp>
 #include <map>
 #include <stdint.h>
 #include <string>
@@ -13,7 +14,7 @@ namespace CxxProf
     struct CxxProf_Dyn_Network_EXPORT AppInfo
     {
         std::string Name;
-        int64_t Starttime;
+        boost::int64_t Starttime;
         std::map<unsigned int, std::string> ThreadAliases;
 
         AppInfo() :

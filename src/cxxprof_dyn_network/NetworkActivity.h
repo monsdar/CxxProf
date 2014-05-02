@@ -7,6 +7,7 @@
 #include "cxxprof_dyn_network/common.h"
 #include "cxxprof_dyn_network/ActivityResult.h"
 
+#include <boost/cstdint.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/function.hpp>
 #include <stdint.h>
@@ -43,10 +44,10 @@ namespace CxxProf
         unsigned int actId_;
         unsigned int parentId_;
         ResultCallback callback_;
-        unsigned int starttime_;
+        boost::int64_t starttime_;
         boost::posix_time::ptime profilingStart_;
 
-        int64_t getCurrentTime();
+        boost::int64_t getCurrentTime();
     };
 
 }

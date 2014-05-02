@@ -82,7 +82,7 @@ namespace CxxProf
         }
     }
 
-    int64_t NetworkActivity::getCurrentTime()
+    boost::int64_t NetworkActivity::getCurrentTime()
     {
         boost::posix_time::time_duration const diff = boost::posix_time::microsec_clock::local_time() - profilingStart_;
         return diff.total_microseconds();
