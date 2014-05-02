@@ -1,6 +1,7 @@
 language: cpp
 compiler:
   - gcc
+  - clang
 before_script:
  - wget -q https://github.com/monsdar/CxxProf-Thirdparty-gcc64/archive/master.zip 
  - unzip -o -q master.zip
