@@ -40,7 +40,7 @@
  * to create multiple Activities in the same line of code
  */
 #define CXXPROF_ACTIVITY(NAME) \
-    boost::shared_ptr<CxxProf::IActivity> CXXPROF_HELPER_COMBINE(newActivity, __LINE__) = CxxProf::CxxProfStatic::getCxxProf()->createActivity(NAME);
+    std::vector<boost::shared_ptr<CxxProf::IActivity> > CXXPROF_HELPER_COMBINE(newActivity, __LINE__) = CxxProf::CxxProfStatic::getCxxProf()->createActivities(NAME);
 
 /**
  * This creates a new Mark with the given NAME.

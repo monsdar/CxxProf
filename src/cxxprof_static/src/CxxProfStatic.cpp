@@ -23,7 +23,6 @@ namespace CxxProf
     }
 
     CxxProfStatic::CxxProfStatic() :
-        dynCxxProf_(NULL),
         manager_(new pluma::Pluma())
     {
         //load the plugin during instantiation of the CxxProfStatic
@@ -43,16 +42,19 @@ namespace CxxProf
         std::vector<IDynCxxProfProvider*> providers;
         manager_->getProviders(providers);
 
-        //Just load a plugin if there has been one found
-        //If there are multiple plugins found, load the first you find. This
-        //is not the best method, but there also is no way (yet) to tell
-        //the user that he wanted to load multiple plugins.
-        if (providers.begin() != providers.end())
+        //load all found plugins into our vector
+        //all loaded plugins will be used together, so it is possible to have a ProfPlugin
+        //storing the profiling data in a database while another sends it via
+        //network to another application
+        std::vector<IDynCxxProfProvider*>::iterator provIter = providers.begin();
+        for (; provIter != providers.end(); ++provIter)
         {
-            dynCxxProf_ = (*providers.begin())->create();
-            std::cout << "Loaded DynCxxProf: " << dynCxxProf_->toString() << std::endl;
+            dynCxxProfs_.push_back((*provIter)->create());
+            std::vector<IDynCxxProf*>::reverse_iterator pluginIter = dynCxxProfs_.rbegin();
+            std::cout << "Loaded DynCxxProf: " << (*pluginIter)->toString() << std::endl;
         }
-        else
+
+        if (dynCxxProfs_.empty())
         {
             std::cout << "Cannot find Plugin, no DynCxxProf loaded..." << std::endl;
         }
@@ -64,20 +66,22 @@ namespace CxxProf
         //This part later could be used to initialize via configuration or something similar
     }
 
-    boost::shared_ptr<IActivity> CxxProfStatic::createActivity(const std::string& name)
+    std::vector< boost::shared_ptr<IActivity> > CxxProfStatic::createActivities(const std::string& name)
     {
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        //Return an empty Activity if there is no plugin loaded
-        //This seems to be the best thing we can do here, everything else
-        //involves the user
-        if (dynCxxProf_ == NULL)
+        //this is the vector which contains all the activites our plugins are creating
+        std::vector< boost::shared_ptr<IActivity> > returnVec;
+
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            return boost::shared_ptr<IActivity>();
+            returnVec.push_back((*profIter)->createActivity(name));
         }
 
-        return dynCxxProf_->createActivity(name);
+        return returnVec;
     }
 
     void CxxProfStatic::addMark(const std::string& name)
@@ -85,9 +89,11 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        if (dynCxxProf_ != NULL)
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            dynCxxProf_->addMark(name);
+            (*profIter)->addMark(name);
         }
     }
 
@@ -96,9 +102,11 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        if (dynCxxProf_ != NULL)
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            dynCxxProf_->addPlotValue(name, value);
+            (*profIter)->addPlotValue(name, value);
         }
     }
 
@@ -107,9 +115,11 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        if (dynCxxProf_ != NULL)
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            dynCxxProf_->setProcessAlias(name);
+            (*profIter)->setProcessAlias(name);
         }
     }
     void CxxProfStatic::setThreadAlias(const std::string name)
@@ -117,9 +127,11 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        if (dynCxxProf_ != NULL)
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            dynCxxProf_->setThreadAlias(name);
+            (*profIter)->setThreadAlias(name);
         }
     }
 
@@ -128,9 +140,11 @@ namespace CxxProf
         //this mutex protects the dynCxxProf_
         boost::mutex::scoped_lock lock(mutex_);
 
-        if (dynCxxProf_ != NULL)
+        //if no profilers are loaded, the following won't do anything...
+        std::vector<IDynCxxProf*>::iterator profIter = dynCxxProfs_.begin();
+        for (; profIter != dynCxxProfs_.end(); ++profIter)
         {
-            dynCxxProf_->shutdown();
+            (*profIter)->shutdown();
         }
     }
 

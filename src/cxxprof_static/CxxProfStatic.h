@@ -34,15 +34,17 @@ namespace CxxProf
         virtual ~CxxProfStatic();
     
         /**
-         * This creates a new Activity which is active until the focus is lost in which it is created.
-         * If there is no plugin loaded, this will return an empty shared_ptr which does nothing at all.
+         * This creates new Activities which are active until the focus is lost in which it is created.
+         * If there is no plugin loaded, this will return an empty list which does nothing at all.
+         * It is needed to create a list of activities here because it could be possilbe that there are multiple
+         * plugins being loaded.
          *
          * Activities are measuring the time from their creation until they're destroyed. They're the heart
          * of CxxProf and should be put around all calls you want to measure.
          *
          * In short: Activities measure how long certain things take
          */
-        boost::shared_ptr<IActivity> createActivity(const std::string& name);
+        std::vector< boost::shared_ptr<IActivity> > createActivities(const std::string& name);
         /**
          * This creates a new Mark with the given name
          * 
@@ -109,7 +111,7 @@ namespace CxxProf
         static CxxProfStatic* instance_;
 
         void loadDynCxxProf();
-        IDynCxxProf* dynCxxProf_;
+        std::vector<IDynCxxProf*> dynCxxProfs_;
 
         boost::mutex mutex_;
         boost::shared_ptr<pluma::Pluma> manager_;
