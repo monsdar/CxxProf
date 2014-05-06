@@ -74,6 +74,16 @@ int main()
     CXXPROF_MARK("RecursiveOperation start");
     recursiveOperation(1);
 
+    //This test conditional statements
+    CXXPROF_MARK_COND("Conditional Test Start - true", true);
+    CXXPROF_MARK_COND("Conditional Test Start - false", false);
+    {
+        CXXPROF_ACTIVITY_COND("ActCondTest - true", true);
+        CXXPROF_ACTIVITY_COND("ActCondTest - false", false);
+        CXXPROF_PLOT_COND("PlotCondTest - true", 1.0, true);
+        CXXPROF_PLOT_COND("PlotCondTest - false", 1.0, false);
+    }
+
     //Now let's wait until the loopThreads are finished
     std::vector<boost::shared_ptr<boost::thread> >::iterator threadIter = threads.begin();
     for (; threadIter != threads.end(); ++threadIter)

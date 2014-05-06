@@ -43,6 +43,20 @@
     std::vector<boost::shared_ptr<CxxProf::IActivity> > CXXPROF_HELPER_COMBINE(newActivity, __LINE__) = CxxProf::CxxProfStatic::getCxxProf()->createActivities(NAME);
 
 /**
+ * This is the same as using CXXPROF_ACTIVITY, but an additional
+ * condition can be given which needs to be matched.
+ *
+ * It is useful if you e.g. just want to start measuring if your application
+ * reaches a certain state or if you have a certain number of objects created.
+ */
+#define CXXPROF_ACTIVITY_COND(NAME, COND) \
+    if( COND )                 \
+    {                          \
+        CXXPROF_ACTIVITY(NAME) \
+    }
+
+
+/**
  * This creates a new Mark with the given NAME.
  * 
  * Marks indicate that the state of the application has changed. An example would be
@@ -55,6 +69,19 @@
  */
 #define CXXPROF_MARK(NAME) \
     CxxProf::CxxProfStatic::getCxxProf()->addMark(NAME);
+
+/**
+* This is the same as using CXXPROF_MARK, but an additional
+* condition can be given which needs to be matched.
+*
+* It is useful if you e.g. just want to start measuring if your application
+* reaches a certain state or if you have a certain number of objects created.
+*/
+#define CXXPROF_MARK_COND(NAME, COND) \
+    if( COND )             \
+    {                      \
+        CXXPROF_MARK(NAME) \
+    }
 
 /**
  * This creates a Plot with the given NAME and VALUE
@@ -71,7 +98,20 @@
     CxxProf::CxxProfStatic::getCxxProf()->addPlotValue(NAME, VALUE);
 
 /**
- * This shuts down Brofiler cleanly.
+* This is the same as using CXXPROF_PLOT, but an additional
+* condition can be given which needs to be matched.
+*
+* It is useful if you e.g. just want to start measuring if your application
+* reaches a certain state or if you have a certain number of objects created.
+*/
+#define CXXPROF_PLOT_COND(NAME, VALUE, COND) \
+    if( COND )                    \
+    {                             \
+        CXXPROF_PLOT(NAME, VALUE) \
+    }
+
+/**
+ * This shuts down CxxProf cleanly.
  * Cleanly means that it ends all active Activities and sends all the remaining data to the server.
  *
  * You should call this macro at the very end of your application. Mostly it will be called at the
@@ -120,9 +160,12 @@
  * us to let the compiler remove CxxProf completely from the sources during compilation time
  */
 #define CXXPROF_INIT() 
-#define CXXPROF_ACTIVITY(NAME) 
+#define CXXPROF_ACTIVITY(NAME)
+#define CXXPROF_ACTIVITY_COND(NAME, COND) 
 #define CXXPROF_MARK(NAME) 
+#define CXXPROF_MARK_COND(NAME, COND) 
 #define CXXPROF_PLOT(NAME, VALUE) 
+#define CXXPROF_PLOT_COND(NAME, VALUE, COND) 
 #define CXXPROF_SHUTDOWN() 
 #define CXXPROF_PROCESS_ALIAS(NAME) 
 #define CXXPROF_THREAD_ALIAS(NAME) 
