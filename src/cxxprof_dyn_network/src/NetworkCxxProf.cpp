@@ -8,6 +8,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 
+#include <cstdlib>
 #include <stdlib.h> //needed for rand() and srand()
 #include <time.h>   //needed for time() -> used for seeding
 
@@ -44,7 +45,15 @@ namespace CxxProf
         info_.Name = getAppname("App");
 
         //Connect the sender, this will send every message to the below address
-        zmq_connect(zmqSender_, "tcp://localhost:15232");
+        std::string envAddress = getEnv("CXXPROF_ADDRESS");
+        if (envAddress.empty())
+        {
+            zmq_connect(zmqSender_, "tcp://localhost:15232");
+        }
+        else
+        {
+            zmq_connect(zmqSender_, envAddress.c_str());
+        }
 
         //Start the sending Thread. This thread will send the received data every x milliseconds
         sendThread_ = boost::thread(boost::bind(&NetworkCxxProf::sendLoop, this));
@@ -256,4 +265,14 @@ namespace CxxProf
         return "NetworkCxxProf";
     }
 
+    std::string NetworkCxxProf::getEnv(const std::string& envVariable)
+    {
+        const char * val = std::getenv(envVariable.c_str());
+        if (val == 0)
+        {
+            return "";
+        }
+
+        return val;
+    }
 }

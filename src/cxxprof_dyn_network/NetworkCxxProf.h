@@ -39,8 +39,19 @@ namespace CxxProf
         void addResult(const ActivityResult& result);
         boost::mutex callbackMutex_;
 
-        AppInfo info_;
+        /**
+         * This method returns the content of the given environment variable
+         * If there is no such variable, it returns an empty string
+         */
+        std::string getEnv(const std::string & envVariable);
+
+        /**
+         * Tries to create a somehw unique ID for the App
+         * The name needs to be unique for several processes on the same host
+         * as well as for several processes on different hosts.
+         */
         std::string getAppname(const std::string& appName);
+        AppInfo info_;
 
         bool isSending_;
         boost::thread sendThread_;
