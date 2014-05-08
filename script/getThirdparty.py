@@ -13,11 +13,13 @@ import urllib
 import zipfile
 
 ZIP_SUFFIX = "/archive/master.zip"
+VS10_URL = "https://github.com/monsdar/CxxProf-Thirdparty-vc100"
 VS13_URL = "https://github.com/monsdar/CxxProf-Thirdparty-vc120"
 GCC32_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc32"
 GCC64_URL = "https://github.com/monsdar/CxxProf-Thirdparty-gcc64"
 
 KNOWN_URLS = []
+KNOWN_URLS.append(VS10_URL)
 KNOWN_URLS.append(VS13_URL)
 KNOWN_URLS.append(GCC32_URL)
 KNOWN_URLS.append(GCC64_URL)
