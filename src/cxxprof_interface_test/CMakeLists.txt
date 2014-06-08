@@ -29,7 +29,8 @@ set( INCLUDEDIRS ${Boost_INCLUDE_DIRS}
                  ${cxxprof_static_INCLUDE_DIRS}
                  ${CMAKE_CURRENT_SOURCE_DIR}/src/helpers/)
 set( LIBRARIES   ${cxxprof_static_LIBRARIES}
-                 ${Boost_LIBRARIES})
+                 ${Boost_LIBRARIES}
+                 ${Pluma_LIBRARIES})
 set( ADDITIONALSOURCES ${Sources} ${Headers})
 
 #create the actual tests

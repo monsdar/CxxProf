@@ -2,7 +2,6 @@
 #ifndef _CXXPROF_STATIC_H_
 #define _CXXPROF_STATIC_H_
 
-#include "cxxprof_static/common.h"
 #include "cxxprof_static/IDynCxxProf.h"
 #include "cxxprof_static/IActivity.h"
 
@@ -27,7 +26,7 @@ namespace CxxProf
      * or the plugin is not loadable because of other reasons, all call will
      * return immediately.
      */
-    class CxxProfStatic_EXPORT CxxProfStatic : boost::noncopyable
+    class CxxProfStatic : boost::noncopyable
     {
     public:
         static CxxProfStatic* getCxxProf();

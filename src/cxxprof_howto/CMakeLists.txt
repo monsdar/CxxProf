@@ -25,7 +25,8 @@ include_directories(${Boost_INCLUDE_DIRS}
 
 add_executable(${PROJECT_NAME} ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME}   ${cxxprof_static_LIBRARIES}
-                                        ${Boost_LIBRARIES})
+                                        ${Boost_LIBRARIES}
+                                        ${Pluma_LIBRARIES})
 
 #NOTE: What about clang-based systems?
 if(UNIX)

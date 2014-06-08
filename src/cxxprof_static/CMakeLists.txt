@@ -10,9 +10,6 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${SELFCONTAINED_CMAKE} )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${SELFCONTAINED_THIRDPARTY} )
 include( setEnv )
 
-#This is needed for the dllexport mechanism
-add_definitions(-DCXXPROFSTATIC)
-
 #Build the actual component
 file(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
@@ -20,7 +17,7 @@ file(GLOB Headers ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../
                     ${Boost_INCLUDE_DIRS}
                     ${Pluma_INCLUDE_DIRS})
-add_library(${PROJECT_NAME} SHARED ${Sources} ${Headers})
+add_library(${PROJECT_NAME} STATIC ${Sources} ${Headers})
 target_link_libraries(${PROJECT_NAME}   ${Pluma_LIBRARIES}
                                         ${Boost_LIBRARIES})
 
