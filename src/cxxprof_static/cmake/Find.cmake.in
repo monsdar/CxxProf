@@ -23,6 +23,6 @@ if(WIN32)
 else()
 	set( @PROJECT_NAME@_FOUND TRUE )
 	set( @PROJECT_NAME@_INCLUDE_DIRS ${SCRIPT_DIR}/../install/@PROJECT_NAME@/include )
-	set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@.so
-        	                        debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@_debug.so)
+	set( @PROJECT_NAME@_LIBRARIES   optimized ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@.a
+        	                        debug ${SCRIPT_DIR}/../install/@PROJECT_NAME@/lib/lib@PROJECT_NAME@_debug.a)
 endif()
