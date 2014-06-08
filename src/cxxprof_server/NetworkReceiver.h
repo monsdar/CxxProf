@@ -42,10 +42,15 @@ private:
      */
     bool isRunning_;
 
+    /**
+     * The envelope for the incoming messages
+     */
+    std::string envelope_;
+
     ReceiveCallback callback_;
     boost::shared_ptr<boost::thread> listenThread_;
     boost::shared_ptr<zmq::context_t> zmqContext_;
-    boost::shared_ptr<zmq::socket_t> zmqListener_;
+    boost::shared_ptr<zmq::socket_t> zmqSubscriber_;
 
 };
 

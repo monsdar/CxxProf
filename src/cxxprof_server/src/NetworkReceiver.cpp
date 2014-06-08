@@ -9,10 +9,12 @@
 
 NetworkReceiver::NetworkReceiver() :
     zmqContext_(new zmq::context_t(1)),
-    zmqListener_(new zmq::socket_t(*zmqContext_, ZMQ_PULL)),
-    isRunning_(false)
+    zmqSubscriber_(new zmq::socket_t(*zmqContext_, ZMQ_SUB)),
+    isRunning_(false),
+    envelope_("CXXPROF")
 {
-    zmqListener_->bind("tcp://*:15232");
+    zmqSubscriber_->connect("tcp://127.0.0.1:15232");
+    zmqSubscriber_->setsockopt(ZMQ_SUBSCRIBE, envelope_.c_str(), envelope_.size());
 }
 
 NetworkReceiver::~NetworkReceiver()
@@ -41,9 +43,15 @@ void NetworkReceiver::receive()
 {
     while (isRunning_)
     {
-        std::string data = s_recv(*zmqListener_);
+        std::string data = s_recv(*zmqSubscriber_);
         if (data.size() != 0)
         {
+            //do not work with the envelope, throw it away immediately
+            if (data == envelope_)
+            {
+                continue;
+            }
+
             //TODO: During deserialization we're not receiving any new data.
             //      As this could take some time we should think about serializing in an
             //      explicit thread

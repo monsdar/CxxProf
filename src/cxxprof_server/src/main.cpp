@@ -33,7 +33,7 @@ int main()
     NetworkReceiver receiver;
     receiver.setCallback(receivedObjects);
     receiver.startListening();
-    std::cout << "Listening on tcp://*:15232..." << std::endl;
+    std::cout << "Subscribing to tcp://127.0.0.1:15232..." << std::endl;
 
     //This is needed to keep the main-thread alive while the NetworkReceiver runs
     while(true)

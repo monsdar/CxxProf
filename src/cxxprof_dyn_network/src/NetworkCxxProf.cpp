@@ -25,13 +25,13 @@
 
 namespace CxxProf
 {
-
     NetworkCxxProf::NetworkCxxProf() :
         actCounter_(1),
         profilingStart_(boost::posix_time::microsec_clock::local_time()),
         zmqContext_(zmq_ctx_new()),
-        zmqSender_(zmq_socket(zmqContext_, ZMQ_PUSH)),
-        isSending_(false)
+        zmqPublisher_(zmq_socket(zmqContext_, ZMQ_PUB)),
+        isSending_(false),
+        envelope_("CXXPROF")
     {
         //Initialize the AppInfo, this is needed to identify this application in the data
         //The Starttime is needed to determine when this application has been started. It is important
@@ -48,11 +48,11 @@ namespace CxxProf
         std::string envAddress = getEnv("CXXPROF_ADDRESS");
         if (envAddress.empty())
         {
-            zmq_connect(zmqSender_, "tcp://localhost:15232");
+            zmq_bind(zmqPublisher_, "tcp://*:15232");
         }
         else
         {
-            zmq_connect(zmqSender_, envAddress.c_str());
+            zmq_bind(zmqPublisher_, envAddress.c_str());
         }
 
         //Start the sending Thread. This thread will send the received data every x milliseconds
@@ -62,7 +62,7 @@ namespace CxxProf
     NetworkCxxProf::~NetworkCxxProf()
     {
         isSending_ = false;
-        zmq_close(zmqSender_);
+        zmq_close(zmqPublisher_);
         zmq_ctx_destroy(zmqContext_);
     }
 
@@ -257,7 +257,8 @@ namespace CxxProf
 
         //send the activity data via network
         std::string serializeString = serializeStream.str();
-        zmq_send(zmqSender_, serializeString.c_str(), serializeString.size(), 0);
+        s_sendmore(zmqPublisher_, &envelope_[0]);
+        s_send(zmqPublisher_, &serializeString[0]);
     }
 
     std::string NetworkCxxProf::toString() const

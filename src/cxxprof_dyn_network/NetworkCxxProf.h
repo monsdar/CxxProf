@@ -73,7 +73,8 @@ namespace CxxProf
 
         //NOTE: Tried shared-ptrs here, which should work but did not...
         void* zmqContext_;
-        void* zmqSender_;
+        void* zmqPublisher_;
+        std::string envelope_;
     };
 
 }
