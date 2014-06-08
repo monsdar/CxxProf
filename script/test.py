@@ -35,7 +35,10 @@ def main():
                 matches.append(os.path.join(root, filename))
         for path in matches:
             os.environ['PATH'] = os.environ['PATH'] + ';' + path
-    
+    else:
+	os.environ['LD_LIBRARY_PATH'] = THIRDPARTY_PATH + '/boost/lib/'
+        os.environ['LD_LIBRARY_PATH'] += ':' + THIRDPARTY_PATH + '/pluma/lib/'
+ 
     #search for projects which need to be tested
     for root, dirnames, filenames in os.walk( BUILD_PATH ):
         for filename in fnmatch.filter(filenames, 'CTestTestfile.cmake'):            
