@@ -263,7 +263,6 @@ void DataStorage::updateActivities(const std::vector<CxxProf::ActivityResult>& a
     std::vector<CxxProf::ActivityResult>::const_iterator actIter = activities.begin();
     for (; actIter != activities.end(); ++actIter)
     {
-        //TODO: Check if an ActivityResult with the given ActId is already stored in the database, then react appropriately
         sqlite::command insertCommand(*connection_,
             "INSERT INTO activities ("
             "ActivityId,"
