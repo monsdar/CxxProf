@@ -1,3 +1,6 @@
+# ATTENTION
+This repo is currently being moved to [Gitlab](https://gitlab.com/groups/CxxProf). Any new versions will be released on that platform.
+
 #CxxProf
 
 CxxProf is a manual instrumented Profiling library for C++.
